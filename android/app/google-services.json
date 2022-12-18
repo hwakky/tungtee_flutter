@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "380236578962",
+    "firebase_url": "https://tangtee-f93e0-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "tangtee-f93e0",
+    "storage_bucket": "tangtee-f93e0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:380236578962:android:26aa6133b5f098b19de64b",
+        "android_client_info": {
+          "package_name": "com.example.tangteevs"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "380236578962-i6nq2mqiuns3n3f7pkeaouhnuv9fh6m6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBCVsvYYMkyBqz9RY8ZwGFPj6uneIXxojI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "380236578962-i6nq2mqiuns3n3f7pkeaouhnuv9fh6m6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
