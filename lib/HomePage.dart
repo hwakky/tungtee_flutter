@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'Activity.dart';
 import 'Event.dart';
@@ -116,8 +117,10 @@ class ActivityTab extends StatelessWidget {
 class HomeTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final user = FirebaseAuth.instance.currentUser!;
     return Container(
-        child: const Text('Add the content for the home tab here'),
+        child: const Text('Add the content for the Home tab here'),
+        
         );
   }
 }
@@ -132,11 +135,12 @@ class ChatTab extends StatelessWidget {
 }
 
 class ProfileTab extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-        child: const Text('Add the content for the chat tab here'),
-        );
+    return MaterialApp(
+      home: ProfilePage(),
+    );
   }
 }
 

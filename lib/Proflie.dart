@@ -1,9 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class ProfilePage extends StatelessWidget {
-  final User user;
+  final  user = FirebaseAuth.instance.currentUser!;
 
-  const ProfilePage({Key? key, required this.user}) : super(key: key);
+
+  ProfilePage({Key? key, required }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,11 +16,11 @@ class ProfilePage extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               ListTile(
-                leading: CircleAvatar(
-                  backgroundImage: NetworkImage(user.profileImageUrl),
-                ),
-                title: Text(user.name),
-                subtitle: Text(user.email),
+                //leading: CircleAvatar(
+                  //backgroundImage: NetworkImage(user.photoURL),
+               // ),
+                title: Text(user.uid),
+                subtitle: Text(user.email!),
               ),
               ButtonBar(
                 children: [
