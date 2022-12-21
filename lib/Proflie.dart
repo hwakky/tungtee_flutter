@@ -1,11 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:tangteevs/Login.dart';
+import 'services/auth_service.dart';
 
 class ProfilePage extends StatelessWidget {
-  final  user = FirebaseAuth.instance.currentUser!;
+  final user = FirebaseAuth.instance.currentUser!;
+  AuthService authService = AuthService();
 
-
-  ProfilePage({Key? key, required }) : super(key: key);
+  ProfilePage({Key? key, required}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,25 +19,34 @@ class ProfilePage extends StatelessWidget {
             children: [
               ListTile(
                 //leading: CircleAvatar(
-                  //backgroundImage: NetworkImage(user.photoURL),
-               // ),
+                //backgroundImage: NetworkImage(user.photoURL),
+                // ),
                 title: Text(user.uid),
                 subtitle: Text(user.email!),
               ),
               ButtonBar(
                 children: [
                   TextButton(
-                    child: Text('Edit'),
+                    child: const Text('Edit'),
                     onPressed: () {
                       // Navigate to edit profile page
                     },
                   ),
                   TextButton(
-                    child: Text('Logout'),
+                    child: const Text('Logout'),
                     onPressed: () {
                       // Logout user
                     },
                   ),
+                  ElevatedButton.icon(
+                      onPressed: () async {
+                        await authService.signOut();
+                        Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(builder: (context) => Login()),
+                            (route) => false);
+                      },
+                      icon: const Icon(Icons.arrow_back),
+                      label: const Text("Logout"))
                 ],
               ),
             ],
@@ -51,5 +62,6 @@ class User {
   final String email;
   final String profileImageUrl;
 
-  User({required this.name, required this.email, required this.profileImageUrl});
+  User(
+      {required this.name, required this.email, required this.profileImageUrl});
 }
