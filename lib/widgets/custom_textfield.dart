@@ -25,17 +25,19 @@ const lightestOrange = Color.fromRGBO(255, 221, 89, 1);
 const textInputDecoration = InputDecoration(
   labelStyle: TextStyle(color: Colors.black),
   focusedBorder: OutlineInputBorder(
-    borderRadius: BorderRadius.all(Radius.circular(150.0)),
-    borderSide: BorderSide(color: green, width: 3),
+    borderRadius: BorderRadius.all(Radius.circular(70.0)),
+    borderSide: BorderSide(color: green, width: 2),
   ),
   enabledBorder: OutlineInputBorder(
-    borderRadius: BorderRadius.all(Radius.circular(150.0)),
-    borderSide: BorderSide(color: green, width: 3),
+    borderRadius: BorderRadius.all(Radius.circular(70.0)),
+    borderSide: BorderSide(color: green, width: 2),
   ),
   errorBorder: OutlineInputBorder(
-    borderRadius: BorderRadius.all(Radius.circular(150.0)),
-    borderSide: BorderSide(color: green, width: 3),
+    borderRadius: BorderRadius.all(Radius.circular(70.0)),
+    borderSide: BorderSide(color: green, width: 2),
   ),
+  fillColor: primaryColor,
+  filled: true,
 );
 
 void nextScreen(context, page) {

@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:tangteevs/Login.dart';
+import 'package:tangteevs/regis,login/Login.dart';
 import 'services/auth_service.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -21,7 +21,7 @@ class ProfilePage extends StatelessWidget {
                 //leading: CircleAvatar(
                 //backgroundImage: NetworkImage(user.photoURL),
                 // ),
-                title: Text(user.uid),
+                title: Text(user.displayName!),
                 subtitle: Text(user.email!),
               ),
               ButtonBar(

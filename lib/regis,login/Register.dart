@@ -1,11 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'services/auth_service.dart';
+import 'package:tangteevs/services/auth_service.dart';
 import 'package:tangteevs/widgets/custom_textfield.dart';
-import 'helper/helper_function.dart';
-import 'Homepage.dart';
+import 'package:tangteevs/helper/helper_function.dart';
+import 'package:tangteevs/Homepage.dart';
 import 'Login.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
+import 'package:tangteevs/regis,login/Verify.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
@@ -50,9 +53,12 @@ class _RegistrationScreen extends State<RegisterPage> {
                             style: TextStyle(
                                 fontSize: 15, fontWeight: FontWeight.w400)),
                         // Image.asset("assets/register.png"),
+                        const SizedBox(
+                          height: 35,
+                        ),
                         TextFormField(
                           decoration: textInputDecoration.copyWith(
-                              labelText: "Full Name",
+                              labelText: "Username",
                               prefixIcon: Icon(
                                 Icons.person,
                                 color: Theme.of(context).primaryColor,
@@ -71,7 +77,7 @@ class _RegistrationScreen extends State<RegisterPage> {
                           },
                         ),
                         const SizedBox(
-                          height: 15,
+                          height: 25,
                         ),
                         TextFormField(
                           decoration: textInputDecoration.copyWith(
@@ -95,7 +101,7 @@ class _RegistrationScreen extends State<RegisterPage> {
                                 : "Please enter a valid email";
                           },
                         ),
-                        const SizedBox(height: 15),
+                        const SizedBox(height: 25),
                         TextFormField(
                           obscureText: true,
                           decoration: textInputDecoration.copyWith(
@@ -118,6 +124,30 @@ class _RegistrationScreen extends State<RegisterPage> {
                           },
                         ),
                         const SizedBox(
+                          height: 25,
+                        ),
+                        TextFormField(
+                          obscureText: true,
+                          decoration: textInputDecoration.copyWith(
+                              labelText: "Confirm Password",
+                              prefixIcon: Icon(
+                                Icons.lock,
+                                color: Theme.of(context).primaryColor,
+                              )),
+                          validator: (val) {
+                            if (password == password2) {
+                              return null;
+                            } else {
+                              return "Password does not match";
+                            }
+                          },
+                          onChanged: (val) {
+                            setState(() {
+                              password2 = val;
+                            });
+                          },
+                        ),
+                        const SizedBox(
                           height: 20,
                         ),
                         SizedBox(
@@ -129,7 +159,7 @@ class _RegistrationScreen extends State<RegisterPage> {
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(30))),
                             child: const Text(
-                              "Register",
+                              "Next",
                               style:
                                   TextStyle(color: Colors.white, fontSize: 16),
                             ),
