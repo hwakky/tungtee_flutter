@@ -21,7 +21,7 @@ class ProfilePage extends StatelessWidget {
                 //leading: CircleAvatar(
                 //backgroundImage: NetworkImage(user.photoURL),
                 // ),
-                title: Text(user.displayName!),
+                title: Text(user.uid),
                 subtitle: Text(user.email!),
               ),
               ButtonBar(
