@@ -16,14 +16,15 @@ class LandingPage extends StatelessWidget {
         flexibleSpace: Container(
           decoration: const BoxDecoration(
               image: DecorationImage(
-                  image: AssetImage("assets/landing.png"), fit: BoxFit.fill)),
+                  image: AssetImage("assets/images/landing.png"),
+                  fit: BoxFit.fill)),
         ),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Image.asset("assets/logo with name.png"),
+          Image.asset("assets/images/logo with name.png"),
           const Text.rich(TextSpan(
             text: "ไม่มีเพื่อนไปทำกิจกรรมอย่างงั้นหรอ?",
             style: const TextStyle(

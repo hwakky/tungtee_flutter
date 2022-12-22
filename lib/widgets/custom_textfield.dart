@@ -38,6 +38,7 @@ const textInputDecoration = InputDecoration(
   ),
   fillColor: primaryColor,
   filled: true,
+  
 );
 
 void nextScreen(context, page) {

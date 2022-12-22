@@ -84,11 +84,11 @@ flutter:
   # the material Icons class.
   uses-material-design: true
   assets:
-    - assets/login.png
-    - assets/logo with name.png
-    - assets/landing.png
-    - assets/login c.png
-    - assets/id-card.png
+    - assets/images/login.png
+    - assets/images/logo with name.png
+    - assets/images/landing.png
+    - assets/images/login c.png
+    - assets/images/id-card.png
   #] To add assets to your application, add an assets section, like this:
 
   # An image asset can refer to one or more resolution-specific "variants", see
@@ -100,7 +100,7 @@ flutter:
   fonts:
   - family: MyCustomFont
     fonts:
-      - asset: fonts/BaiJamjuree-Regular.ttf
+      - asset: assets/fonts/BaiJamjuree-Regular.ttf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro

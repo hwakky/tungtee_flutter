@@ -37,7 +37,7 @@ class _LoginState extends State<Login> {
                   bottomLeft: Radius.circular(200),
                   bottomRight: Radius.circular(200)),
               image: DecorationImage(
-                  image: AssetImage("assets/login.png"), fit: BoxFit.fill)),
+                  image: AssetImage("assets/images/login.png"), fit: BoxFit.fill)),
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,

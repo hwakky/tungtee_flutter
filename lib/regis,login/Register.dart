@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:tangteevs/regis,login/firestore.dart';
 import 'package:tangteevs/services/auth_service.dart';
 import 'package:tangteevs/widgets/custom_textfield.dart';
 import 'package:tangteevs/helper/helper_function.dart';
@@ -26,6 +27,9 @@ class _RegistrationScreen extends State<RegisterPage> {
   String password2 = "";
   String fullName = "";
   AuthService authService = AuthService();
+  String age = "";
+  String imageUrl = "";
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -200,14 +204,14 @@ class _RegistrationScreen extends State<RegisterPage> {
         _isLoading = true;
       });
       await authService
-          .registerUserWithEmailandPassword(fullName, email, password)
+          .registerUserWithEmailandPassword(fullName, email, password, imageUrl, age)
           .then((value) async {
         if (value == true) {
           // saving the shared preference state
           await HelperFunctions.saveUserLoggedInStatus(true);
           await HelperFunctions.saveUserEmailSF(email);
           await HelperFunctions.saveUserNameSF(fullName);
-          nextScreenReplace(context, MyHomePage());
+          nextScreenReplace(context, profile());
         } else {
           showSnackbar(context, Colors.red, value);
           setState(() {

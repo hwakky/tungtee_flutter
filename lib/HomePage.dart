@@ -1,8 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:tangteevs/utils/color.dart';
 import 'Activity.dart';
 import 'Event.dart';
-import 'Proflie.dart';
+import 'FeedPage.dart';
+import 'Profile.dart';
 
 void main() {
   runApp(MyApp());
@@ -64,33 +66,39 @@ class _MyHomePageState extends State<MyHomePage> {
     }
     return Scaffold(
       body: currentPage,
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.history),
-            label: 'Activity',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.add_box),
-            label: 'Post',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.chat),
-            label: 'Chat',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.account_circle),
-            label: 'Proflie',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        unselectedItemColor: Color.fromARGB(147, 45, 166, 1),
-        selectedItemColor: Color.fromARGB(178, 242, 97, 1),
-        onTap: _onItemTapped,
+      bottomNavigationBar: SizedBox(
+        height: 65,
+        child: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
+          currentIndex: _selectedIndex,
+          backgroundColor: purple,
+          unselectedItemColor: primaryColor,
+          selectedItemColor: lightGreen,
+          onTap: _onItemTapped,
+          iconSize: 30,
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.history),
+              label: 'Activity',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.add_box),
+              label: 'Post',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.chat),
+              label: 'Chat',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.account_circle),
+              label: 'Proflie',
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -118,10 +126,9 @@ class HomeTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser!;
-    return Container(
-        child: const Text('Add the content for the Home tab here'),
-        
-        );
+    return MaterialApp(
+      home: FeedPage(),
+    );
   }
 }
 
@@ -129,13 +136,12 @@ class ChatTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        child: const Text('Add the content for the chat tab here'),
-        );
+      child: const Text('Add the content for the chat tab here'),
+    );
   }
 }
 
 class ProfileTab extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -143,4 +149,3 @@ class ProfileTab extends StatelessWidget {
     );
   }
 }
-

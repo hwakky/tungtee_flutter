@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:tangteevs/regis,login/firestore.dart';
 import 'regis,login/Verify.dart';
 import 'package:tangteevs/firebase_options.dart';
 import 'package:tangteevs/regis,login/Login.dart';
@@ -16,6 +17,7 @@ void main() async {
   runApp(MaterialApp(
     initialRoute: '/landing',
     routes: {
+      '/test': (context) => profile(),
       '/landing': (context) => LandingPage(),
       '/Verify': (context) => Verify(),
       '/login': (context) => Login(),

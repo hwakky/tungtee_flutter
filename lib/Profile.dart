@@ -1,10 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:tangteevs/regis,login/Login.dart';
 import 'services/auth_service.dart';
+import 'landing.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ProfilePage extends StatelessWidget {
+  bool isSignedIn = false;
   final user = FirebaseAuth.instance.currentUser!;
+ FirebaseFirestore firestore = FirebaseFirestore.instance;
   AuthService authService = AuthService();
 
   ProfilePage({Key? key, required}) : super(key: key);
@@ -39,11 +42,15 @@ class ProfilePage extends StatelessWidget {
                     },
                   ),
                   ElevatedButton.icon(
-                      onPressed: () async {
-                        await authService.signOut();
-                        Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(builder: (context) => Login()),
-                            (route) => false);
+                      onPressed: () {
+                        // Sign out of Firebase
+                        FirebaseAuth.instance.signOut();
+
+                        // Push the landing page route and replace the current route
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                              builder: (context) => const LandingPage()),
+                        );
                       },
                       icon: const Icon(Icons.arrow_back),
                       label: const Text("Logout"))

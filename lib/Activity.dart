@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tangteevs/utils/color.dart';
 
 class ActivityPage extends StatelessWidget {
   @override
@@ -7,7 +8,17 @@ class ActivityPage extends StatelessWidget {
       length: 3,
       child: Scaffold(
         appBar: AppBar(
+          elevation: 0,
+          backgroundColor: mobileBackgroundColor,
           bottom: const TabBar(
+            indicatorColor: lightGreen,
+            labelColor: lightGreen,
+            unselectedLabelColor: unselected,
+            labelStyle: TextStyle(
+                fontSize: 20.0, fontFamily: 'MyCustomFont'), //For Selected tab
+            unselectedLabelStyle: TextStyle(
+                fontSize: 20.0,
+                fontFamily: 'MyCustomFont'), //For Un-selected Tabs
             tabs: [
               Tab(text: 'Waiting'),
               Tab(text: 'History'),
@@ -22,6 +33,7 @@ class ActivityPage extends StatelessWidget {
             FavoritePage(),
           ],
         ),
+        backgroundColor: mobileBackgroundColor,
       ),
     );
   }
@@ -44,7 +56,6 @@ class HistoryPage extends StatelessWidget {
         );
   }
 }
-
 
 class WaitingPage extends StatelessWidget {
   @override
