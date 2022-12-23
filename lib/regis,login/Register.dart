@@ -172,8 +172,9 @@ class _RegistrationScreen extends State<RegisterPage> {
                         const SizedBox(
                           height: 25,
                         ),
-                        ElevatedButton(
-                          onPressed: () async {
+
+                        InkWell(
+                          onTap: () async {
                             ImagePicker imagePicker = ImagePicker();
                             XFile? file = await imagePicker.pickImage(
                                 source: ImageSource.gallery);
@@ -193,7 +194,7 @@ class _RegistrationScreen extends State<RegisterPage> {
                               //Store the file
                               await referenceImageToUpload
                                   .putFile(File(file.path));
-                              //Success: get the download URL
+                              //  Success: get the download URL
                               ImageProfile =
                                   await referenceImageToUpload.getDownloadURL();
                             } catch (error) {
@@ -202,51 +203,17 @@ class _RegistrationScreen extends State<RegisterPage> {
                             setState(() {
                               media1 = File(file.path);
                             });
-                            print(ImageProfile);
                           },
-                          child: const Text("Profile"),
+                          child: CircleAvatar(
+                            radius: 100,
+                            backgroundColor: Colors.transparent,
+                            child: ClipRRect(
+                                borderRadius: BorderRadius.circular(500),
+                                child: media1 != null
+                                    ? Image.file(media1!)
+                                    : Image.asset('assets/images/profile.png')),
+                          ),
                         ),
-                        // InkWell(
-                        ///  onTap: () async {
-                        //  ImagePicker imagePicker = ImagePicker();
-                        //   XFile? file = await imagePicker.pickImage(
-                        //      source: ImageSource.gallery);
-                        //    print('${file?.path}');
-
-                        ///   if (file == null) return;
-                        //    String uniqueFileName = DateTime.now()
-                        //        .millisecondsSinceEpoch
-                        //        .toString();
-                        //    Reference referenceRoot =
-                        //       FirebaseStorage.instance.ref();
-                        //   Reference referenceDirImages =
-                        //       referenceRoot.child('Profile');
-                        //   Reference referenceImageToUpload =
-                        //       referenceDirImages.child("${user?.uid}");
-                        //   try {
-                        //Store the file
-                        //    await referenceImageToUpload
-                        //       .putFile(File(file.path));
-                        //Success: get the download URL
-                        //    ImageProfile =
-                        //        await referenceImageToUpload.getDownloadURL();
-                        //  } catch (error) {
-                        //Some error occurred
-                        //   }
-                        //   setState(() {
-                        //     media1 = File(file.path);
-                        //    });
-                        //  },
-                        //   child: CircleAvatar(
-                        //    radius: 100,
-                        //    backgroundColor: Colors.transparent,
-                        //    child: ClipRRect(
-                        //        borderRadius: BorderRadius.circular(500),
-                        //       child: media1 != null
-                        //           ? Image.file(media1!)
-                        //            : Image.asset('assets/images/profile.png')),
-                        //   ),
-                        //  ),
                         const SizedBox(
                           height: 25,
                         ),
@@ -460,7 +427,7 @@ class _RegistrationScreen extends State<RegisterPage> {
           await HelperFunctions.saveUserGenderSF(gender);
           await HelperFunctions.saveUserBioSF(bio);
 
-          nextScreenReplace(context, MyHomePage());
+          nextScreenReplace(this.context, MyHomePage());
         } else {
           showSnackbar(context, Colors.red, value);
           setState(() {

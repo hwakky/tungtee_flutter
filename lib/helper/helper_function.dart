@@ -49,9 +49,9 @@ class HelperFunctions {
     return await sf.setString(userDisplayKey, userDisplay);
   }
 
-  static Future<bool> saveUserGenderSF(String usergender) async {
+  static Future<bool> saveUserGenderSF(String userGender) async {
     SharedPreferences sf = await SharedPreferences.getInstance();
-    return await sf.setString(userGenderKey, usergender);
+    return await sf.setString(userGenderKey, userGender);
   }
 
   static Future<bool> saveUserBioSF(String userBio) async {
@@ -79,11 +79,6 @@ class HelperFunctions {
   static Future<String?> getUserAgeFromSF() async {
     SharedPreferences sf = await SharedPreferences.getInstance();
     return sf.getString(userAgeKey);
-  }
-
-  static Future<String?> getUserImageFromSF() async {
-    SharedPreferences sf = await SharedPreferences.getInstance();
-    return sf.getString(userImageidcardKey);
   }
 
   static Future<String?> getUserImageidcardFromSF() async {

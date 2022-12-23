@@ -1,6 +1,9 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:tangteevs/HomePage.dart';
+
+import '../widgets/custom_textfield.dart';
 
 void main() => runApp(Verify());
 
@@ -57,7 +60,7 @@ class _VerifyState extends State<Verify> {
               ),
               ElevatedButton(
                 onPressed: () {
-                  // Navigate to the next page or perform verification
+                  nextScreen(context, MyHomePage());
                 },
                 child: const Text('Next'),
               ),
