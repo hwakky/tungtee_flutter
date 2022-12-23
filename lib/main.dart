@@ -1,13 +1,16 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:tangteevs/regis,login/firestore.dart';
+import 'model/user_model.dart';
 import 'regis,login/Verify.dart';
 import 'package:tangteevs/firebase_options.dart';
 import 'package:tangteevs/regis,login/Login.dart';
 import 'package:tangteevs/regis,login/Register.dart';
 import 'HomePage.dart';
 import 'Landing.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,3 +29,4 @@ void main() async {
     },
   ));
 }
+

@@ -26,6 +26,7 @@ class ProfilePage extends StatelessWidget {
                 // ),
                 title: Text(user.uid),
                 subtitle: Text(user.email!),
+               
               ),
               ButtonBar(
                 children: [

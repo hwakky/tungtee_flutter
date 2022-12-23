@@ -24,6 +24,7 @@ const lightestOrange = Color.fromRGBO(255, 221, 89, 1);
 
 const textInputDecoration = InputDecoration(
   labelStyle: TextStyle(color: Colors.black),
+  
   focusedBorder: OutlineInputBorder(
     borderRadius: BorderRadius.all(Radius.circular(70.0)),
     borderSide: BorderSide(color: green, width: 2),

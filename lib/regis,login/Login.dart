@@ -9,6 +9,8 @@ import 'package:tangteevs/services/database_service.dart';
 import 'package:tangteevs/widgets/custom_textfield.dart';
 import 'package:tangteevs/helper/helper_function.dart';
 
+import '../services/reset_password.dart';
+
 class Login extends StatefulWidget {
   @override
   _LoginState createState() => _LoginState();
@@ -37,7 +39,8 @@ class _LoginState extends State<Login> {
                   bottomLeft: Radius.circular(200),
                   bottomRight: Radius.circular(200)),
               image: DecorationImage(
-                  image: AssetImage("assets/images/login.png"), fit: BoxFit.fill)),
+                  image: AssetImage("assets/images/login.png"),
+                  fit: BoxFit.fill)),
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -135,8 +138,21 @@ class _LoginState extends State<Login> {
                         }
                       },
                     ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        TextButton(
+                            style: TextButton.styleFrom(
+                              primary: primaryColor,
+                            ),
+                            onPressed: () {
+                              nextScreen(context, ResetPasswordPage());
+                            },
+                            child: const Text("ลืมรหัสผ่าน?"))
+                      ],
+                    ),
                     const SizedBox(
-                      height: 75,
+                      height: 35,
                     ),
                     //ElevatedButton.icon(
                     // onPressed: () {

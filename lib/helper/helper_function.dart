@@ -5,7 +5,12 @@ class HelperFunctions {
   static String userLoggedInKey = "LOGGEDINKEY";
   static String userNameKey = "USERNAMEKEY";
   static String userEmailKey = "USEREMAILKEY";
- 
+  static String userAgeKey = "USERAGEKEY";
+  static String userImageidcardKey = "USERIMAGEIDCARDKEY";
+  static String userImageprofileKey = "USERIMAGEPROFILEKEY";
+  static String userDisplayKey = "USERDISPLAYKEY";
+  static String userGenderKey = "USERGENDERKEY";
+  static String userBioKey = "USERBIOKEY";
 
   // saving the data to SF
 
@@ -24,7 +29,35 @@ class HelperFunctions {
     return await sf.setString(userEmailKey, userEmail);
   }
 
+  static Future<bool> saveUserAgeSF(String userAge) async {
+    SharedPreferences sf = await SharedPreferences.getInstance();
+    return await sf.setString(userAgeKey, userAge);
+  }
 
+  static Future<bool> saveUserImageidcardSF(String userImageidcard) async {
+    SharedPreferences sf = await SharedPreferences.getInstance();
+    return await sf.setString(userImageidcardKey, userImageidcard);
+  }
+
+  static Future<bool> saveUserImageprofileSF(String userImageprofile) async {
+    SharedPreferences sf = await SharedPreferences.getInstance();
+    return await sf.setString(userImageprofileKey, userImageprofile);
+  }
+
+  static Future<bool> saveUserDisplaySF(String userDisplay) async {
+    SharedPreferences sf = await SharedPreferences.getInstance();
+    return await sf.setString(userDisplayKey, userDisplay);
+  }
+
+  static Future<bool> saveUserGenderSF(String usergender) async {
+    SharedPreferences sf = await SharedPreferences.getInstance();
+    return await sf.setString(userGenderKey, usergender);
+  }
+
+  static Future<bool> saveUserBioSF(String userBio) async {
+    SharedPreferences sf = await SharedPreferences.getInstance();
+    return await sf.setString(userBioKey, userBio);
+  }
 
   // getting the data from SF
 
@@ -43,5 +76,38 @@ class HelperFunctions {
     return sf.getString(userNameKey);
   }
 
-  
+  static Future<String?> getUserAgeFromSF() async {
+    SharedPreferences sf = await SharedPreferences.getInstance();
+    return sf.getString(userAgeKey);
+  }
+
+  static Future<String?> getUserImageFromSF() async {
+    SharedPreferences sf = await SharedPreferences.getInstance();
+    return sf.getString(userImageidcardKey);
+  }
+
+  static Future<String?> getUserImageidcardFromSF() async {
+    SharedPreferences sf = await SharedPreferences.getInstance();
+    return sf.getString(userImageidcardKey);
+  }
+
+  static Future<String?> getUserImageprofileFromSF() async {
+    SharedPreferences sf = await SharedPreferences.getInstance();
+    return sf.getString(userImageprofileKey);
+  }
+
+  static Future<String?> getUserDisplayFromSF() async {
+    SharedPreferences sf = await SharedPreferences.getInstance();
+    return sf.getString(userDisplayKey);
+  }
+
+  static Future<String?> getUserGenderFromSF() async {
+    SharedPreferences sf = await SharedPreferences.getInstance();
+    return sf.getString(userGenderKey);
+  }
+
+  static Future<String?> getUserBioFromSF() async {
+    SharedPreferences sf = await SharedPreferences.getInstance();
+    return sf.getString(userBioKey);
+  }
 }

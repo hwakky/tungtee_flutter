@@ -22,7 +22,7 @@ class AuthService {
 
   // register
   Future registerUserWithEmailandPassword(
-      String fullName, String email, String password, String imageUrl, String age) async {
+      String fullName, String email, String password, String Imageidcard, String age, String Imageprofile, String Displayname, String gender, String bio) async {
     try {
       User user = (await firebaseAuth.createUserWithEmailAndPassword(
               email: email, password: password))
@@ -30,7 +30,7 @@ class AuthService {
 
       if (user != null) {
         // call our database service to update the user data.
-        await DatabaseService(uid: user.uid).savingUserData(fullName, email);
+        await DatabaseService(uid: user.uid).savingUserData(fullName, email, age, Imageidcard, Imageprofile, Displayname, gender, bio);
         return true;
       }
     } on FirebaseAuthException catch (e) {
@@ -44,6 +44,12 @@ class AuthService {
       await HelperFunctions.saveUserLoggedInStatus(false);
       await HelperFunctions.saveUserEmailSF("");
       await HelperFunctions.saveUserNameSF("");
+      await HelperFunctions.saveUserImageidcardSF("");
+      await HelperFunctions.saveUserImageprofileSF("");
+      await HelperFunctions.saveUserAgeSF("");
+      await HelperFunctions.saveUserDisplaySF("");
+      await HelperFunctions.saveUserGenderSF("");
+      await HelperFunctions.saveUserBioSF("");
       await firebaseAuth.signOut();
     } catch (e) {
       return null;
