@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tangteevs/HomePage.dart';
 import 'package:tangteevs/regis,login/Register.dart';
 import 'package:tangteevs/services/auth_service.dart';
@@ -17,7 +18,6 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  final user = FirebaseAuth.instance.currentUser;
   final _formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -231,7 +231,7 @@ class _LoginState extends State<Login> {
         if (value == true) {
           QuerySnapshot snapshot =
               await DatabaseService(uid: FirebaseAuth.instance.currentUser!.uid)
-                  .gettingUserData(email);
+                  .gettingUserData(email);       
           // saving the values to our shared preferences
           await HelperFunctions.saveUserLoggedInStatus(true);
           await HelperFunctions.saveUserEmailSF(email);

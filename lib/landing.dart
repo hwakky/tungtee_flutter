@@ -1,11 +1,33 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:tangteevs/regis,login/Login.dart';
+import 'package:tangteevs/regis,login/Register.dart';
 import 'package:tangteevs/widgets/custom_textfield.dart';
 import 'team/team.dart';
 import 'team/privacy.dart';
 
-class LandingPage extends StatelessWidget {
+class LandingPage extends StatefulWidget {
   const LandingPage({super.key});
+
+
+  @override
+  State<LandingPage> createState() => _LandingPageState();
+}
+
+class _LandingPageState extends State<LandingPage> {
+  var auth = FirebaseAuth.instance;
+  bool isLogin = false;
+
+  checkIfLogin() async {
+    auth.userChanges().listen((User? user) {
+      if (user != null && mounted) {
+        setState(() {
+          isLogin = true;
+        });
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +82,7 @@ class LandingPage extends StatelessWidget {
                 style: TextStyle(color: Colors.white, fontSize: 24),
               ),
               onPressed: () {
-                Navigator.of(context).pushNamed('/login');
+                nextScreen(context, Login());
               },
             ),
           ),
@@ -81,7 +103,7 @@ class LandingPage extends StatelessWidget {
               style: TextStyle(color: Colors.purple, fontSize: 24),
             ),
             onPressed: () {
-              Navigator.of(context).pushNamed('/register');
+              nextScreen(context, const RegisterPage());
             },
           ),
           const SizedBox(

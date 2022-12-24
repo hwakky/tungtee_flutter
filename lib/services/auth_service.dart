@@ -39,7 +39,7 @@ class AuthService {
   }
 
   // signout
-  Future signOut() async {
+  Future authsignOut() async {
     try {
       await HelperFunctions.saveUserLoggedInStatus(false);
       await HelperFunctions.saveUserEmailSF("");

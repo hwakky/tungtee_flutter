@@ -7,7 +7,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class ProfilePage extends StatelessWidget {
   bool isSignedIn = false;
   final user = FirebaseAuth.instance.currentUser!;
- FirebaseFirestore firestore = FirebaseFirestore.instance;
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
   AuthService authService = AuthService();
 
   ProfilePage({Key? key, required}) : super(key: key);
@@ -26,7 +26,6 @@ class ProfilePage extends StatelessWidget {
                 // ),
                 title: Text(user.uid),
                 subtitle: Text(user.email!),
-               
               ),
               ButtonBar(
                 children: [

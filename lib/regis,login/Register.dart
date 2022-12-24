@@ -10,6 +10,8 @@ import 'package:tangteevs/services/auth_service.dart';
 import 'package:tangteevs/widgets/custom_textfield.dart';
 import 'package:tangteevs/helper/helper_function.dart';
 import 'package:tangteevs/Homepage.dart';
+import '../team/privacy.dart';
+import '../team/team.dart';
 import 'Login.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
@@ -23,6 +25,7 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegistrationScreen extends State<RegisterPage> {
+  bool isChecked = false;
   File? media;
   File? media1;
   bool _isLoading = false;
@@ -39,6 +42,13 @@ class _RegistrationScreen extends State<RegisterPage> {
   String Imageidcard = "";
   String ImageProfile = "";
   String bio = "";
+  final textEditingController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    textEditingController.text = 'Select Gender';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +70,17 @@ class _RegistrationScreen extends State<RegisterPage> {
                         const Text(
                           "REGISTER",
                           style: TextStyle(
-                              fontSize: 40, fontWeight: FontWeight.bold),
+                            fontSize: 46,
+                            fontWeight: FontWeight.bold,
+                            color: purple,
+                            shadows: [
+                              Shadow(
+                                blurRadius: 5,
+                                color: Colors.grey,
+                                offset: Offset(3, 3),
+                              ),
+                            ],
+                          ),
                         ),
                         const SizedBox(height: 10),
                         const Text("สร้างบัญชีของคุณเลยสิ",
@@ -81,7 +101,6 @@ class _RegistrationScreen extends State<RegisterPage> {
                             setState(() {
                               fullName = val;
                             });
-                            print(fullName);
                           },
                           validator: (val) {
                             if (val!.isNotEmpty) {
@@ -105,7 +124,6 @@ class _RegistrationScreen extends State<RegisterPage> {
                             setState(() {
                               email = val;
                             });
-                            print(email);
                           },
 
                           // check tha validation
@@ -165,6 +183,24 @@ class _RegistrationScreen extends State<RegisterPage> {
                         ),
                         const SizedBox(
                           height: 15,
+                        ),
+                        const Text(
+                          "PROFILE",
+                          style: TextStyle(
+                            fontSize: 46,
+                            fontWeight: FontWeight.bold,
+                            color: purple,
+                            shadows: [
+                              Shadow(
+                                blurRadius: 5,
+                                color: Colors.grey,
+                                offset: Offset(3, 3),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10,
                         ),
                         const Text("กรอกข้อมูลส่วนตัวของคุณ",
                             style: TextStyle(
@@ -254,8 +290,8 @@ class _RegistrationScreen extends State<RegisterPage> {
                                 validator: (val) {
                                   if (val!.isEmpty) {
                                     return "plase Enter Your Age";
-                                  } else if (int.parse(val) < 18) {
-                                    return 'Age must be 18 or older';
+                                  } else if (int.parse(val) < 15) {
+                                    return 'Age must be 15 or older';
                                   } else {
                                     return null;
                                   }
@@ -269,25 +305,67 @@ class _RegistrationScreen extends State<RegisterPage> {
                             ),
                             const SizedBox(width: 16),
                             Expanded(
-                              child: TextFormField(
+                              child: TextField(
+                                controller: textEditingController,
+                                readOnly: true,
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return SimpleDialog(
+                                        children: <Widget>[
+                                          SimpleDialogOption(
+                                            onPressed: () {
+                                              textEditingController.text =
+                                                  'Male';
+                                              // Update the gender value using setState
+                                              setState(() {
+                                                gender = 'Male';
+                                              });
+                                              // Close the dialog
+                                              Navigator.pop(context);
+                                            },
+                                            child: Text('Male'),
+                                          ),
+                                          SimpleDialogOption(
+                                            onPressed: () {
+                                              textEditingController.text =
+                                                  'Female';
+                                              // Update the gender value using setState
+                                              setState(() {
+                                                gender = 'Female';
+                                              });
+                                              // Close the dialog
+                                              Navigator.pop(context);
+                                            },
+                                            child: Text('Female'),
+                                          ),
+                                          SimpleDialogOption(
+                                            onPressed: () {
+                                              textEditingController.text =
+                                                  'Other';
+                                              // Update the gender value using setState
+                                              setState(() {
+                                                gender = 'Other';
+                                              });
+                                              // Close the dialog
+                                              Navigator.pop(context);
+                                            },
+                                            child: Text('Other'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                                enableInteractiveSelection: false,
                                 decoration: textInputDecoration.copyWith(
-                                    hintText: "Gender",
-                                    prefixIcon: Icon(
-                                      Icons.wc_sharp,
-                                      color: Theme.of(context).primaryColor,
-                                    )),
-                                validator: (val) {
-                                  if (val!.isNotEmpty) {
-                                    return null;
-                                  } else {
-                                    return "plase Enter Your Gender";
-                                  }
-                                },
-                                onChanged: (val) {
-                                  setState(() {
-                                    gender = val;
-                                  });
-                                },
+                                  hintText: 'Select Gender',
+                                  prefixIcon: Icon(
+                                    Icons.wc_sharp,
+                                    color: Theme.of(context).primaryColor,
+                                  ),
+                                ),
                               ),
                             ),
                           ],
@@ -316,12 +394,21 @@ class _RegistrationScreen extends State<RegisterPage> {
                             });
                           },
                         ),
+                        const SizedBox(
+                          height: 25,
+                        ),
 
                         ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: purple,
+                              minimumSize: const Size(200, 49),
+                              elevation: 0,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30))),
                           onPressed: () async {
                             ImagePicker imagePicker = ImagePicker();
                             XFile? file = await imagePicker.pickImage(
-                                source: ImageSource.gallery);
+                                source: ImageSource.camera);
                             print('${file?.path}');
 
                             if (file == null) return;
@@ -349,24 +436,79 @@ class _RegistrationScreen extends State<RegisterPage> {
                             });
                             print(Imageidcard);
                           },
-                          child: const Text("idcard"),
+                          child: const Text("Take a photo of idcard"),
                         ),
                         SizedBox(
-                            height: 150,
+                            height: 120,
                             child: media != null
                                 ? Image.file(media!)
-                                : const FlutterLogo(
-                                    size: 200,
-                                  )),
+                                : Image.asset('assets/images/id-card.png')),
 
                         const SizedBox(
                           height: 20,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            Checkbox(
+                              value: isChecked,
+                              onChanged: (value) {
+                                setState(() {
+                                  isChecked = value!;
+                                });
+                              },
+                            ),
+                            Text.rich(TextSpan(
+                              style: const TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 12,
+                                  fontFamily: 'MyCustomFont'),
+                              children: <TextSpan>[
+                                TextSpan(
+                                    text: "การลงชื่อเข้าใช้แสดงว่าคุณยอมรับ",
+                                    style: const TextStyle(
+                                      color: Colors.black,
+                                      decoration: TextDecoration.none,
+                                    ),
+                                    recognizer: TapGestureRecognizer()),
+                                TextSpan(
+                                    text: "เงื่อนไขการใช้งาน\n",
+                                    style: const TextStyle(
+                                        color: Colors.black,
+                                        decoration: TextDecoration.underline,
+                                        fontWeight: FontWeight.bold),
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () {
+                                        nextScreen(context, TermsPage());
+                                      }),
+                                TextSpan(
+                                    text: "และ",
+                                    style: const TextStyle(
+                                      color: Colors.black,
+                                      decoration: TextDecoration.none,
+                                    ),
+                                    recognizer: TapGestureRecognizer()),
+                                TextSpan(
+                                    text: "นโยบายความเป็นส่วนตัว",
+                                    style: const TextStyle(
+                                        color: Colors.black,
+                                        decoration: TextDecoration.underline,
+                                        fontWeight: FontWeight.bold),
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () {
+                                        nextScreen(context, PrivacyPage());
+                                      }),
+                              ],
+                            )),
+                          ],
                         ),
                         SizedBox(
                           width: double.infinity,
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                                primary: Theme.of(context).primaryColor,
+                                backgroundColor:
+                                    isChecked ? purple : unselected,
+                                minimumSize: const Size(307, 49),
                                 elevation: 0,
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(30))),
@@ -376,7 +518,11 @@ class _RegistrationScreen extends State<RegisterPage> {
                                   TextStyle(color: Colors.white, fontSize: 16),
                             ),
                             onPressed: () {
-                              register();
+                              if (isChecked == true) {
+                                register();
+                              } else {
+                                return null;
+                              }
                             },
                           ),
                         ),
