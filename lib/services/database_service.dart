@@ -19,7 +19,8 @@ class DatabaseService {
       String Imageprofile,
       String Displayname,
       String gender,
-      String bio) async {
+      String bio,
+      bool isadmin) async {
     return await userCollection.doc(uid).set({
       "fullName": fullName,
       "Displayname": Displayname,
@@ -31,6 +32,7 @@ class DatabaseService {
       "idcard": Imageidcard,
       "profile": Imageprofile,
       "uid": uid,
+      "admin": isadmin,
     });
   }
 

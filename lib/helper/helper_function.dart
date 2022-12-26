@@ -11,6 +11,7 @@ class HelperFunctions {
   static String userDisplayKey = "USERDISPLAYKEY";
   static String userGenderKey = "USERGENDERKEY";
   static String userBioKey = "USERBIOKEY";
+  static String userIsadminKey = "USERISADMINKEY";
 
   // saving the data to SF
 
@@ -58,6 +59,10 @@ class HelperFunctions {
     SharedPreferences sf = await SharedPreferences.getInstance();
     return await sf.setString(userBioKey, userBio);
   }
+   static Future<bool> saveUserIsadminSF(bool userIsadmin) async {
+    SharedPreferences sf = await SharedPreferences.getInstance();
+    return await sf.setBool(userIsadminKey, userIsadmin);
+  }
 
   // getting the data from SF
 
@@ -104,5 +109,9 @@ class HelperFunctions {
   static Future<String?> getUserBioFromSF() async {
     SharedPreferences sf = await SharedPreferences.getInstance();
     return sf.getString(userBioKey);
+  }
+  static Future<bool?> getUserIsadminFromSF() async {
+    SharedPreferences sf = await SharedPreferences.getInstance();
+    return sf.getBool(userIsadminKey);
   }
 }

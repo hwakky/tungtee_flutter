@@ -42,6 +42,7 @@ class _RegistrationScreen extends State<RegisterPage> {
   String Imageidcard = "";
   String ImageProfile = "";
   String bio = "";
+  bool isadmin = false;
   final textEditingController = TextEditingController();
 
   @override
@@ -455,6 +456,8 @@ class _RegistrationScreen extends State<RegisterPage> {
                               onChanged: (value) {
                                 setState(() {
                                   isChecked = value!;
+
+                                  isadmin = false;
                                 });
                               },
                             ),
@@ -559,7 +562,7 @@ class _RegistrationScreen extends State<RegisterPage> {
       });
       await authService
           .registerUserWithEmailandPassword(fullName, email, password,
-              Imageidcard, age, ImageProfile, Displayname, gender, bio)
+              Imageidcard, age, ImageProfile, Displayname, gender, bio, isadmin)
           .then((value) async {
         if (value == true) {
           // saving the shared preference state

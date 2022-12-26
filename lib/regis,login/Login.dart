@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -9,15 +12,20 @@ import 'package:tangteevs/services/auth_service.dart';
 import 'package:tangteevs/services/database_service.dart';
 import 'package:tangteevs/widgets/custom_textfield.dart';
 import 'package:tangteevs/helper/helper_function.dart';
-
+import '../admin/home.dart';
 import '../services/reset_password.dart';
 
 class Login extends StatefulWidget {
+  String? get uid => FirebaseAuth.instance.currentUser!.uid;
+
   @override
   _LoginState createState() => _LoginState();
 }
 
+late Stream<QuerySnapshot> _stream;
+
 class _LoginState extends State<Login> {
+  var userData = {};
   final _formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -25,6 +33,9 @@ class _LoginState extends State<Login> {
   String password = "";
   bool _isLoading = false;
   AuthService authService = AuthService();
+  final _auth = FirebaseAuth.instance;
+  final dbRef =
+      FirebaseFirestore.instance.collection('users').doc('admin').get();
 
   @override
   Widget build(BuildContext context) {
@@ -220,6 +231,18 @@ class _LoginState extends State<Login> {
     );
   }
 
+  List<String> docIDs = [];
+  Future getDocId() async {
+    await FirebaseFirestore.instance.collection('users').get().then(
+          (snapshot) => snapshot.docs.forEach(
+            (document) {
+              print(document.reference);
+              docIDs.add(document.reference.id);
+            },
+          ),
+        );
+  }
+
   login() async {
     if (_formKey.currentState!.validate()) {
       setState(() {
@@ -231,12 +254,23 @@ class _LoginState extends State<Login> {
         if (value == true) {
           QuerySnapshot snapshot =
               await DatabaseService(uid: FirebaseAuth.instance.currentUser!.uid)
-                  .gettingUserData(email);       
+                  .gettingUserData(email);
           // saving the values to our shared preferences
           await HelperFunctions.saveUserLoggedInStatus(true);
           await HelperFunctions.saveUserEmailSF(email);
           await HelperFunctions.saveUserNameSF(snapshot.docs[0]['fullName']);
-          nextScreenReplace(context, MyHomePage());
+          var snap = await FirebaseFirestore.instance
+              .collection('users')
+              .doc(widget.uid)
+              .get();
+          userData = snap.data()!;
+          var a = userData['admin'];
+          if (a == true) {
+            nextScreenReplace(context, AdminHomePage());
+          } else {
+            nextScreenReplace(context, MyHomePage());
+          }
+          //nextScreenReplace(context, MyHomePage());
         } else {
           showSnackbar(context, Colors.red, value);
           setState(() {
