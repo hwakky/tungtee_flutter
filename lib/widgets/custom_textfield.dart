@@ -29,7 +29,7 @@ const textInputDecoration = InputDecoration(
     borderSide: BorderSide(color: green, width: 2),
   ),
   enabledBorder: OutlineInputBorder(
-    borderRadius: BorderRadius.all(Radius.circular(70.0)),
+    borderRadius: BorderRadius.all(Radius.circular(20.0)),
     borderSide: BorderSide(color: green, width: 2),
   ),
   errorBorder: OutlineInputBorder(
@@ -40,15 +40,37 @@ const textInputDecoration = InputDecoration(
   filled: true,
 );
 
+const textInputDecorationp = InputDecoration(
+  labelStyle: TextStyle(color: Colors.black),
+  focusedBorder: OutlineInputBorder(
+    borderRadius: BorderRadius.all(Radius.circular(20.0)),
+    borderSide: BorderSide(color: purple, width: 2),
+  ),
+  enabledBorder: OutlineInputBorder(
+    borderRadius: BorderRadius.all(Radius.circular(20.0)),
+    borderSide: BorderSide(color: purple, width: 2),
+  ),
+  errorBorder: OutlineInputBorder(
+    borderRadius: BorderRadius.all(Radius.circular(20.0)),
+    borderSide: BorderSide(color: purple, width: 2),
+  ),
+  fillColor: primaryColor,
+  filled: true,
+);
+
 void nextScreen(context, page) {
   Navigator.push(context, MaterialPageRoute(builder: (context) => page));
 }
 
-void nextScreenReplace( context, page) {
+void nextScreenReplace(context, page) {
   Navigator.pushReplacement(
       context, MaterialPageRoute(builder: (context) => page));
 }
 
+void nextScreenReplaceOut(context, page) {
+  Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
+      MaterialPageRoute(builder: (context) => page), (route) => false);
+}
 
 void showSnackbar(context, color, message) {
   ScaffoldMessenger.of(context).showSnackBar(

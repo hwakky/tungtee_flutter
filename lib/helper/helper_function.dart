@@ -63,7 +63,6 @@ class HelperFunctions {
     SharedPreferences sf = await SharedPreferences.getInstance();
     return await sf.setBool(userIsadminKey, userIsadmin);
   }
-
   // getting the data from SF
 
   static Future<bool?> getUserLoggedInStatus() async {

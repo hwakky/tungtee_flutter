@@ -1,45 +1,54 @@
-class UserModel {
-  String name;
-  String email;
-  String bio;
-  String profilePic;
-  String createdAt;
-  String phoneNumber;
-  String uid;
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-  UserModel({
-    required this.name,
+class UserModel {
+  final String fullName;
+  final String email;
+  final String age;
+  final String Imageidcard;
+  final String Imageprofile;
+  final String Displayname;
+  final String gender;
+  final String bio;
+  final String uid;
+
+  const UserModel({
+    required this.fullName,
     required this.email,
+    required this.age,
+    required this.Imageidcard,
+    required this.Imageprofile,
+    required this.Displayname,
+    required this.gender,
     required this.bio,
-    required this.profilePic,
-    required this.createdAt,
-    required this.phoneNumber,
     required this.uid,
   });
 
   // from map
-  factory UserModel.fromMap(Map<String, dynamic> map) {
+  factory UserModel.fromMap(DocumentSnapshot snap) {
+    var snapshot = snap.data() as Map<String, dynamic>;
     return UserModel(
-      name: map['name'] ?? '',
-      email: map['email'] ?? '',
-      bio: map['bio'] ?? '',
-      uid: map['uid'] ?? '',
-      phoneNumber: map['phoneNumber'] ?? '',
-      createdAt: map['createdAt'] ?? '',
-      profilePic: map['profilePic'] ?? '',
+      fullName: snapshot["fullName"],
+      email: snapshot["email"],
+      age: snapshot["age"],
+      Imageidcard: snapshot["Imageidcard"].toString(),
+      Imageprofile: snapshot["Imageprofile"].toString(),
+      Displayname: snapshot["Displayname"],
+      gender: snapshot["gender"],
+      bio: snapshot["bio"],
+      uid: snapshot["uid"],
     );
   }
 
   // to map
-  Map<String, dynamic> toMap() {
-    return {
-      "name": name,
-      "email": email,
-      "uid": uid,
-      "bio": bio,
-      "profilePic": profilePic,
-      "phoneNumber": phoneNumber,
-      "createdAt": createdAt,
-    };
-  }
+  Map<String, dynamic> toJson() => {
+        "username": fullName,
+        "age": age,
+        "email": email,
+        "Imageidcard": Imageidcard,
+        "bio": bio,
+        "Imageprofile": Imageprofile,
+        "Displayname": Displayname,
+        "gender": gender,
+        "uid": uid,
+      };
 }

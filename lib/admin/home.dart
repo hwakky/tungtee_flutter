@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tangteevs/admin/tag.dart';
@@ -53,11 +54,19 @@ class _AdminHomePageState extends State<AdminHomePage> {
         actions: [
           IconButton(
             icon: const Icon(
-              Icons.notifications_none,
+              Icons.logout,
               color: purple,
               size: 30,
             ),
-            onPressed: () {},
+            onPressed: () {
+              // Sign out of Firebase
+              FirebaseAuth.instance.signOut();
+
+              // Push the landing page route and replace the current route
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (context) => const LandingPage()),
+              );
+            },
           ),
         ],
       ),
@@ -92,20 +101,7 @@ class complaint extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Column(children: [
-        ElevatedButton.icon(
-            onPressed: () {
-              // Sign out of Firebase
-              FirebaseAuth.instance.signOut();
-
-              // Push the landing page route and replace the current route
-              Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (context) => const LandingPage()),
-              );
-            },
-            icon: const Icon(Icons.arrow_back),
-            label: const Text("Logout")),
-      ]),
+      child: Column(children: const []),
     );
   }
 }

@@ -25,6 +25,9 @@ class Login extends StatefulWidget {
 late Stream<QuerySnapshot> _stream;
 
 class _LoginState extends State<Login> {
+  var auth = FirebaseAuth.instance;
+  bool isLogin = false;
+  bool isChecked = false;
   var userData = {};
   final _formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
@@ -100,57 +103,68 @@ class _LoginState extends State<Login> {
                     const SizedBox(
                       height: 35,
                     ),
-                    TextFormField(
-                      controller: emailController,
-                      decoration: textInputDecoration.copyWith(
-                        hintText: 'Email  ',
-                        prefixIcon: const Icon(
-                          Icons.account_circle,
-                          color: green,
+                    Container(
+                      alignment: Alignment.center,
+                      width: 360,
+                      child: TextFormField(
+                        controller: emailController,
+                        decoration: textInputDecoration.copyWith(
+                          hintText: 'Email  ',
+                          prefixIcon: const Icon(
+                            Icons.account_circle,
+                            color: green,
+                          ),
                         ),
+                        onChanged: (val) {
+                          setState(() {
+                            email = val;
+                          });
+                        },
+                        validator: (val) {
+                          return RegExp(
+                                      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                  .hasMatch(val!)
+                              ? null
+                              : "Please enter a valid email";
+                        },
                       ),
-                      onChanged: (val) {
-                        setState(() {
-                          email = val;
-                        });
-                      },
-                      validator: (val) {
-                        return RegExp(
-                                    r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                                .hasMatch(val!)
-                            ? null
-                            : "Please enter a valid email";
-                      },
                     ),
                     const SizedBox(
                       height: 35,
                     ),
 
-                    TextFormField(
-                      controller: passwordController,
-                      obscureText: true,
-                      decoration: textInputDecoration.copyWith(
-                        hintText: 'Password',
-                        prefixIcon: const Icon(
-                          Icons.lock,
-                          color: green,
+                    Container(
+                      alignment: Alignment.center,
+                      width: 360,
+                      child: TextFormField(
+                        controller: passwordController,
+                        obscureText: true,
+                        decoration: textInputDecoration.copyWith(
+                          hintText: 'Password',
+                          prefixIcon: const Icon(
+                            Icons.lock,
+                            color: green,
+                          ),
                         ),
+                        onChanged: (val) {
+                          setState(() {
+                            password = val;
+                          });
+                        },
+                        validator: (val) {
+                          if (val!.length < 6) {
+                            return "Password must be at least 6 characters";
+                          } else {
+                            return null;
+                          }
+                        },
                       ),
-                      onChanged: (val) {
-                        setState(() {
-                          password = val;
-                        });
-                      },
-                      validator: (val) {
-                        if (val!.length < 6) {
-                          return "Password must be at least 6 characters";
-                        } else {
-                          return null;
-                        }
-                      },
+                    ),
+                    const SizedBox(
+                      height: 7,
                     ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         TextButton(
                             style: TextButton.styleFrom(
@@ -163,7 +177,7 @@ class _LoginState extends State<Login> {
                       ],
                     ),
                     const SizedBox(
-                      height: 35,
+                      height: 7,
                     ),
                     //ElevatedButton.icon(
                     // onPressed: () {

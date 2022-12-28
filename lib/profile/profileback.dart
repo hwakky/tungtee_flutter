@@ -3,10 +3,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tangteevs/utils/color.dart';
-import 'Activity.dart';
-import 'Event.dart';
-import 'FeedPage.dart';
-import 'Profile/Profile.dart';
+import 'package:tangteevs/Activity.dart';
+import 'package:tangteevs/Event.dart';
+import 'package:tangteevs/FeedPage.dart';
+import 'package:tangteevs/Profile/Profile.dart';
 
 void main() {
   runApp(MyApp());
@@ -27,7 +27,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _selectedIndex = 0;
+  int _selectedIndex = 4;
 
   final List<Widget> _pages = [
     HomeTab(),
