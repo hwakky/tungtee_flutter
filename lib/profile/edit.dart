@@ -182,11 +182,11 @@ class _EditPageState extends State<EditPage> {
                       alignment: Alignment.center,
                       width: 360,
                       child: TextFormField(
+                        controller: _instagramController,
                         decoration: textInputDecorationp.copyWith(
                             hintText: "link(option)",
                             prefixIcon:
                                 Image.asset('assets/images/instagram.png')),
-                        controller: _instagramController,
                       ),
                     ),
                     const SizedBox(
@@ -196,11 +196,11 @@ class _EditPageState extends State<EditPage> {
                       alignment: Alignment.center,
                       width: 360,
                       child: TextFormField(
+                        controller: _facebookController,
                         decoration: textInputDecorationp.copyWith(
                             hintText: "link(option)",
                             prefixIcon:
                                 Image.asset('assets/images/facebook.png')),
-                        controller: _facebookController,
                       ),
                     ),
                     const SizedBox(
@@ -210,11 +210,11 @@ class _EditPageState extends State<EditPage> {
                       alignment: Alignment.center,
                       width: 360,
                       child: TextFormField(
+                        controller: _twitterController,
                         decoration: textInputDecorationp.copyWith(
                             hintText: "link(option)",
                             prefixIcon:
                                 Image.asset('assets/images/twitter.png')),
-                        controller: _twitterController,
                       ),
                     ),
                     const SizedBox(
@@ -253,13 +253,15 @@ class _EditPageState extends State<EditPage> {
     final String facebook = _facebookController.text;
     final String twitter = _twitterController.text;
     if (_formKey.currentState!.validate()) {
-      await _users
-          .doc(widget.uid)
-          .update({"Displayname": Displayname, "bio": bio});
+      await _users.doc(widget.uid).update({
+        "Displayname": Displayname,
+        "bio": bio,
+        "instagram": instagram,
+        "facebook": facebook,
+        "twitter": twitter
+      });
       _DisplaynameController.text = '';
       _bioController.text = '';
-      await _users.add(
-          {"instagram": instagram, "facebook": facebook, "twitter": twitter});
       _instagramController.text = '';
       _facebookController.text = '';
       _twitterController.text = '';

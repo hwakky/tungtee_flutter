@@ -137,35 +137,68 @@ class PostCard extends StatelessWidget {
       backgroundColor: mobileBackgroundColor,
       body: StreamBuilder(
         stream: _post.snapshots(),
-        builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
-          if (streamSnapshot.hasData) {
-            return ListView.builder(
-              itemCount: streamSnapshot.data!.docs.length,
-              itemBuilder: (context, index) {
-                final DocumentSnapshot documentSnapshot =
-                    streamSnapshot.data!.docs[index];
-                return Card(
-                  child: ListTile(
-                    title: Text(documentSnapshot['activityName']),
-                    subtitle: Text(documentSnapshot['date']),
-                  ),
-                );
-              },
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
             );
           }
-          return Container(
-            child: Center(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  SizedBox(
-                    child: CircularProgressIndicator(),
-                    height: 30.0,
-                    width: 30.0,
+
+          return GridView.builder(
+            shrinkWrap: true,
+            itemCount: (snapshot.data! as dynamic).docs.length,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 1, mainAxisExtent: 200),
+            itemBuilder: (context, index) {
+              DocumentSnapshot snap = (snapshot.data! as dynamic).docs[index];
+
+              return Column(
+                children: [
+                  DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: primaryColor,
+                      border: Border.all(color: unselected, width: 0),
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Colors.black26,
+                          offset: Offset(5, 5),
+                          blurRadius: 3,
+                        ),
+                      ],
+                    ),
+                    child: SizedBox(
+                      height: 176,
+                      width: 342,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text((snap.data()! as dynamic)['activityName'],
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: unselected,
+                                fontFamily: 'MyCustomFont',
+                              )),
+                          Text((snap.data()! as dynamic)['date'],
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: unselected,
+                                fontFamily: 'MyCustomFont',
+                              )),
+                        ],
+                      ),
+                    ),
+
+                    //Image(
+                    //  image: NetworkImage((snap.data()!
+                    //     as dynamic)['activityName']),
+                    //  fit: BoxFit.cover,
+                    //  ),
                   ),
                 ],
-              ),
-            ),
+              );
+            },
           );
         },
       ),

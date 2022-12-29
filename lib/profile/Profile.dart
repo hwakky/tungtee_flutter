@@ -226,86 +226,135 @@ class _ProfilePageState extends State<ProfilePage> {
                   ],
                 ),
               ),
-              const Divider(),
-              SizedBox(
-                width: 50,
-                height: 50,
+              SingleChildScrollView(
                 child: DefaultTabController(
                   length: 2,
-                  child: Scaffold(
-                    appBar: AppBar(
-                      elevation: 0,
-                      backgroundColor: mobileBackgroundColor,
-                      bottom: const TabBar(
-                        indicatorColor: green,
-                        labelColor: green,
-                        unselectedLabelColor: unselected,
-                        labelStyle: TextStyle(
-                            fontSize: 20.0,
-                            fontFamily: 'MyCustomFont'), //For Selected tab
-                        unselectedLabelStyle: TextStyle(
-                            fontSize: 20.0,
-                            fontFamily: 'MyCustomFont'), //For Un-selected Tabs
-                        tabs: [
-                          Tab(text: 'Post'),
-                          Tab(text: 'Review'),
-                        ],
-                      ),
-                    ),
-                    body: TabBarView(
-                      children: [
-                        FutureBuilder(
-                          future: FirebaseFirestore.instance
-                              .collection('post')
-                              .where('uid', isEqualTo: widget.uid)
-                              .get(),
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return const Center(
-                                child: CircularProgressIndicator(),
-                              );
-                            }
-
-                            return GridView.builder(
-                              shrinkWrap: true,
-                              itemCount:
-                                  (snapshot.data! as dynamic).docs.length,
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 1,
-                                crossAxisSpacing: 5,
-                                mainAxisSpacing: 1.5,
-                                childAspectRatio: 1,
-                              ),
-                              itemBuilder: (context, index) {
-                                DocumentSnapshot snap =
-                                    (snapshot.data! as dynamic).docs[index];
-
-                                return Container(
-                                  child: Text(
-                                    // (snap.data()! as dynamic)['activityName'],
-                                    'love',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      color: unselected,
-                                      fontFamily: 'MyCustomFont',
-                                    ),
-                                  ),
-                                  // Image(
-                                  //   image: NetworkImage((snap.data()!
-                                  //       as dynamic)['activityName']),
-                                  //   fit: BoxFit.cover,
-                                  // ),
-                                );
-                              },
-                            );
-                          },
+                  initialIndex: 0,
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: <Widget>[
+                        Container(
+                          child: const TabBar(
+                            indicatorColor: green,
+                            labelColor: green,
+                            labelPadding: EdgeInsets.symmetric(horizontal: 30),
+                            unselectedLabelColor: unselected,
+                            labelStyle: TextStyle(
+                                fontSize: 20.0,
+                                fontFamily: 'MyCustomFont'), //For Selected tab
+                            unselectedLabelStyle: TextStyle(
+                                fontSize: 20.0,
+                                fontFamily:
+                                    'MyCustomFont'), //For Un-selected Tabs
+                            tabs: [
+                              Tab(text: 'Post'),
+                              Tab(text: 'Review'),
+                            ],
+                          ),
                         ),
-                        ReviewPage(),
-                      ],
-                    ),
-                  ),
+                        SizedBox(
+                          height: 30,
+                        ),
+                        SizedBox(
+                          height: 400,
+                          child: TabBarView(children: <Widget>[
+                            Container(
+                              child: FutureBuilder(
+                                future: FirebaseFirestore.instance
+                                    .collection('post')
+                                    .where('uid', isEqualTo: widget.uid)
+                                    .get(),
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return const Center(
+                                      child: CircularProgressIndicator(),
+                                    );
+                                  }
+
+                                  return GridView.builder(
+                                    shrinkWrap: true,
+                                    itemCount:
+                                        (snapshot.data! as dynamic).docs.length,
+                                    gridDelegate:
+                                        const SliverGridDelegateWithFixedCrossAxisCount(
+                                            crossAxisCount: 1,
+                                            mainAxisExtent: 200),
+                                    itemBuilder: (context, index) {
+                                      DocumentSnapshot snap =
+                                          (snapshot.data! as dynamic)
+                                              .docs[index];
+
+                                      return Column(
+                                        children: [
+                                          DecoratedBox(
+                                            decoration: BoxDecoration(
+                                              color: primaryColor,
+                                              border: Border.all(
+                                                  color: unselected, width: 0),
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
+                                              boxShadow: const [
+                                                BoxShadow(
+                                                  color: Colors.black26,
+                                                  offset: Offset(5, 5),
+                                                  blurRadius: 3,
+                                                ),
+                                              ],
+                                            ),
+                                            child: SizedBox(
+                                              height: 176,
+                                              width: 342,
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Text(
+                                                      (snap.data()! as dynamic)[
+                                                          'activityName'],
+                                                      style: TextStyle(
+                                                        fontSize: 16,
+                                                        color: unselected,
+                                                        fontFamily:
+                                                            'MyCustomFont',
+                                                      )),
+                                                  Text(
+                                                      (snap.data()!
+                                                          as dynamic)['date'],
+                                                      style: TextStyle(
+                                                        fontSize: 16,
+                                                        color: unselected,
+                                                        fontFamily:
+                                                            'MyCustomFont',
+                                                      )),
+                                                ],
+                                              ),
+                                            ),
+
+                                            //Image(
+                                            //  image: NetworkImage((snap.data()!
+                                            //     as dynamic)['activityName']),
+                                            //  fit: BoxFit.cover,
+                                            //  ),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                              ),
+                            ),
+                            Container(
+                              child: const Center(
+                                child: Text('Review',
+                                    style: TextStyle(
+                                        fontSize: 22,
+                                        fontWeight: FontWeight.bold)),
+                              ),
+                            ),
+                          ]),
+                        )
+                      ]),
                 ),
               ),
             ]),
@@ -316,8 +365,14 @@ class _ProfilePageState extends State<ProfilePage> {
 class ReviewPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
-        // Add the content for the home tab here
-        );
+    return Scaffold(
+      body: ListView(
+        children: const [
+          Center(
+            child: Text('Review'),
+          )
+        ],
+      ),
+    );
   }
 }
