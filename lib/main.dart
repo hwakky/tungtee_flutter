@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tangteevs/comment.dart';
 import 'package:tangteevs/regis,login/firestore.dart';
 import 'log.dart';
 import 'model/user_model.dart';
@@ -26,6 +27,7 @@ void main() async {
       '/login': (context) => Login(),
       '/register': (context) => const RegisterPage(),
       '/HomePage': (context) => MyHomePage(),
+      '/Comment': (context) => const Comment(),
     },
   ));
 }

@@ -1,6 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:tangteevs/FeedPage.dart';
 import 'package:tangteevs/Landing.dart';
+import 'package:tangteevs/comment.dart';
+import 'package:tangteevs/profile/Post.dart';
 import 'package:tangteevs/profile/edit.dart';
 import 'package:tangteevs/profile/test.dart';
 import 'package:tangteevs/utils/showSnackbar.dart';
@@ -253,10 +256,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                         ),
                         SizedBox(
-                          height: 30,
-                        ),
-                        SizedBox(
-                          height: 400,
+                          height: 338,
                           child: TabBarView(children: <Widget>[
                             Container(
                               child: FutureBuilder(
@@ -264,84 +264,291 @@ class _ProfilePageState extends State<ProfilePage> {
                                     .collection('post')
                                     .where('uid', isEqualTo: widget.uid)
                                     .get(),
-                                builder: (context, snapshot) {
+                                builder: ((context, snapshot) {
+                                  //onRefresh:_onRefresh;
                                   if (snapshot.connectionState ==
                                       ConnectionState.waiting) {
-                                    return const Center(
-                                      child: CircularProgressIndicator(),
+                                    return Container(
+                                      child: Center(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: const <Widget>[
+                                            SizedBox(
+                                              height: 30.0,
+                                              width: 30.0,
+                                              child:
+                                                  CircularProgressIndicator(),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
                                     );
                                   }
 
-                                  return GridView.builder(
-                                    shrinkWrap: true,
+                                  return ListView.builder(
                                     itemCount:
                                         (snapshot.data! as dynamic).docs.length,
-                                    gridDelegate:
-                                        const SliverGridDelegateWithFixedCrossAxisCount(
-                                            crossAxisCount: 1,
-                                            mainAxisExtent: 200),
                                     itemBuilder: (context, index) {
                                       DocumentSnapshot snap =
                                           (snapshot.data! as dynamic)
                                               .docs[index];
 
-                                      return Column(
-                                        children: [
-                                          DecoratedBox(
-                                            decoration: BoxDecoration(
-                                              color: primaryColor,
-                                              border: Border.all(
-                                                  color: unselected, width: 0),
+                                      var Mytext = new Map();
+                                      Mytext['activityName'] = (snap.data()!
+                                          as dynamic)['activityName'];
+                                      Mytext['dateTime'] = (snap.data()!
+                                              as dynamic)['date'] +
+                                          '\t\t(' +
+                                          (snap.data()! as dynamic)['time'] +
+                                          ')';
+                                      Mytext['place'] =
+                                          (snap.data()! as dynamic)['place'];
+                                      Mytext['location'] =
+                                          (snap.data()! as dynamic)['location'];
+                                      Mytext['peopleLimit'] = (snap.data()!
+                                          as dynamic)['peopleLimit'];
+
+                                      return SizedBox(
+                                        height: 227,
+                                        child: Card(
+                                            clipBehavior: Clip.hardEdge,
+                                            shape: RoundedRectangleBorder(
                                               borderRadius:
-                                                  BorderRadius.circular(20),
-                                              boxShadow: const [
-                                                BoxShadow(
-                                                  color: Colors.black26,
-                                                  offset: Offset(5, 5),
-                                                  blurRadius: 3,
-                                                ),
-                                              ],
-                                            ),
-                                            child: SizedBox(
-                                              height: 176,
-                                              width: 342,
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Text(
-                                                      (snap.data()! as dynamic)[
-                                                          'activityName'],
-                                                      style: TextStyle(
-                                                        fontSize: 16,
-                                                        color: unselected,
-                                                        fontFamily:
-                                                            'MyCustomFont',
-                                                      )),
-                                                  Text(
-                                                      (snap.data()!
-                                                          as dynamic)['date'],
-                                                      style: TextStyle(
-                                                        fontSize: 16,
-                                                        color: unselected,
-                                                        fontFamily:
-                                                            'MyCustomFont',
-                                                      )),
-                                                ],
+                                                  BorderRadius.circular(15.0),
+                                              side: const BorderSide(
+                                                color: Color.fromARGB(
+                                                    255, 151, 150, 150),
+                                                width: 2,
                                               ),
                                             ),
-
-                                            //Image(
-                                            //  image: NetworkImage((snap.data()!
-                                            //     as dynamic)['activityName']),
-                                            //  fit: BoxFit.cover,
-                                            //  ),
-                                          ),
-                                        ],
+                                            margin: const EdgeInsets.all(10),
+                                            child: SizedBox(
+                                              width: 380,
+                                              height: 190,
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 15.00),
+                                                child: SingleChildScrollView(
+                                                  scrollDirection:
+                                                      Axis.horizontal,
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Row(
+                                                        children: [
+                                                          SizedBox(
+                                                            width: 290,
+                                                            child: Text(
+                                                                Mytext[
+                                                                    'activityName'],
+                                                                style:
+                                                                    const TextStyle(
+                                                                  fontSize: 20,
+                                                                  fontFamily:
+                                                                      'MyCustomFont',
+                                                                  color:
+                                                                      unselected,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                )),
+                                                          ),
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .only(
+                                                                    left: 2),
+                                                            child: IconButton(
+                                                              onPressed: (() {
+                                                                //add action
+                                                              }),
+                                                              icon: const Icon(
+                                                                Icons
+                                                                    .favorite_border,
+                                                                color:
+                                                                    unselected,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          SizedBox(
+                                                            width: 7,
+                                                            child: IconButton(
+                                                              onPressed: (() {
+                                                                //add action
+                                                              }),
+                                                              icon: const Icon(
+                                                                Icons
+                                                                    .more_horiz,
+                                                                color:
+                                                                    unselected,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      Text.rich(
+                                                          TextSpan(children: <
+                                                              InlineSpan>[
+                                                        const TextSpan(
+                                                          text: '',
+                                                        ),
+                                                        const WidgetSpan(
+                                                          child: Icon(
+                                                            Icons
+                                                                .calendar_today,
+                                                          ),
+                                                        ),
+                                                        TextSpan(
+                                                            text: '\t\t' +
+                                                                Mytext[
+                                                                    'dateTime'],
+                                                            style:
+                                                                const TextStyle(
+                                                              fontFamily:
+                                                                  'MyCustomFont',
+                                                              color: unselected,
+                                                            )),
+                                                      ])),
+                                                      const SizedBox(
+                                                        height: 5,
+                                                      ),
+                                                      Text.rich(
+                                                          TextSpan(children: <
+                                                              InlineSpan>[
+                                                        const TextSpan(
+                                                          text: '',
+                                                        ),
+                                                        const WidgetSpan(
+                                                          child: Icon(
+                                                            Icons
+                                                                .maps_home_work,
+                                                          ),
+                                                        ),
+                                                        TextSpan(
+                                                            text: '\t\t' +
+                                                                Mytext['place'],
+                                                            style:
+                                                                const TextStyle(
+                                                              fontFamily:
+                                                                  'MyCustomFont',
+                                                              color: unselected,
+                                                            )),
+                                                      ])),
+                                                      const SizedBox(
+                                                        height: 5,
+                                                      ),
+                                                      Text.rich(
+                                                          TextSpan(children: <
+                                                              InlineSpan>[
+                                                        const TextSpan(
+                                                          text: '',
+                                                        ),
+                                                        const WidgetSpan(
+                                                          child: Icon(
+                                                            Icons.place,
+                                                          ),
+                                                        ),
+                                                        TextSpan(
+                                                            text: '\t\t' +
+                                                                Mytext[
+                                                                    'location'],
+                                                            style:
+                                                                const TextStyle(
+                                                              fontFamily:
+                                                                  'MyCustomFont',
+                                                              color: unselected,
+                                                            )),
+                                                      ])),
+                                                      const SizedBox(
+                                                        height: 5,
+                                                      ),
+                                                      Text.rich(
+                                                          TextSpan(children: <
+                                                              InlineSpan>[
+                                                        const TextSpan(
+                                                          text: '',
+                                                        ),
+                                                        const WidgetSpan(
+                                                          child: Icon(
+                                                            Icons
+                                                                .person_outline,
+                                                          ),
+                                                        ),
+                                                        TextSpan(
+                                                            text: '\t\t' +
+                                                                '0 / ' +
+                                                                Mytext[
+                                                                    'peopleLimit'],
+                                                            style:
+                                                                const TextStyle(
+                                                              fontFamily:
+                                                                  'MyCustomFont',
+                                                              color: unselected,
+                                                            )),
+                                                      ])),
+                                                      Row(
+                                                        children: [
+                                                          const SingleChildScrollView(
+                                                            scrollDirection:
+                                                                Axis.horizontal,
+                                                            child: Padding(
+                                                              padding:
+                                                                  EdgeInsets
+                                                                      .all(1),
+                                                              child: SizedBox(
+                                                                width: 265,
+                                                                height: 25,
+                                                                child: Text(
+                                                                    'add tag+',
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontFamily:
+                                                                          'MyCustomFont',
+                                                                      color:
+                                                                          unselected,
+                                                                    )),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          TextButton(
+                                                            onPressed: () {
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .push(
+                                                                MaterialPageRoute(
+                                                                  builder:
+                                                                      (context) =>
+                                                                          Comment(),
+                                                                ),
+                                                              );
+                                                            },
+                                                            child: const Text(
+                                                                'See More >>',
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontSize: 16,
+                                                                  fontFamily:
+                                                                      'MyCustomFont',
+                                                                  color: green,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                )),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            )),
                                       );
                                     },
                                   );
-                                },
+                                }),
                               ),
                             ),
                             Container(
@@ -372,6 +579,249 @@ class ReviewPage extends StatelessWidget {
             child: Text('Review'),
           )
         ],
+      ),
+    );
+  }
+}
+
+class _PostPageState extends State<PostPage> {
+  var postLen = 0;
+  bool isLoading = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container(
+        child: FutureBuilder(
+          future: FirebaseFirestore.instance
+              .collection('post')
+              .where('uid', isEqualTo: widget.uid)
+              .get(),
+          builder: ((context, snapshot) {
+            //onRefresh:_onRefresh;
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Container(
+                child: Center(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: const <Widget>[
+                      SizedBox(
+                        height: 30.0,
+                        width: 30.0,
+                        child: CircularProgressIndicator(),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            }
+
+            return ListView.builder(
+              itemCount: (snapshot.data! as dynamic).docs.length,
+              itemBuilder: (context, index) {
+                DocumentSnapshot snap = (snapshot.data! as dynamic).docs[index];
+
+                var Mytext = new Map();
+                Mytext['activityName'] =
+                    (snap.data()! as dynamic)['activityName'];
+                Mytext['dateTime'] = (snap.data()! as dynamic)['data'] +
+                    '\t\t(' +
+                    (snap.data()! as dynamic)['time'] +
+                    ')';
+                Mytext['place'] = (snap.data()! as dynamic)['place'];
+                Mytext['location'] = (snap.data()! as dynamic)['location'];
+                Mytext['peopleLimit'] =
+                    (snap.data()! as dynamic)['peopleLimit'];
+
+                return SizedBox(
+                  height: 230,
+                  child: Card(
+                      clipBehavior: Clip.hardEdge,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                        side: const BorderSide(
+                          color: Color.fromARGB(255, 151, 150, 150),
+                          width: 2,
+                        ),
+                      ),
+                      margin: const EdgeInsets.all(10),
+                      child: SizedBox(
+                        width: 380,
+                        height: 190,
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 15.00),
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 290,
+                                      child: Text(
+                                          (snap.data()!
+                                              as dynamic)['activityName'],
+                                          style: const TextStyle(
+                                            fontSize: 20,
+                                            fontFamily: 'MyCustomFont',
+                                            color: unselected,
+                                            fontWeight: FontWeight.bold,
+                                          )),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 2),
+                                      child: IconButton(
+                                        onPressed: (() {
+                                          //add action
+                                        }),
+                                        icon: const Icon(
+                                          Icons.favorite_border,
+                                          color: unselected,
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 7,
+                                      child: IconButton(
+                                        onPressed: (() {
+                                          //add action
+                                        }),
+                                        icon: const Icon(
+                                          Icons.more_horiz,
+                                          color: unselected,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Text.rich(TextSpan(children: <InlineSpan>[
+                                  const TextSpan(
+                                    text: '',
+                                  ),
+                                  const WidgetSpan(
+                                    child: Icon(
+                                      Icons.calendar_today,
+                                    ),
+                                  ),
+                                  TextSpan(
+                                      text: '\t\t' +
+                                          (snap.data()! as dynamic)['data'] +
+                                          '\t\t(' +
+                                          (snap.data()! as dynamic)['time'] +
+                                          ')',
+                                      style: const TextStyle(
+                                        fontFamily: 'MyCustomFont',
+                                        color: unselected,
+                                      )),
+                                ])),
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                Text.rich(TextSpan(children: <InlineSpan>[
+                                  const TextSpan(
+                                    text: '',
+                                  ),
+                                  const WidgetSpan(
+                                    child: Icon(
+                                      Icons.maps_home_work,
+                                    ),
+                                  ),
+                                  TextSpan(
+                                      text: '\t\t' +
+                                          (snap.data()! as dynamic)['place'],
+                                      style: const TextStyle(
+                                        fontFamily: 'MyCustomFont',
+                                        color: unselected,
+                                      )),
+                                ])),
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                Text.rich(TextSpan(children: <InlineSpan>[
+                                  const TextSpan(
+                                    text: '',
+                                  ),
+                                  const WidgetSpan(
+                                    child: Icon(
+                                      Icons.place,
+                                    ),
+                                  ),
+                                  TextSpan(
+                                      text: '\t\t' +
+                                          (snap.data()! as dynamic)['location'],
+                                      style: const TextStyle(
+                                        fontFamily: 'MyCustomFont',
+                                        color: unselected,
+                                      )),
+                                ])),
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                Text.rich(TextSpan(children: <InlineSpan>[
+                                  const TextSpan(
+                                    text: '',
+                                  ),
+                                  const WidgetSpan(
+                                    child: Icon(
+                                      Icons.person_outline,
+                                    ),
+                                  ),
+                                  TextSpan(
+                                      text: '\t\t' +
+                                          '0 / ' +
+                                          (snap.data()!
+                                              as dynamic)['peopleLimit'],
+                                      style: const TextStyle(
+                                        fontFamily: 'MyCustomFont',
+                                        color: unselected,
+                                      )),
+                                ])),
+                                Row(
+                                  children: [
+                                    const SingleChildScrollView(
+                                      scrollDirection: Axis.horizontal,
+                                      child: Padding(
+                                        padding: EdgeInsets.all(1),
+                                        child: SizedBox(
+                                          width: 265,
+                                          height: 25,
+                                          child: Text('add tag+',
+                                              style: TextStyle(
+                                                fontFamily: 'MyCustomFont',
+                                                color: unselected,
+                                              )),
+                                        ),
+                                      ),
+                                    ),
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                            builder: (context) => Comment(),
+                                          ),
+                                        );
+                                      },
+                                      child: const Text('See More >>',
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            fontFamily: 'MyCustomFont',
+                                            color: green,
+                                            fontWeight: FontWeight.bold,
+                                          )),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      )),
+                );
+              },
+            );
+          }),
+        ),
       ),
     );
   }

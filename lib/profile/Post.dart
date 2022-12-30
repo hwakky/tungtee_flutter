@@ -1,137 +1,66 @@
-import 'package:flutter/material.dart';
-import 'package:tangteevs/HomePage.dart';
-import 'package:tangteevs/comment.dart';
-import 'services/auth_service.dart';
-import 'package:getwidget/getwidget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:tangteevs/FeedPage.dart';
+import 'package:tangteevs/Landing.dart';
+import 'package:tangteevs/comment.dart';
+import 'package:tangteevs/profile/Post.dart';
+import 'package:tangteevs/profile/edit.dart';
+import 'package:tangteevs/profile/test.dart';
+import 'package:tangteevs/utils/showSnackbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'dart:math';
-import 'widgets/custom_textfield.dart';
 
-class FeedPage extends StatelessWidget {
-  FeedPage({Key? key, required}) : super(key: key);
+import '../regis,login/Login.dart';
+import '../widgets/custom_textfield.dart';
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: mobileBackgroundColor,
-      appBar: AppBar(
-        backgroundColor: mobileBackgroundColor,
-        elevation: 1,
-        centerTitle: false,
-        title: Image.asset(
-          "assets/images/logo with name.png",
-          width: 130,
-        ),
-        actions: [
-          IconButton(
-            icon: const Icon(
-              Icons.notifications_none,
-              color: purple,
-              size: 30,
-            ),
-            onPressed: () {},
-          ),
-        ],
-      ),
-      body: const SearchForm(),
-    );
-  }
-}
-
-class SearchForm extends StatelessWidget {
-  const SearchForm({super.key});
+class PostPage extends StatefulWidget {
+  final String uid;
+  const PostPage({Key? key, required this.uid}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: mobileBackgroundColor,
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(100),
-        child: AppBar(
-          backgroundColor: mobileBackgroundColor,
-          elevation: 0,
-          centerTitle: false,
-          title: const SizedBox(
-            width: 350.0,
-            height: 45.0,
-            child: TextField(
-              decoration: InputDecoration(
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(15)),
-                  borderSide: BorderSide(width: 2, color: lightOrange),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(15)),
-                  borderSide: BorderSide(width: 1, color: orange),
-                ),
-                hintText: 'ค้นหากิจกรรม หรือ Tag ที่คุณสนใจ',
-                hintStyle: TextStyle(
-                  color: unselected,
-                  fontFamily: 'MyCustomFont',
-                ),
-                suffixIcon: Icon(
-                  Icons.search_outlined,
-                  color: orange,
-                  size: 30,
-                ),
-              ),
-            ),
-          ),
-          actions: [
-            PopupMenuButton(
-                itemBuilder: (context) {
-                  return [
-                    const PopupMenuItem<int>(
-                      value: 0,
-                      child: Text("Make for you"),
-                    ),
-                    const PopupMenuItem<int>(
-                      value: 1,
-                      child: Text("New to you"),
-                    ),
-                  ];
-                },
-                icon: const Icon(
-                  Icons.filter_list,
-                  color: green,
-                  size: 30,
-                ),
-                onSelected: (value) {
-                  if (value == 0) {
-                    final snackBar = SnackBar(
-                      content: const Text("Display feed for you"),
-                      action: SnackBarAction(
-                        label: 'Undo',
-                        onPressed: () {
-                          // Some code to undo the change.
-                        },
-                      ),
-                    );
-                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                  } else if (value == 1) {
-                    final snackBar = SnackBar(
-                      content: const Text("Display new for you"),
-                      action: SnackBarAction(
-                        label: 'Undo',
-                        onPressed: () {
-                          // Some code to undo the change.
-                        },
-                      ),
-                    );
-                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                  }
-                }),
-          ],
-        ),
-      ),
-      body: PostCard(),
-    );
-  }
+  _PostPageState createState() => _PostPageState();
 }
 
-class PostCard extends StatelessWidget {
+class _PostPageState extends State<PostPage> {
+  var userData = {};
+  var postLen = 0;
+  bool isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    getData();
+  }
+
+  getData() async {
+    setState(() {
+      isLoading = true;
+    });
+    try {
+      var userSnap = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(widget.uid)
+          .get();
+
+      // get post Length
+      var postSnap = await FirebaseFirestore.instance
+          .collection('post')
+          .where('uid', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+          .get();
+
+      postLen = postSnap.docs.length;
+      userData = userSnap.data()!;
+      setState(() {});
+    } catch (e) {
+      showSnackBar(
+        context,
+        e.toString(),
+      );
+    }
+    setState(() {
+      isLoading = false;
+    });
+  }
+
   final CollectionReference _post =
       FirebaseFirestore.instance.collection('post');
 

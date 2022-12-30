@@ -55,6 +55,11 @@ class _EditPageState extends State<EditPage> {
           .doc(widget.uid)
           .get();
       userData = userSnap.data()!;
+      _DisplaynameController.text = userData['Displayname'].toString();
+      _bioController.text = userData['bio'].toString();
+      _instagramController.text = userData['instagram'].toString();
+      _facebookController.text = userData['facebook'].toString();
+      _twitterController.text = userData['twitter'].toString();
       setState(() {});
     } catch (e) {
       showSnackBar(
@@ -126,7 +131,7 @@ class _EditPageState extends State<EditPage> {
                         child: TextFormField(
                           controller: _DisplaynameController,
                           decoration: textInputDecorationp.copyWith(
-                              hintText: userData['Displayname'].toString(),
+                              hintText: 'Display Name',
                               prefixIcon: Icon(
                                 Icons.person_pin_circle_sharp,
                                 color: Theme.of(context).primaryColor,
@@ -156,7 +161,7 @@ class _EditPageState extends State<EditPage> {
                         controller: _bioController,
                         maxLines: 5,
                         decoration: textInputDecorationp.copyWith(
-                            hintText: userData['bio'].toString(),
+                            hintText: 'bio',
                             prefixIcon: Icon(
                               Icons.pending,
                               color: Theme.of(context).primaryColor,

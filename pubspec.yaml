@@ -39,7 +39,8 @@ dependencies:
   background_app_bar: ^2.0.1
   table_calendar: ^3.0.8
   intl: ^0.17.0
-
+  pull_to_refresh: ^2.0.0
+  getwidget: ^ 2.0.4
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

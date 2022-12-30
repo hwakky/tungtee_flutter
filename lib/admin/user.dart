@@ -1,9 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:tangteevs/profile/profileback.dart';
 import '../widgets/custom_textfield.dart';
-
 
 class UserPage extends StatefulWidget {
   const UserPage({Key? key}) : super(key: key);
@@ -37,7 +37,7 @@ class _UserPageState extends State<UserPage> {
               children: [
                 TextField(
                   controller: _DisplaynameController,
-                  decoration: const InputDecoration(labelText: 'Displayname'),
+                  decoration: const InputDecoration(labelText:  'Displayname'),
                 ),
                 TextField(
                   keyboardType:
@@ -57,7 +57,8 @@ class _UserPageState extends State<UserPage> {
                     final double? email =
                         double.tryParse(_emailController.text);
                     if (email != null) {
-                      await _users.add({"Displayname": Displayname, "email": email});
+                      await _users
+                          .add({"Displayname": Displayname, "email": email});
 
                       _DisplaynameController.text = '';
                       _emailController.text = '';
@@ -131,16 +132,13 @@ class _UserPageState extends State<UserPage> {
   Future<void> _delete(String usersId) async {
     await _users.doc(usersId).delete();
 
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('You have successfully deleted a users')));
+    ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('You have successfully deleted a users')));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Center(child: Text('Firebase Firestore')),
-        ),
         body: StreamBuilder(
           stream: _users.snapshots(),
           builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
@@ -164,7 +162,33 @@ class _UserPageState extends State<UserPage> {
                                 onPressed: () => _update(documentSnapshot)),
                             IconButton(
                                 icon: const Icon(Icons.delete),
-                                onPressed: () => _delete(documentSnapshot.id)),
+                                onPressed: () => showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                          title: Text('Are you sure?'),
+                                          content: Text(
+                                              'This action cannot be undone.'),
+                                          actions: [
+                                            TextButton(
+                                              child: Text('Cancel'),
+                                              onPressed: () {
+                                                Navigator.of(context)
+                                                    .pop(); // dismiss the dialog
+                                              },
+                                            ),
+                                            TextButton(
+                                              child: Text('OK'),
+                                              onPressed: () {
+                                                _delete(documentSnapshot.id);
+                                                Navigator.of(context)
+                                                    .pop(); // dismiss the dialog
+                                              },
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    )),
                           ],
                         ),
                       ),
@@ -180,10 +204,10 @@ class _UserPageState extends State<UserPage> {
           },
         ),
 // Add new users
-        floatingActionButton: FloatingActionButton(
-          onPressed: () => _create(),
-          child: const Icon(Icons.add),
-        ),
+        // floatingActionButton: FloatingActionButton(
+        //   onPressed: () => _create(),
+        //   child: const Icon(Icons.add),
+        // ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat);
   }
 }

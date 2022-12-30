@@ -1,10 +1,25 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:tangteevs/admin/report.dart';
 import 'package:tangteevs/admin/tag.dart';
+import 'package:tangteevs/admin/user.dart';
 import 'package:tangteevs/utils/color.dart';
 
 import '../Landing.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: AdminHomePage(),
+    );
+  }
+}
 
 class AdminHomePage extends StatefulWidget {
   const AdminHomePage({super.key});
@@ -16,7 +31,8 @@ class AdminHomePage extends StatefulWidget {
 class _AdminHomePageState extends State<AdminHomePage> {
   int _selectedIndex = 0;
   final List<Widget> _pages = [
-    complaint(),
+    UserTab(),
+    ReportTab(),
     tagTab(),
   ];
   void _onItemTapped(int index) {
@@ -34,6 +50,9 @@ class _AdminHomePageState extends State<AdminHomePage> {
         break;
       case 1:
         currentPage = _pages[1];
+        break;
+      case 2:
+        currentPage = _pages[2];
         break;
       default:
         currentPage = _pages[0];
@@ -83,11 +102,15 @@ class _AdminHomePageState extends State<AdminHomePage> {
           iconSize: 30,
           items: const [
             BottomNavigationBarItem(
-              icon: Icon(Icons.compass_calibration),
-              label: 'complant',
+              icon: Icon(Icons.person),
+              label: 'User',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.local_activity),
+              icon: Icon(Icons.report),
+              label: 'Report',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.tag),
               label: 'Tag',
             ),
           ],
@@ -97,11 +120,20 @@ class _AdminHomePageState extends State<AdminHomePage> {
   }
 }
 
-class complaint extends StatelessWidget {
+class UserTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(children: const []),
+    return MaterialApp(
+      home: UserPage(),
+    );
+  }
+}
+
+class ReportTab extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: ReportPage(),
     );
   }
 }
