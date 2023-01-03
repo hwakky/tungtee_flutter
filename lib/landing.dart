@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:tangteevs/regis,login/Login.dart';
 import 'package:tangteevs/regis,login/Register.dart';
+import 'package:tangteevs/utils/color.dart';
 import 'package:tangteevs/widgets/custom_textfield.dart';
 import 'team/team.dart';
 import 'team/privacy.dart';

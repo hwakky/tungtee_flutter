@@ -42,6 +42,7 @@ class _MyHomePageState extends State<MyHomePage> {
       _selectedIndex = index;
     });
   }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -149,6 +150,7 @@ class ProfileTab extends StatelessWidget {
     return MaterialApp(
       home: ProfilePage(
         uid: FirebaseAuth.instance.currentUser!.uid,
+        
       ),
     );
   }

@@ -12,6 +12,7 @@ import 'package:tangteevs/FeedPage.dart';
 import 'package:tangteevs/HomePage.dart';
 import 'package:tangteevs/model/post_model.dart';
 import 'package:tangteevs/services/auth_service.dart';
+import 'package:tangteevs/utils/color.dart';
 import 'package:tangteevs/utils/showSnackbar.dart';
 import 'package:tangteevs/widgets/custom_textfield.dart';
 import 'package:tangteevs/helper/helper_function.dart';

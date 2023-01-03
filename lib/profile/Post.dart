@@ -6,6 +6,7 @@ import 'package:tangteevs/comment.dart';
 import 'package:tangteevs/profile/Post.dart';
 import 'package:tangteevs/profile/edit.dart';
 import 'package:tangteevs/profile/test.dart';
+import 'package:tangteevs/utils/color.dart';
 import 'package:tangteevs/utils/showSnackbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 

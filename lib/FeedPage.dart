@@ -2,6 +2,7 @@ import 'package:favorite_button/favorite_button.dart';
 import 'package:flutter/material.dart';
 import 'package:tangteevs/HomePage.dart';
 import 'package:tangteevs/comment.dart';
+import 'package:tangteevs/utils/color.dart';
 import 'services/auth_service.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
