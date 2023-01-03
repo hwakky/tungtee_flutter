@@ -5,7 +5,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tangteevs/profile/Profile.dart';
 import 'package:tangteevs/profile/profileback.dart';
-import 'package:tangteevs/regis,login/firestore.dart';
 import 'package:tangteevs/services/auth_service.dart';
 import 'package:tangteevs/services/database_service.dart';
 import '../helper/helper_function.dart';
@@ -32,6 +31,7 @@ class _EditPageState extends State<EditPage> {
   final TextEditingController _instagramController = TextEditingController();
   final TextEditingController _facebookController = TextEditingController();
   final TextEditingController _twitterController = TextEditingController();
+  final TextEditingController _profileController = TextEditingController();
   final CollectionReference _users =
       FirebaseFirestore.instance.collection('users');
 
@@ -60,6 +60,7 @@ class _EditPageState extends State<EditPage> {
       _instagramController.text = userData['instagram'].toString();
       _facebookController.text = userData['facebook'].toString();
       _twitterController.text = userData['twitter'].toString();
+      _profileController.text = userData['profile'].toString();
       setState(() {});
     } catch (e) {
       showSnackBar(
@@ -121,6 +122,9 @@ class _EditPageState extends State<EditPage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   // ignore: prefer_const_literals_to_create_immutables
                   children: [
+                    const SizedBox(
+                      height: 15,
+                    ),
                     const SizedBox(
                       height: 15,
                     ),

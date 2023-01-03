@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -19,7 +20,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
     return Scaffold(
       backgroundColor: lightPurple,
       appBar: AppBar(
-        toolbarHeight: 210,
+        toolbarHeight: 150,
         centerTitle: true,
         flexibleSpace: Container(
           decoration: const BoxDecoration(
@@ -31,74 +32,110 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
         elevation: 0,
         automaticallyImplyLeading: false,
       ),
-      body: Center(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            //  Image.asset("assets/images/reset.png"),
-            const Text("Reset password",
-                style: TextStyle(
-                    fontSize: 51,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'MyCustomFont',
-                    color: lightGreen)),
-            const Text("Don’t worry! It happens.",
-                style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'MyCustomFont',
-                    color: primaryColor)),
-            const Text(
-                "Plase enter Your E-mail address to reset you password\n",
-                style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'MyCustomFont',
-                    color: primaryColor)),
-            const SizedBox(
-              height: 35,
-            ),
-            TextField(
-              controller: _emailController,
-              decoration: textInputDecoration.copyWith(
-                hintText: 'Your E-mail',
-                prefixIcon: const Icon(
-                  Icons.email_outlined,
-                  color: green,
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              //  Image.asset("assets/images/reset.png"),
+              const Text("Reset password",
+                  style: TextStyle(
+                      fontSize: 51,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'MyCustomFont',
+                      color: lightGreen)),
+              const SizedBox(
+                height: 15,
+              ),
+              const Text("Don’t worry! It happens.",
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'MyCustomFont',
+                      color: primaryColor)),
+              const Text(
+                  "Plase enter Your E-mail address to reset you password\n",
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'MyCustomFont',
+                      color: primaryColor)),
+              const SizedBox(
+                height: 35,
+              ),
+              Container(
+                alignment: Alignment.center,
+                width: 360,
+                child: TextField(
+                  controller: _emailController,
+                  decoration: textInputDecoration.copyWith(
+                    hintText: 'Your E-mail',
+                    hintStyle: const TextStyle(),
+                    prefixIcon: const Icon(
+                      Icons.email_outlined,
+                      color: green,
+                    ),
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(
-              height: 55,
-            ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                  backgroundColor: primaryColor,
-                  foregroundColor: primaryColor,
-                  side: const BorderSide(
-                    width: 2.0,
-                    color: Colors.purple,
-                  ),
-                  minimumSize: const Size(307, 49),
-                  elevation: 0,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30))),
-              child: const Text(
-                "Send",
-                style: TextStyle(color: Colors.purple, fontSize: 24),
+              const SizedBox(
+                height: 45,
               ),
-              onPressed: () {
-                String email = _emailController.text;
-                _auth.sendPasswordResetEmail(email: email).then((value) {
-                  print('Password reset email sent');
-                  _showResetEmailSentDialog();
-                }).catchError((error) {
-                  print('Error sending password reset email: $error');
-                  _showErrorDialog();
-                });
-              },
-            ),
-          ],
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: primaryColor,
+                    foregroundColor: primaryColor,
+                    side: const BorderSide(
+                      width: 2.0,
+                      color: Colors.purple,
+                    ),
+                    minimumSize: const Size(307, 49),
+                    elevation: 0,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30))),
+                child: const Text(
+                  "Send",
+                  style: TextStyle(color: Colors.purple, fontSize: 24),
+                ),
+                onPressed: () {
+                  String email = _emailController.text;
+                  _auth.sendPasswordResetEmail(email: email).then((value) {
+                    print('Password reset email sent');
+                    _showResetEmailSentDialog();
+                  }).catchError((error) {
+                    print('Error sending password reset email: $error');
+                    _showErrorDialog();
+                  });
+                },
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              Text.rich(TextSpan(
+                style: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 12,
+                    fontFamily: 'MyCustomFont'),
+                children: <TextSpan>[
+                  TextSpan(
+                      text: "กลับสู่หน้า",
+                      style: const TextStyle(
+                          color: primaryColor, decoration: TextDecoration.none),
+                      recognizer: TapGestureRecognizer()),
+                  TextSpan(
+                      text: "เข้าสู่ระบบ",
+                      style: const TextStyle(
+                          color: lightGreen,
+                          decoration: TextDecoration.underline,
+                          fontWeight: FontWeight.bold),
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          nextScreen(context, Login());
+                        }),
+                ],
+              )),
+            ],
+          ),
         ),
       ),
     );

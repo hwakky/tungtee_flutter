@@ -3,7 +3,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tangteevs/comment.dart';
-import 'package:tangteevs/regis,login/firestore.dart';
 import 'log.dart';
 import 'model/user_model.dart';
 import 'regis,login/Verify.dart';
@@ -21,7 +20,6 @@ void main() async {
   runApp(MaterialApp(
     home: const Log(),
     routes: {
-      '/test': (context) => const profile(),
       '/landing': (context) => const LandingPage(),
       '/Verify': (context) => const Verify(),
       '/login': (context) => Login(),

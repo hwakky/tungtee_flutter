@@ -1,5 +1,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.tangteevs">
+
+    <queries>
+    <!-- If your app checks for google support -->
+    <intent>
+        <action android:name="android.intent.action.VIEW" />
+        <data android:scheme="https" />
+    </intent>
+
+    </queries>
+
    <application
         android:label="tangtee"
         android:name="${applicationName}"

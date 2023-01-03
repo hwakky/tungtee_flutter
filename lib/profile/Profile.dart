@@ -8,6 +8,7 @@ import 'package:tangteevs/profile/edit.dart';
 import 'package:tangteevs/profile/test.dart';
 import 'package:tangteevs/utils/showSnackbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../regis,login/Login.dart';
 import '../widgets/custom_textfield.dart';
@@ -209,18 +210,90 @@ class _ProfilePageState extends State<ProfilePage> {
                                   ],
                                 ),
                               ),
-                              // Row(
-                              //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              //   children: [
-                              //     FirebaseAuth.instance.currentUser!.uid == widget.uid? EditProfile(
-                              //       backgroundColor: mobileBackgroundColor,
-                              //       borderColor: purple,
-                              //       text: 'Edit Profile',
-                              //       textColor: mobileSearchColor,
-                              //       function: () {},
-                              //     ):
-                              //   ],
-                              // ),
+                              Container(
+                                alignment: Alignment.centerLeft,
+                                padding: const EdgeInsets.only(
+                                  top: 10,
+                                  left: 30,
+                                ),
+                                child: Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 30,
+                                      height: 30,
+                                      child: MaterialButton(
+                                        onPressed: () {
+                                          Uri uri = Uri.parse(userData[
+                                                  'instagram']
+                                              .toString()); //https://www.instagram.com/
+                                          _launchUrl(uri);
+                                        },
+                                        padding: const EdgeInsets.only(
+                                          left: 0,
+                                        ),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                        ),
+                                        child: Image.asset(
+                                            'assets/images/instagram.png'),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                        left: 20,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 30,
+                                      height: 30,
+                                      child: MaterialButton(
+                                        onPressed: () {
+                                          Uri uri = Uri.parse(userData[
+                                                  'facebook']
+                                              .toString()); //https://www.facebook.com/
+                                          _launchUrl(uri);
+                                        },
+                                        padding: const EdgeInsets.only(
+                                          left: 0,
+                                        ),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                        ),
+                                        child: Image.asset(
+                                            'assets/images/facebook.png'),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                        left: 20,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 30,
+                                      height: 30,
+                                      child: MaterialButton(
+                                        onPressed: () {
+                                          Uri uri = Uri.parse(userData[
+                                                  'twitter']
+                                              .toString()); //https://www.facebook.com/
+                                          _launchUrl(uri);
+                                        },
+                                        padding: const EdgeInsets.only(
+                                          left: 0,
+                                        ),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                        ),
+                                        child: Image.asset(
+                                            'assets/images/twitter.png'),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ],
                           ),
                         ),
@@ -566,6 +639,25 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ]),
           );
+  }
+
+  Future<void> _launchUrl(Uri url) async {
+    try {
+      if (await canLaunchUrl(url)) {
+        await launchUrl(
+          url,
+        );
+      } else {
+        throw 'Could not launch $url';
+      }
+    } catch (_) {}
+  }
+
+  String? encodeQueryParameters(Map<String, String> params) {
+    return params.entries
+        .map((MapEntry<String, String> e) =>
+            '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}')
+        .join('&');
   }
 }
 

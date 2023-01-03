@@ -12,15 +12,19 @@ class DatabaseService {
 
   // saving the userdata
   Future savingUserData(
-      String fullName,
-      String email,
-      String age,
-      String Imageidcard,
-      String Imageprofile,
-      String Displayname,
-      String gender,
-      String bio,
-      bool isadmin) async {
+    String fullName,
+    String email,
+    String age,
+    String Imageidcard,
+    String Imageprofile,
+    String Displayname,
+    String gender,
+    String bio,
+    bool isadmin,
+    String facebook,
+    String instagram,
+    String twitter,
+  ) async {
     return await userCollection.doc(uid).set({
       "fullName": fullName,
       "Displayname": Displayname,
@@ -33,6 +37,9 @@ class DatabaseService {
       "profile": Imageprofile,
       "uid": uid,
       "admin": isadmin,
+      "facebook": facebook,
+      "instagram": instagram,
+      "twitter": twitter,
     });
   }
 

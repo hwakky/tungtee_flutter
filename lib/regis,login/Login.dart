@@ -44,9 +44,9 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: lightPurple,
-      extendBodyBehindAppBar: true,
+      extendBodyBehindAppBar: false,
       appBar: AppBar(
-        toolbarHeight: 219,
+        toolbarHeight: 171,
         flexibleSpace: Container(
           decoration: const BoxDecoration(
               borderRadius: BorderRadius.only(
@@ -78,9 +78,7 @@ class _LoginState extends State<Login> {
                     //    image: AssetImage("assets/login.png"),
                     //   )))),
                     //Image.asset("assets/login.png"),
-                    const SizedBox(
-                      height: 245,
-                    ),
+
                     const Text(
                       "WELCOME BACK",
                       style: TextStyle(
@@ -101,7 +99,7 @@ class _LoginState extends State<Login> {
                           color: primaryColor),
                     ),
                     const SizedBox(
-                      height: 35,
+                      height: 25,
                     ),
                     Container(
                       alignment: Alignment.center,
@@ -130,7 +128,7 @@ class _LoginState extends State<Login> {
                       ),
                     ),
                     const SizedBox(
-                      height: 35,
+                      height: 25,
                     ),
 
                     Container(
@@ -177,7 +175,7 @@ class _LoginState extends State<Login> {
                       ],
                     ),
                     const SizedBox(
-                      height: 7,
+                      height: 50,
                     ),
                     //ElevatedButton.icon(
                     // onPressed: () {
@@ -229,7 +227,7 @@ class _LoginState extends State<Login> {
                         TextSpan(
                             text: "สมัครใช้งาน",
                             style: const TextStyle(
-                                color: Colors.lightGreen,
+                                color: lightGreen,
                                 decoration: TextDecoration.underline,
                                 fontWeight: FontWeight.bold),
                             recognizer: TapGestureRecognizer()

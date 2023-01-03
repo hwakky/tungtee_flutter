@@ -1,9 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 import 'package:tangteevs/activity/favorite.dart';
 import 'package:tangteevs/activity/history.dart';
 import 'package:tangteevs/activity/waiting.dart';
 import 'package:tangteevs/utils/color.dart';
+import 'package:flutter/material.dart';
 
 class ActivityPage extends StatelessWidget {
   @override
@@ -35,24 +34,22 @@ class ActivityPage extends StatelessWidget {
           child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
-                Container(
-                  child: const TabBar(
-                    indicatorColor: green,
-                    labelColor: green,
-                    labelPadding: EdgeInsets.symmetric(horizontal: 30),
-                    unselectedLabelColor: unselected,
-                    labelStyle: TextStyle(
-                        fontSize: 20.0,
-                        fontFamily: 'MyCustomFont'), //For Selected tab
-                    unselectedLabelStyle: TextStyle(
-                        fontSize: 20.0,
-                        fontFamily: 'MyCustomFont'), //For Un-selected Tabs
-                    tabs: [
-                      Tab(text: 'Waiting'),
-                      Tab(text: 'History'),
-                      Tab(text: 'Favorite'),
-                    ],
-                  ),
+                const TabBar(
+                  indicatorColor: green,
+                  labelColor: green,
+                  labelPadding: EdgeInsets.symmetric(horizontal: 30),
+                  unselectedLabelColor: unselected,
+                  labelStyle: TextStyle(
+                      fontSize: 20.0,
+                      fontFamily: 'MyCustomFont'), //For Selected tab
+                  unselectedLabelStyle: TextStyle(
+                      fontSize: 20.0,
+                      fontFamily: 'MyCustomFont'), //For Un-selected Tabs
+                  tabs: [
+                    Tab(text: 'Waiting'),
+                    Tab(text: 'History'),
+                    Tab(text: 'Favorite'),
+                  ],
                 ),
                 SizedBox(
                   height: 30,

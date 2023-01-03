@@ -11,7 +11,6 @@ import 'package:path/path.dart';
 import 'package:tangteevs/FeedPage.dart';
 import 'package:tangteevs/HomePage.dart';
 import 'package:tangteevs/model/post_model.dart';
-import 'package:tangteevs/regis,login/firestore.dart';
 import 'package:tangteevs/services/auth_service.dart';
 import 'package:tangteevs/utils/showSnackbar.dart';
 import 'package:tangteevs/widgets/custom_textfield.dart';

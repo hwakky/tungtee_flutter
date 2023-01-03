@@ -60,6 +60,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
     }
     return Scaffold(
       appBar: AppBar(
+        toolbarHeight: 50,
         backgroundColor: mobileBackgroundColor,
         elevation: 1,
         leadingWidth: 130,
@@ -123,7 +124,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
 class UserTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       home: UserPage(),
     );
   }

@@ -54,8 +54,7 @@ class _UserPageState extends State<UserPage> {
                   child: const Text('Create'),
                   onPressed: () async {
                     final String Displayname = _DisplaynameController.text;
-                    final double? email =
-                        double.tryParse(_emailController.text);
+                    final String email =_emailController.text;
                     if (email != null) {
                       await _users
                           .add({"Displayname": Displayname, "email": email});

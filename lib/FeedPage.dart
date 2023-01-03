@@ -1,3 +1,4 @@
+import 'package:favorite_button/favorite_button.dart';
 import 'package:flutter/material.dart';
 import 'package:tangteevs/HomePage.dart';
 import 'package:tangteevs/comment.dart';
@@ -48,9 +49,10 @@ class SearchForm extends StatelessWidget {
     return Scaffold(
       backgroundColor: mobileBackgroundColor,
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(100),
+        preferredSize: const Size.fromHeight(80),
         child: AppBar(
-          backgroundColor: mobileBackgroundColor,
+          toolbarHeight: 80,
+          backgroundColor: Colors.transparent,
           elevation: 0,
           centerTitle: false,
           title: const SizedBox(
@@ -135,6 +137,9 @@ class PostCard extends StatelessWidget {
   final CollectionReference _post =
       FirebaseFirestore.instance.collection('post');
 
+  final CollectionReference _favorite =
+      FirebaseFirestore.instance.collection('favorite');
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -164,6 +169,7 @@ class PostCard extends StatelessWidget {
                   height: 230,
                   child: Card(
                       clipBehavior: Clip.hardEdge,
+                      elevation: 5,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15.0),
                         side: const BorderSide(
@@ -196,18 +202,17 @@ class PostCard extends StatelessWidget {
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.only(left: 2),
-                                      child: IconButton(
-                                        onPressed: (() {
-                                          //add action
-                                        }),
-                                        icon: const Icon(
-                                          Icons.favorite_border,
-                                          color: unselected,
-                                        ),
-                                      ),
+                                      child: FavoriteButton(
+                                          iconSize: 45,
+                                          isFavorite: false,
+                                          iconDisabledColor: unselected,
+                                          valueChanged: (_isFavorite) {
+                                            if (_isFavorite == true) {
+                                              print(_isFavorite);
+                                            }
+                                          }),
                                     ),
                                     SizedBox(
-                                      width: 7,
                                       child: IconButton(
                                         onPressed: (() {
                                           //add action
