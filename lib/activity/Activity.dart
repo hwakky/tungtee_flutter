@@ -19,7 +19,7 @@ class ActivityPage extends StatelessWidget {
           IconButton(
             icon: const Icon(
               Icons.notifications_none,
-              color: green,
+              color: purple,
               size: 30,
             ),
             onPressed: () {},
