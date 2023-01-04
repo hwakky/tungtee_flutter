@@ -6,6 +6,7 @@ import 'package:tangteevs/comment.dart';
 import 'package:tangteevs/profile/Post.dart';
 import 'package:tangteevs/profile/edit.dart';
 import 'package:tangteevs/profile/test.dart';
+import 'package:tangteevs/utils/color.dart';
 import 'package:tangteevs/utils/showSnackbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -50,6 +51,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
       postLen = postSnap.docs.length;
       userData = userSnap.data()!;
+
       setState(() {});
     } catch (e) {
       showSnackBar(
@@ -62,6 +64,71 @@ class _ProfilePageState extends State<ProfilePage> {
     });
   }
 
+  void _showModalBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      useRootNavigator: true,
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              ListTile(
+                contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
+                title: const Center(
+                    child: Text(
+                  'Edit profile',
+                  style: TextStyle(fontFamily: 'MyCustomFont', fontSize: 20),
+                )),
+                onTap: () {
+                  Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
+                    MaterialPageRoute(
+                      builder: (BuildContext context) {
+                        return EditPage(
+                          uid: FirebaseAuth.instance.currentUser!.uid,
+                        );
+                      },
+                    ),
+                    (_) => false,
+                  );
+                },
+              ),
+              ListTile(
+                contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
+                title: const Center(
+                    child: Text(
+                  'Logout',
+                  style: TextStyle(
+                      fontFamily: 'MyCustomFont',
+                      fontSize: 20,
+                      color: redColor),
+                )),
+                onTap: () {
+                  FirebaseAuth.instance.signOut();
+                  nextScreenReplaceOut(context, const LandingPage());
+                },
+              ),
+              ListTile(
+                contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
+                title: const Center(
+                    child: Text(
+                  'Cancel',
+                  style: TextStyle(
+                      color: redColor,
+                      fontFamily: 'MyCustomFont',
+                      fontSize: 20),
+                )),
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return isLoading
@@ -69,6 +136,7 @@ class _ProfilePageState extends State<ProfilePage> {
             child: CircularProgressIndicator(),
           )
         : Scaffold(
+            bottomNavigationBar: null,
             backgroundColor: mobileBackgroundColor,
             appBar: AppBar(
               backgroundColor: mobileBackgroundColor,
@@ -78,35 +146,14 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               centerTitle: true,
               actions: [
-                PopupMenuButton<String>(
-                  itemBuilder: (_) {
-                    return const [
-                      PopupMenuItem<String>(
-                          value: "1", child: Text("Edit profile")),
-                      PopupMenuItem<String>(value: "2", child: Text("Logout")),
-                    ];
-                  },
+                IconButton(
                   icon: const Icon(
                     Icons.settings,
                     color: purple,
+                    size: 30,
                   ),
-                  onSelected: (i) {
-                    if (i == "1") {
-                      Navigator.of(context, rootNavigator: true)
-                          .pushAndRemoveUntil(
-                        MaterialPageRoute(
-                          builder: (BuildContext context) {
-                            return EditPage(
-                              uid: FirebaseAuth.instance.currentUser!.uid,
-                            );
-                          },
-                        ),
-                        (_) => false,
-                      );
-                    } else if (i == "2") {
-                      FirebaseAuth.instance.signOut();
-                      nextScreenReplaceOut(context, const LandingPage());
-                    }
+                  onPressed: () {
+                    _showModalBottomSheet(context);
                   },
                 ),
               ],
@@ -216,83 +263,90 @@ class _ProfilePageState extends State<ProfilePage> {
                                   top: 10,
                                   left: 30,
                                 ),
-                                child: Row(
-                                  children: [
-                                    SizedBox(
-                                      width: 30,
-                                      height: 30,
-                                      child: MaterialButton(
-                                        onPressed: () {
-                                          Uri uri = Uri.parse(userData[
-                                                  'instagram']
-                                              .toString()); //https://www.instagram.com/
-                                          _launchUrl(uri);
-                                        },
-                                        padding: const EdgeInsets.only(
-                                          left: 0,
-                                        ),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                        ),
-                                        child: Image.asset(
-                                            'assets/images/instagram.png'),
+                                child: (userData['instagram'].toString() != '')
+                                    ? Row(
+                                        children: [
+                                          SizedBox(
+                                            width: 30,
+                                            height: 30,
+                                            child: MaterialButton(
+                                              onPressed: () {
+                                                Uri uri = Uri.parse(userData[
+                                                        'instagram']
+                                                    .toString()); //https://www.instagram.com/
+                                                _launchUrl(uri);
+                                              },
+                                              padding: const EdgeInsets.only(
+                                                left: 0,
+                                              ),
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(20),
+                                              ),
+                                              child: Image.asset(
+                                                  'assets/images/instagram.png'),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                              left: 20,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: 30,
+                                            height: 30,
+                                            child: (userData['facebook']
+                                                        .toString() !=
+                                                    '')
+                                                ? MaterialButton(
+                                                    onPressed: () {
+                                                      Uri uri = Uri.parse(userData[
+                                                              'facebook']
+                                                          .toString()); //https://www.facebook.com/
+                                                      _launchUrl(uri);
+                                                    },
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                      left: 0,
+                                                    ),
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              20),
+                                                    ),
+                                                    child: Image.asset(
+                                                        'assets/images/facebook.png'),
+                                                  )
+                                                : Container(),
+                                          ),
+                                        ],
+                                      )
+                                    : SizedBox(
+                                        width: 30,
+                                        height: 30,
+                                        child: (userData['facebook']
+                                                    .toString() !=
+                                                '')
+                                            ? MaterialButton(
+                                                onPressed: () {
+                                                  Uri uri = Uri.parse(userData[
+                                                          'facebook']
+                                                      .toString()); //https://www.facebook.com/
+                                                  _launchUrl(uri);
+                                                },
+                                                padding: const EdgeInsets.only(
+                                                  left: 0,
+                                                ),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(20),
+                                                ),
+                                                child: Image.asset(
+                                                    'assets/images/facebook.png'),
+                                              )
+                                            : Container(),
                                       ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                        left: 20,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 30,
-                                      height: 30,
-                                      child: MaterialButton(
-                                        onPressed: () {
-                                          Uri uri = Uri.parse(userData[
-                                                  'facebook']
-                                              .toString()); //https://www.facebook.com/
-                                          _launchUrl(uri);
-                                        },
-                                        padding: const EdgeInsets.only(
-                                          left: 0,
-                                        ),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                        ),
-                                        child: Image.asset(
-                                            'assets/images/facebook.png'),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                        left: 20,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 30,
-                                      height: 30,
-                                      child: MaterialButton(
-                                        onPressed: () {
-                                          Uri uri = Uri.parse(userData[
-                                                  'twitter']
-                                              .toString()); //https://www.facebook.com/
-                                          _launchUrl(uri);
-                                        },
-                                        padding: const EdgeInsets.only(
-                                          left: 0,
-                                        ),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                        ),
-                                        child: Image.asset(
-                                            'assets/images/twitter.png'),
-                                      ),
-                                    ),
-                                  ],
-                                ),
                               ),
                             ],
                           ),
@@ -383,7 +437,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                           as dynamic)['peopleLimit'];
 
                                       return SizedBox(
-                                        height: 227,
+                                        height: 247,
                                         child: Card(
                                             clipBehavior: Clip.hardEdge,
                                             shape: RoundedRectangleBorder(
@@ -594,7 +648,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                                                 MaterialPageRoute(
                                                                   builder:
                                                                       (context) =>
-                                                                          Comment(),
+                                                                          Comment(
+                                                postid: snapshot
+                                                    .data!.docs[index]),
                                                                 ),
                                                               );
                                                             },
@@ -890,7 +946,9 @@ class _PostPageState extends State<PostPage> {
                                       onPressed: () {
                                         Navigator.of(context).push(
                                           MaterialPageRoute(
-                                            builder: (context) => Comment(),
+                                            builder: (context) => Comment(
+                                                postid: snapshot
+                                                    .data!.docs[index]),
                                           ),
                                         );
                                       },

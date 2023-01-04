@@ -25,7 +25,6 @@ void main() async {
       '/login': (context) => Login(),
       '/register': (context) => const RegisterPage(),
       '/HomePage': (context) => MyHomePage(),
-      '/Comment': (context) => const Comment(),
     },
   ));
 }

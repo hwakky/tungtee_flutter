@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tangteevs/utils/color.dart';
 import 'package:tangteevs/widgets/custom_textfield.dart';
 
 class PrivacyPage extends StatelessWidget {

@@ -8,6 +8,7 @@ import 'package:tangteevs/profile/profileback.dart';
 import 'package:tangteevs/services/auth_service.dart';
 import 'package:tangteevs/services/database_service.dart';
 import '../helper/helper_function.dart';
+import '../utils/color.dart';
 import '../utils/showSnackbar.dart';
 import '../widgets/custom_textfield.dart';
 
@@ -213,21 +214,7 @@ class _EditPageState extends State<EditPage> {
                       ),
                     ),
                     const SizedBox(
-                      height: 15,
-                    ),
-                    Container(
-                      alignment: Alignment.center,
-                      width: 360,
-                      child: TextFormField(
-                        controller: _twitterController,
-                        decoration: textInputDecorationp.copyWith(
-                            hintText: "link(option)",
-                            prefixIcon:
-                                Image.asset('assets/images/twitter.png')),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 25,
+                      height: 55,
                     ),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(

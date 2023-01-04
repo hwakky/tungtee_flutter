@@ -12,6 +12,7 @@ import 'package:tangteevs/FeedPage.dart';
 import 'package:tangteevs/HomePage.dart';
 import 'package:tangteevs/model/post_model.dart';
 import 'package:tangteevs/services/auth_service.dart';
+import 'package:tangteevs/utils/color.dart';
 import 'package:tangteevs/utils/showSnackbar.dart';
 import 'package:tangteevs/widgets/custom_textfield.dart';
 import 'package:tangteevs/helper/helper_function.dart';
@@ -19,6 +20,8 @@ import 'dart:io';
 import 'package:intl/intl.dart';
 import 'firebase_options.dart';
 import 'package:path/path.dart';
+
+import 'utils/color.dart';
 
 class CreateEventScreen extends StatefulWidget {
   const CreateEventScreen({Key? key}) : super(key: key);
@@ -29,8 +32,7 @@ class CreateEventScreen extends StatefulWidget {
 
 class _CreateEventScreenState extends State<CreateEventScreen> {
   bool _isLoading = false;
-  final CollectionReference _post =
-      FirebaseFirestore.instance.collection('post');
+  final _post = FirebaseFirestore.instance.collection('post').doc();
 
   final _formKey = GlobalKey<FormState>();
   // late String _activityName;
@@ -194,17 +196,26 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
               ElevatedButton(
                 child: Text("Post"),
                 onPressed: () async {
-                  post();
-                  // if (var res == "success") {
-                  //   setState(() {
-                  //     _isLoading = false;
-                  //     Navigator.of(context).pushReplacement(
-                  //       MaterialPageRoute(builder: (context) => FeedPage()),
-                  //     );
-                  //   });
-                  // }else{
-
-                  // }
+                  if (_formKey.currentState!.validate() == true) {
+                    setState(() {
+                      _isLoading = true;
+                    });
+                    await _post.set({
+                      'postid': _post.id,
+                      'activityName': _activityName.text,
+                      'place': _place.text,
+                      'location': _location.text,
+                      'date': dateController.text,
+                      'time': _time.text,
+                      'detail': _detail.text,
+                      'peopleLimit': _peopleLimit.text,
+                      'timeStamp': FieldValue.serverTimestamp(),
+                      'uid': FirebaseAuth.instance.currentUser?.uid,
+                    }).whenComplete(() {
+                      nextScreenReplaceOut(context, MyHomePage());
+                    });
+                    //await _post.set(post);
+                  }
                 },
               ),
             ],
@@ -214,24 +225,28 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
     );
   }
 
-  post() async {
-    if (_formKey.currentState!.validate() == true) {
-      setState(() {
-        _isLoading = true;
-      });
-      await _post.add({
-        'activityName': _activityName.text,
-        'place': _place.text,
-        'location': _location.text,
-        'date': dateController.text,
-        'time': _time.text,
-        'detail': _detail.text,
-        'peopleLimit': _peopleLimit.text,
-        'timeStamp': FieldValue.serverTimestamp(),
-        'uid': FirebaseAuth.instance.currentUser?.uid,
-      });
-    }
-  }
+  // post() async {
+  //   if (_formKey.currentState!.validate() == true) {
+  //     setState(() {
+  //       _isLoading = true;
+  //     });
+  //     await _post.add({
+  //       //'postid': datasnapchot.key,
+  //       'activityName': _activityName.text,
+  //       'place': _place.text,
+  //       'location': _location.text,
+  //       'date': dateController.text,
+  //       'time': _time.text,
+  //       'detail': _detail.text,
+  //       'peopleLimit': _peopleLimit.text,
+  //       'timeStamp': FieldValue.serverTimestamp(),
+  //       'uid': FirebaseAuth.instance.currentUser?.uid,
+  //     }).whenComplete(() {
+  //       Navigator.pushReplacement(
+  //           context, MaterialPageRoute(builder: (_) => FeedPage()));
+  //     });
+  //   }
+  // }
 
   void initState() {
     dateController.text = "";

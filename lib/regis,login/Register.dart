@@ -13,6 +13,7 @@ import 'package:tangteevs/helper/helper_function.dart';
 import 'package:tangteevs/Homepage.dart';
 import '../team/privacy.dart';
 import '../team/team.dart';
+import '../utils/color.dart';
 import 'Login.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
