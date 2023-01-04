@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tangteevs/admin/report.dart';
-import 'package:tangteevs/admin/tag.dart';
+import 'package:tangteevs/admin/tag/tag.dart';
 import 'package:tangteevs/admin/user.dart';
 import 'package:tangteevs/utils/color.dart';
 
