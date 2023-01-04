@@ -11,7 +11,6 @@ import 'package:tangteevs/utils/color.dart';
 import 'package:tangteevs/utils/showSnackbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 import '../regis,login/Login.dart';
 import '../widgets/custom_textfield.dart';
 
@@ -78,7 +77,7 @@ class _FavoritePageState extends State<FavoritePage> {
             itemCount: (snapshot.data! as dynamic).docs.length,
             itemBuilder: (context, index) {
               DocumentSnapshot snap = (snapshot.data! as dynamic).docs[index];
-                
+
               var Mytext = new Map();
               Mytext['activityName'] =
                   (snap.data()! as dynamic)['activityName'];
@@ -245,7 +244,9 @@ class _FavoritePageState extends State<FavoritePage> {
                                     onPressed: () {
                                       Navigator.of(context).push(
                                         MaterialPageRoute(
-                                          builder: (context) => Comment(),
+                                          builder: (context) => Comment(
+                                              postid:
+                                                  snapshot.data!.docs[index]),
                                         ),
                                       );
                                     },

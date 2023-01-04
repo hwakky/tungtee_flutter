@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:tangteevs/utils/color.dart';
 
 import '../regis,login/Login.dart';
+import '../utils/color.dart';
 import '../widgets/custom_textfield.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
