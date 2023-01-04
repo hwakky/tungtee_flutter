@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:tangteevs/activity/favorite.dart';
 import 'package:tangteevs/activity/history.dart';
 import 'package:tangteevs/activity/waiting.dart';
@@ -73,7 +74,7 @@ class Favorite extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: FavoritePage(),
+      home: FavoritePage(uid: FirebaseAuth.instance.currentUser!.uid,),
     );
   }
 }

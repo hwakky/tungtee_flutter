@@ -63,6 +63,7 @@ dependencies:
   fluent_ui: ^4.1.2
   favorite_button: ^0.0.4
   url_launcher: ^6.1.7
+  firebase_database: ^10.0.9
 
 flutter_icons:
  android: true

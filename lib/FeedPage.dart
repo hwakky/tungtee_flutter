@@ -1,15 +1,9 @@
 import 'package:favorite_button/favorite_button.dart';
 import 'package:flutter/material.dart';
-import 'package:tangteevs/HomePage.dart';
 import 'package:tangteevs/comment.dart';
 import 'package:tangteevs/utils/color.dart';
-import 'services/auth_service.dart';
-import 'package:getwidget/getwidget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'dart:math';
-import 'widgets/custom_textfield.dart';
 
 class FeedPage extends StatelessWidget {
   FeedPage({Key? key, required}) : super(key: key);
@@ -138,8 +132,18 @@ class PostCard extends StatelessWidget {
   final CollectionReference _post =
       FirebaseFirestore.instance.collection('post');
 
-  final CollectionReference _favorite =
-      FirebaseFirestore.instance.collection('favorite');
+  final CollectionReference _favorites =
+      FirebaseFirestore.instance.collection('favorites');
+
+  Future<void> _delete(String usersId) async {
+    await _favorites
+        .doc(uid)
+        .collection('favorites list')
+        .doc(usersId)
+        .delete();
+  }
+
+  var uid = FirebaseAuth.instance.currentUser!.uid;
 
   @override
   Widget build(BuildContext context) {
@@ -209,7 +213,29 @@ class PostCard extends StatelessWidget {
                                           iconDisabledColor: unselected,
                                           valueChanged: (_isFavorite) {
                                             if (_isFavorite == true) {
-                                              print(_isFavorite);
+                                              var uid = FirebaseAuth
+                                                  .instance.currentUser!.uid;
+                                              FirebaseFirestore.instance
+                                                  .collection("favorites")
+                                                  .doc(uid)
+                                                  .collection('favorites list')
+                                                  .doc(documentSnapshot.id)
+                                                  .set({
+                                                "activityName":
+                                                    Mytext['activityName'],
+                                                "dateTime": Mytext['dateTime'],
+                                                "place": Mytext['place'],
+                                                "location": Mytext['location'],
+                                                "peopleLimit":
+                                                    Mytext['peopleLimit'],
+                                                "detail":
+                                                    documentSnapshot['detail'],
+                                                "uid": documentSnapshot['uid'],
+                                                "postId": documentSnapshot.id,
+                                              });
+                                            }
+                                            if (_isFavorite == false) {
+                                              _delete(documentSnapshot.id);
                                             }
                                           }),
                                     ),
