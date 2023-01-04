@@ -12,7 +12,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../regis,login/Login.dart';
-import '../utils/color.dart';
 import '../widgets/custom_textfield.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -52,6 +51,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
       postLen = postSnap.docs.length;
       userData = userSnap.data()!;
+
       setState(() {});
     } catch (e) {
       showSnackBar(
@@ -263,83 +263,90 @@ class _ProfilePageState extends State<ProfilePage> {
                                   top: 10,
                                   left: 30,
                                 ),
-                                child: Row(
-                                  children: [
-                                    SizedBox(
-                                      width: 30,
-                                      height: 30,
-                                      child: MaterialButton(
-                                        onPressed: () {
-                                          Uri uri = Uri.parse(userData[
-                                                  'instagram']
-                                              .toString()); //https://www.instagram.com/
-                                          _launchUrl(uri);
-                                        },
-                                        padding: const EdgeInsets.only(
-                                          left: 0,
-                                        ),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                        ),
-                                        child: Image.asset(
-                                            'assets/images/instagram.png'),
+                                child: (userData['instagram'].toString() != '')
+                                    ? Row(
+                                        children: [
+                                          SizedBox(
+                                            width: 30,
+                                            height: 30,
+                                            child: MaterialButton(
+                                              onPressed: () {
+                                                Uri uri = Uri.parse(userData[
+                                                        'instagram']
+                                                    .toString()); //https://www.instagram.com/
+                                                _launchUrl(uri);
+                                              },
+                                              padding: const EdgeInsets.only(
+                                                left: 0,
+                                              ),
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(20),
+                                              ),
+                                              child: Image.asset(
+                                                  'assets/images/instagram.png'),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                              left: 20,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: 30,
+                                            height: 30,
+                                            child: (userData['facebook']
+                                                        .toString() !=
+                                                    '')
+                                                ? MaterialButton(
+                                                    onPressed: () {
+                                                      Uri uri = Uri.parse(userData[
+                                                              'facebook']
+                                                          .toString()); //https://www.facebook.com/
+                                                      _launchUrl(uri);
+                                                    },
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                      left: 0,
+                                                    ),
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              20),
+                                                    ),
+                                                    child: Image.asset(
+                                                        'assets/images/facebook.png'),
+                                                  )
+                                                : Container(),
+                                          ),
+                                        ],
+                                      )
+                                    : SizedBox(
+                                        width: 30,
+                                        height: 30,
+                                        child: (userData['facebook']
+                                                    .toString() !=
+                                                '')
+                                            ? MaterialButton(
+                                                onPressed: () {
+                                                  Uri uri = Uri.parse(userData[
+                                                          'facebook']
+                                                      .toString()); //https://www.facebook.com/
+                                                  _launchUrl(uri);
+                                                },
+                                                padding: const EdgeInsets.only(
+                                                  left: 0,
+                                                ),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(20),
+                                                ),
+                                                child: Image.asset(
+                                                    'assets/images/facebook.png'),
+                                              )
+                                            : Container(),
                                       ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                        left: 20,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 30,
-                                      height: 30,
-                                      child: MaterialButton(
-                                        onPressed: () {
-                                          Uri uri = Uri.parse(userData[
-                                                  'facebook']
-                                              .toString()); //https://www.facebook.com/
-                                          _launchUrl(uri);
-                                        },
-                                        padding: const EdgeInsets.only(
-                                          left: 0,
-                                        ),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                        ),
-                                        child: Image.asset(
-                                            'assets/images/facebook.png'),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                        left: 20,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 30,
-                                      height: 30,
-                                      child: MaterialButton(
-                                        onPressed: () {
-                                          Uri uri = Uri.parse(userData[
-                                                  'twitter']
-                                              .toString()); //https://www.facebook.com/
-                                          _launchUrl(uri);
-                                        },
-                                        padding: const EdgeInsets.only(
-                                          left: 0,
-                                        ),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                        ),
-                                        child: Image.asset(
-                                            'assets/images/twitter.png'),
-                                      ),
-                                    ),
-                                  ],
-                                ),
                               ),
                             ],
                           ),
@@ -639,10 +646,11 @@ class _ProfilePageState extends State<ProfilePage> {
                                                                       context)
                                                                   .push(
                                                                 MaterialPageRoute(
-                                                                  builder: (context) => Comment(
-                                                                      postid: snapshot
-                                                                          .data!
-                                                                          .docs[index]),
+                                                                  builder:
+                                                                      (context) =>
+                                                                          Comment(
+                                                postid: snapshot
+                                                    .data!.docs[index]),
                                                                 ),
                                                               );
                                                             },
@@ -939,8 +947,8 @@ class _PostPageState extends State<PostPage> {
                                         Navigator.of(context).push(
                                           MaterialPageRoute(
                                             builder: (context) => Comment(
-                                                postid:
-                                                    snapshot.data!.docs[index]),
+                                                postid: snapshot
+                                                    .data!.docs[index]),
                                           ),
                                         );
                                       },

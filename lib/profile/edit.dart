@@ -214,21 +214,7 @@ class _EditPageState extends State<EditPage> {
                       ),
                     ),
                     const SizedBox(
-                      height: 15,
-                    ),
-                    Container(
-                      alignment: Alignment.center,
-                      width: 360,
-                      child: TextFormField(
-                        controller: _twitterController,
-                        decoration: textInputDecorationp.copyWith(
-                            hintText: "link(option)",
-                            prefixIcon:
-                                Image.asset('assets/images/twitter.png')),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 25,
+                      height: 55,
                     ),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
