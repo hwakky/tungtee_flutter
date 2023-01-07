@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:tangteevs/FeedPage.dart';
 import 'package:tangteevs/Landing.dart';
 import 'package:tangteevs/comment.dart';
 import 'package:tangteevs/profile/Post.dart';

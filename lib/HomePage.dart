@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tangteevs/utils/color.dart';
 import 'Event.dart';
-import 'FeedPage.dart';
+import 'feed/FeedPage.dart';
 import 'Profile/Profile.dart';
 import 'activity/Activity.dart';
 
