@@ -386,11 +386,10 @@ class _ProfilePageState extends State<ProfilePage> {
                           height: 533,
                           child: TabBarView(children: <Widget>[
                             Container(
-                              child: FutureBuilder(
-                                future: FirebaseFirestore.instance
-                                    .collection('post')
-                                    .where('uid', isEqualTo: widget.uid)
-                                    .get(),
+                              child: StreamBuilder<QuerySnapshot>(
+                                stream: _post
+                                    .orderBy('timeStamp', descending: true)
+                                    .snapshots(),
                                 builder: ((context, snapshot) {
                                   if (snapshot.connectionState ==
                                       ConnectionState.waiting) {
@@ -411,10 +410,11 @@ class _ProfilePageState extends State<ProfilePage> {
                                       ),
                                     );
                                   }
-                                  return StreamBuilder<QuerySnapshot>(
-                                    stream: _post
-                                        .orderBy('timeStamp', descending: true)
-                                        .snapshots(),
+                                  return FutureBuilder(
+                                    future: FirebaseFirestore.instance
+                                        .collection('post')
+                                        .where('uid', isEqualTo: widget.uid)
+                                        .get(),
                                     builder: ((context, snapshot) {
                                       //onRefresh:_onRefresh;
                                       if (snapshot.connectionState ==
