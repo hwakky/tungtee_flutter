@@ -1,15 +1,15 @@
 import 'package:favorite_button/favorite_button.dart';
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
 import 'package:tangteevs/HomePage.dart';
 import 'package:tangteevs/comment.dart';
-
 import 'package:tangteevs/utils/color.dart';
+import 'package:tangteevs/services/auth_service.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'dart:math';
+import 'package:tangteevs/widgets/custom_textfield.dart';
 
 class FeedPage extends StatelessWidget {
   FeedPage({Key? key, required}) : super(key: key);
@@ -140,7 +140,6 @@ class SearchForm extends StatelessWidget {
         ];
       },
       body: PostCard(),
-      //body: PostCard(),
     );
   }
 }
@@ -165,6 +164,7 @@ class PostCard extends StatelessWidget {
       stream: _post.orderBy('timeStamp', descending: true).snapshots(),
       builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
         //onRefresh:_onRefresh;
+
         if (streamSnapshot.hasData) {
           return ListView.builder(
             itemCount: streamSnapshot.data!.docs.length,
@@ -219,7 +219,7 @@ class PostCard extends StatelessWidget {
                                   Padding(
                                     padding: const EdgeInsets.only(left: 2),
                                     child: FavoriteButton(
-                                        iconSize: 35,
+                                        iconSize: 45,
                                         isFavorite: false,
                                         iconDisabledColor: unselected,
                                         valueChanged: (_isFavorite) {
@@ -357,7 +357,7 @@ class PostCard extends StatelessWidget {
                                   ),
                                   TextButton(
                                     onPressed: () {
-                                      Navigator.of(context).push(
+                                      Navigator.of(context).pushReplacement(
                                         MaterialPageRoute(
                                           builder: (context) => Comment(
                                               postid: streamSnapshot

@@ -77,7 +77,7 @@ class _MyCommentState extends State<Comment> {
 
   final CollectionReference _comment =
       FirebaseFirestore.instance.collection('comments');
-  final commentSet = FirebaseFirestore.instance.collection('comments').doc();
+  final commentSet = FirebaseFirestore.instance.collection('comments');
 
   bool _isLoading = false;
   bool submit = false;
@@ -314,9 +314,10 @@ class _MyCommentState extends State<Comment> {
                       ],
                     ),
                     StreamBuilder<QuerySnapshot>(
-                      stream: _comment
+                      stream: commentSet
+                          .doc(postData['postid'])
+                          .collection('comments')
                           .orderBy('timeStamp', descending: true)
-                          //.where('postid', isEqualTo: postData['postid'])
                           .snapshots(),
                       builder:
                           (context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -340,7 +341,8 @@ class _MyCommentState extends State<Comment> {
                                             documentSnapshot['profile'];
                                         Mytext['time'] = timeago.format(
                                             documentSnapshot['timeStamp']
-                                                .toDate());
+                                                .toDate(),
+                                            locale: 'en_short');
                                         Mytext['comment'] =
                                             documentSnapshot['comment'];
 
@@ -363,95 +365,88 @@ class _MyCommentState extends State<Comment> {
                                                     radius: 20,
                                                   ),
                                                 ),
-                                                SizedBox(
-                                                  //width: 300,
-                                                  child: Card(
-                                                    clipBehavior: Clip.hardEdge,
-                                                    shape:
-                                                        RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              15.0),
-                                                      side: const BorderSide(
-                                                        color: Color.fromARGB(
-                                                            255, 151, 150, 150),
-                                                        width: 2,
-                                                      ),
+                                                Card(
+                                                  clipBehavior: Clip.hardEdge,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            15.0),
+                                                    side: const BorderSide(
+                                                      color: Color.fromARGB(
+                                                          255, 151, 150, 150),
+                                                      width: 2,
                                                     ),
-                                                    margin:
-                                                        const EdgeInsets.only(
-                                                            left: 10),
-                                                    child: Padding(
-                                                      padding:
-                                                          EdgeInsets.all(15.00),
-                                                      child: Column(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          Row(
-                                                            children: [
-                                                              SizedBox(
-                                                                width: 180,
-                                                                child: Text(
-                                                                    Mytext[
-                                                                        'Displayname'],
-                                                                    style:
-                                                                        const TextStyle(
-                                                                      fontSize:
-                                                                          16,
-                                                                      fontFamily:
-                                                                          'MyCustomFont',
-                                                                      color: Colors
-                                                                          .black,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .bold,
-                                                                    )),
-                                                              ),
-                                                              Padding(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                            .only(
-                                                                        left:
-                                                                            1),
-                                                                child: Text(
-                                                                    Mytext['time']
-                                                                        .toString(),
-                                                                    style:
-                                                                        const TextStyle(
-                                                                      fontSize:
-                                                                          12,
-                                                                      fontFamily:
-                                                                          'MyCustomFont',
-                                                                      color:
-                                                                          unselected,
-                                                                    )),
-                                                              )
-                                                            ],
-                                                          ),
-                                                          SizedBox(
-                                                            width: 250,
-                                                            child: Padding(
+                                                  ),
+                                                  margin: const EdgeInsets.only(
+                                                      left: 10),
+                                                  child: Padding(
+                                                    padding:
+                                                        EdgeInsets.all(15.00),
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Row(
+                                                          children: [
+                                                            SizedBox(
+                                                              width: 180,
+                                                              child: Text(
+                                                                  Mytext[
+                                                                      'Displayname'],
+                                                                  style:
+                                                                      const TextStyle(
+                                                                    fontSize:
+                                                                        16,
+                                                                    fontFamily:
+                                                                        'MyCustomFont',
+                                                                    color: Colors
+                                                                        .black,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                  )),
+                                                            ),
+                                                            Padding(
                                                               padding:
                                                                   const EdgeInsets
-                                                                      .all(8.0),
+                                                                          .only(
+                                                                      left: 1),
                                                               child: Text(
-                                                                Mytext[
-                                                                    'comment'],
-                                                                style:
-                                                                    const TextStyle(
-                                                                  fontSize: 16,
-                                                                  fontFamily:
-                                                                      'MyCustomFont',
-                                                                  color:
-                                                                      unselected,
-                                                                ),
+                                                                  Mytext['time']
+                                                                      .toString(),
+                                                                  style:
+                                                                      const TextStyle(
+                                                                    fontSize:
+                                                                        12,
+                                                                    fontFamily:
+                                                                        'MyCustomFont',
+                                                                    color:
+                                                                        unselected,
+                                                                  )),
+                                                            )
+                                                          ],
+                                                        ),
+                                                        SizedBox(
+                                                          width: 250,
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(8.0),
+                                                            child: Text(
+                                                              Mytext['comment'],
+                                                              style:
+                                                                  const TextStyle(
+                                                                fontSize: 16,
+                                                                fontFamily:
+                                                                    'MyCustomFont',
+                                                                color:
+                                                                    unselected,
                                                               ),
                                                             ),
-                                                          )
-                                                        ],
-                                                      ),
+                                                          ),
+                                                        )
+                                                      ],
                                                     ),
                                                   ),
                                                 ),
@@ -493,7 +488,7 @@ class _MyCommentState extends State<Comment> {
                         children: [
                           IconButton(
                             onPressed: () {},
-                            icon: Icon(
+                            icon: const Icon(
                               Icons.attach_file_outlined,
                               color: purple,
                               size: 30,
@@ -503,7 +498,7 @@ class _MyCommentState extends State<Comment> {
                             width: 315, //MediaQuery.of(context).size.width,
                             child: TextFormField(
                               keyboardType: TextInputType.multiline,
-                              maxLines: 5, // <-- SEE HERE
+                              maxLines: 5,
                               minLines: 1,
                               controller: commentController,
                               validator: (value) {
@@ -539,19 +534,24 @@ class _MyCommentState extends State<Comment> {
                                 setState(() {
                                   _isLoading = true;
                                 });
-                                await commentSet.set({
-                                  'cid': commentSet.id,
+                                await commentSet
+                                    .doc(postData['postid'])
+                                    .collection('comments')
+                                    .doc()
+                                    .set({
+                                  'cid': commentSet
+                                      .doc(postData['postid'])
+                                      .collection('comments')
+                                      .id,
                                   'comment': commentController.text,
                                   'postid': postData['postid'],
                                   'uid': FirebaseAuth.instance.currentUser!.uid,
                                   'profile': currentUser['profile'],
                                   'Displayname': currentUser['Displayname'],
-                                  'timeStamp': FieldValue.serverTimestamp(),
+                                  'timeStamp': DateTime.now(),
                                 }).whenComplete(() {
-                                  _formKey.currentState?.reset();
                                   commentController.clear();
                                 });
-                                //await _post.set(post);
                               }
                             },
                             icon: const Icon(
