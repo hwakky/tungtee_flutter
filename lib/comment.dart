@@ -14,7 +14,7 @@ import 'dart:math';
 
 class Comment extends StatefulWidget {
   DocumentSnapshot postid;
-  Comment({required this.postid});
+  Comment({Key? key, required this.postid}) : super(key: key);
 
   @override
   _MyCommentState createState() => _MyCommentState();
@@ -97,9 +97,7 @@ class _MyCommentState extends State<Comment> {
               backgroundColor: mobileBackgroundColor,
               leading: IconButton(
                 icon: const Icon(Icons.arrow_back_ios, color: unselected),
-                onPressed: () => {
-                  nextScreenReplaceOut(context, MyHomePage()),
-                },
+                onPressed: () => {Navigator.pop(context)},
               ),
               elevation: 1,
               centerTitle: false,

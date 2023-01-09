@@ -130,7 +130,9 @@ class HomeTab extends StatelessWidget {
   Widget build(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser!;
     return MaterialApp(
-      home: FeedPage(),
+      home: FeedPage(
+        
+      ),
     );
   }
 }
