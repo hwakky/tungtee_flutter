@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tangteevs/Homepage.dart';
 import 'package:tangteevs/profile/Profile.dart';
@@ -39,6 +40,9 @@ class _IdcardPageState extends State<IdcardPage> {
   final CollectionReference _users =
       FirebaseFirestore.instance.collection('users');
   File? media;
+  final TextEditingController _dayController = TextEditingController();
+  final TextEditingController _monthController = TextEditingController();
+  final TextEditingController _yearController = TextEditingController();
 
   var userData = {};
   var postLen = 0;
@@ -61,6 +65,9 @@ class _IdcardPageState extends State<IdcardPage> {
           .get();
       userData = userSnap.data()!;
       _ImageidcardController = userData['idcard'].toString();
+      _dayController.text = userData['day'].toString();
+      _monthController.text = userData['month'].toString();
+      _yearController.text = userData['year'].toString();
       setState(() {});
     } catch (e) {
       showSnackBar(
@@ -122,7 +129,191 @@ class _IdcardPageState extends State<IdcardPage> {
                     const SizedBox(
                       height: 20,
                     ),
-                    const Text("สแกนบัตรประชาชนของคุณ",
+                    const Text("กรอกวันเดือนปีเกิดของคุณ",
+                        style: TextStyle(
+                            fontSize: 18,
+                            fontFamily: 'MyCustomFont',
+                            color: unselected)),
+                    const SizedBox(height: 16),
+                    Container(
+                      alignment: Alignment.center,
+                      width: 360,
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: TextFormField(
+                              controller: _dayController,
+                              keyboardType: TextInputType.number,
+                              decoration: textInputDecorationp.copyWith(
+                                  hintText: "Day",
+                                  prefixIcon: Icon(
+                                    Icons.view_day,
+                                    color: Theme.of(context).primaryColor,
+                                  )),
+                              validator: (val) {
+                                if (val!.isEmpty) {
+                                  return "plase Enter Your Day";
+                                } else if (int.parse(val) >= 31) {
+                                  return 'Day must less than 31';
+                                } else {
+                                  return null;
+                                }
+                              },
+                            ),
+                          ),
+                          const SizedBox(width: 16),
+                          Expanded(
+                            child: TextField(
+                              controller: _monthController,
+                              readOnly: true,
+                              onTap: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return SimpleDialog(
+                                      children: <Widget>[
+                                        SimpleDialogOption(
+                                          onPressed: () {
+                                            _monthController.text = '1';
+                                            // Close the dialog
+                                            Navigator.pop(context);
+                                          },
+                                          child: Text('1'),
+                                        ),
+                                        SimpleDialogOption(
+                                          onPressed: () {
+                                            _monthController.text = '2';
+
+                                            // Close the dialog
+                                            Navigator.pop(context);
+                                          },
+                                          child: Text('2'),
+                                        ),
+                                        SimpleDialogOption(
+                                          onPressed: () {
+                                            _monthController.text = '3';
+                                            // Close the dialog
+                                            Navigator.pop(context);
+                                          },
+                                          child: Text('3'),
+                                        ),
+                                        SimpleDialogOption(
+                                          onPressed: () {
+                                            _monthController.text = '4';
+                                            // Close the dialog
+                                            Navigator.pop(context);
+                                          },
+                                          child: Text('4'),
+                                        ),
+                                        SimpleDialogOption(
+                                          onPressed: () {
+                                            _monthController.text = '5';
+
+                                            // Close the dialog
+                                            Navigator.pop(context);
+                                          },
+                                          child: Text('5'),
+                                        ),
+                                        SimpleDialogOption(
+                                          onPressed: () {
+                                            _monthController.text = '6';
+                                            // Close the dialog
+                                            Navigator.pop(context);
+                                          },
+                                          child: Text('6'),
+                                        ),
+                                        SimpleDialogOption(
+                                          onPressed: () {
+                                            _monthController.text = '7';
+                                            // Close the dialog
+                                            Navigator.pop(context);
+                                          },
+                                          child: Text('7'),
+                                        ),
+                                        SimpleDialogOption(
+                                          onPressed: () {
+                                            _monthController.text = '8';
+
+                                            // Close the dialog
+                                            Navigator.pop(context);
+                                          },
+                                          child: Text('8'),
+                                        ),
+                                        SimpleDialogOption(
+                                          onPressed: () {
+                                            _monthController.text = '9';
+                                            // Close the dialog
+                                            Navigator.pop(context);
+                                          },
+                                          child: Text('9'),
+                                        ),
+                                        SimpleDialogOption(
+                                          onPressed: () {
+                                            _monthController.text = '10';
+                                            // Close the dialog
+                                            Navigator.pop(context);
+                                          },
+                                          child: Text('10'),
+                                        ),
+                                        SimpleDialogOption(
+                                          onPressed: () {
+                                            _monthController.text = '11';
+
+                                            // Close the dialog
+                                            Navigator.pop(context);
+                                          },
+                                          child: Text('11'),
+                                        ),
+                                        SimpleDialogOption(
+                                          onPressed: () {
+                                            _monthController.text = '12';
+                                            // Close the dialog
+                                            Navigator.pop(context);
+                                          },
+                                          child: Text('12z'),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              },
+                              enableInteractiveSelection: false,
+                              decoration: textInputDecorationp.copyWith(
+                                hintText: 'month',
+                                prefixIcon: Icon(
+                                  Icons.calendar_month,
+                                  color: Theme.of(context).primaryColor,
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 16),
+                          Expanded(
+                            child: TextFormField(
+                              controller: _yearController,
+                              keyboardType: TextInputType.number,
+                              decoration: textInputDecorationp.copyWith(
+                                  hintText: "year",
+                                  prefixIcon: Icon(
+                                    Icons.view_day,
+                                    color: Theme.of(context).primaryColor,
+                                  )),
+                              validator: (val) {
+                                if (val!.isEmpty) {
+                                  return "plase Enter year";
+                                } else if (int.parse(val) >= 2008) {
+                                  return 'your age must be more than 15';
+                                } else {
+                                  return null;
+                                }
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    const Text("โปรดถ่ายให้ตรงกรอบ เพื่อความชัดเจน",
                         style: TextStyle(
                             fontSize: 18,
                             fontFamily: 'MyCustomFont',
@@ -290,12 +481,21 @@ class _IdcardPageState extends State<IdcardPage> {
 
   Updata() async {
     final String Imageidcard = _ImageidcardController.toString();
+    final String day = _dayController.text;
+    final String month = _monthController.text;
+    final String year = _yearController.text;
 
     if (_formKey.currentState!.validate()) {
       await _users.doc(widget.uid).update({
         "idcard": Imageidcard,
+        "day": day,
+        "month": month,
+        "year": year,
       });
       _ImageidcardController = '';
+      _dayController.text = '';
+      _monthController.text = '';
+      _yearController.text = '';
       nextScreen(
           context, RegisnextPage(uid: FirebaseAuth.instance.currentUser!.uid));
     }

@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:tangteevs/utils/showSnackbar.dart';
 import 'package:tangteevs/widgets/custom_textfield.dart';
 import '../HomePage.dart';
-import '../comment.dart';
+import '../comment/comment.dart';
 import '../utils/color.dart';
 import '../services/auth_service.dart';
 import 'package:getwidget/getwidget.dart';
@@ -185,7 +185,11 @@ class _PostCardState extends State<CardWidget> {
                           ),
                         ),
                         TextSpan(
-                          text: '\t\t' + widget.snap['date'],
+                          text: '\t\t' +
+                              widget.snap['date'] +
+                              '\t(' +
+                              widget.snap['time'] +
+                              ')',
                           style: const TextStyle(
                             fontFamily: 'MyCustomFont',
                             color: unselected,

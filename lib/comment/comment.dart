@@ -77,6 +77,7 @@ class _MyCommentState extends State<Comment> {
 
   final CollectionReference _comment =
       FirebaseFirestore.instance.collection('comments');
+  final TextEditingController _commentController = TextEditingController();
   final commentSet = FirebaseFirestore.instance.collection('comments');
 
   bool _isLoading = false;
@@ -332,17 +333,23 @@ class _MyCommentState extends State<Comment> {
                                             documentSnapshot =
                                             snapshot.data!.docs[index];
 
+                                        var postidD = postData['postid'];
+
                                         var Mytext = new Map();
                                         Mytext['Displayname'] =
                                             documentSnapshot['Displayname'];
+                                        Mytext['cid'] = documentSnapshot['cid'];
+                                        Mytext['comment'] =
+                                            documentSnapshot['comment'];
+                                        Mytext['postid'] =
+                                            documentSnapshot['postid'];
                                         Mytext['profile'] =
                                             documentSnapshot['profile'];
                                         Mytext['time'] = timeago.format(
                                             documentSnapshot['timeStamp']
                                                 .toDate(),
                                             locale: 'en_short');
-                                        Mytext['comment'] =
-                                            documentSnapshot['comment'];
+                                        Mytext['uid'] = documentSnapshot['uid'];
 
                                         return Center(
                                           child: Padding(
@@ -363,88 +370,99 @@ class _MyCommentState extends State<Comment> {
                                                     radius: 20,
                                                   ),
                                                 ),
-                                                Card(
-                                                  clipBehavior: Clip.hardEdge,
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            15.0),
-                                                    side: const BorderSide(
-                                                      color: Color.fromARGB(
-                                                          255, 151, 150, 150),
-                                                      width: 2,
+                                                GestureDetector(
+                                                  onLongPress: () =>
+                                                      _showModalBottomSheet(
+                                                          context,
+                                                          postidD,
+                                                          Mytext),
+                                                  child: Card(
+                                                    clipBehavior: Clip.hardEdge,
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              15.0),
+                                                      side: const BorderSide(
+                                                        color: Color.fromARGB(
+                                                            255, 151, 150, 150),
+                                                        width: 2,
+                                                      ),
                                                     ),
-                                                  ),
-                                                  margin: const EdgeInsets.only(
-                                                      left: 10),
-                                                  child: Padding(
-                                                    padding:
-                                                        EdgeInsets.all(15.00),
-                                                    child: Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Row(
-                                                          children: [
-                                                            SizedBox(
-                                                              width: 180,
-                                                              child: Text(
-                                                                  Mytext[
-                                                                      'Displayname'],
-                                                                  style:
-                                                                      const TextStyle(
-                                                                    fontSize:
-                                                                        16,
-                                                                    fontFamily:
-                                                                        'MyCustomFont',
-                                                                    color: Colors
-                                                                        .black,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold,
-                                                                  )),
-                                                            ),
-                                                            Padding(
+                                                    margin:
+                                                        const EdgeInsets.only(
+                                                            left: 10),
+                                                    child: Padding(
+                                                      padding:
+                                                          EdgeInsets.all(15.00),
+                                                      child: Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Row(
+                                                            children: [
+                                                              SizedBox(
+                                                                width: 180,
+                                                                child: Text(
+                                                                    Mytext[
+                                                                        'Displayname'],
+                                                                    style:
+                                                                        const TextStyle(
+                                                                      fontSize:
+                                                                          16,
+                                                                      fontFamily:
+                                                                          'MyCustomFont',
+                                                                      color: Colors
+                                                                          .black,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                    )),
+                                                              ),
+                                                              Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .only(
+                                                                        left:
+                                                                            1),
+                                                                child: Text(
+                                                                    Mytext['time']
+                                                                        .toString(),
+                                                                    style:
+                                                                        const TextStyle(
+                                                                      fontSize:
+                                                                          12,
+                                                                      fontFamily:
+                                                                          'MyCustomFont',
+                                                                      color:
+                                                                          unselected,
+                                                                    )),
+                                                              )
+                                                            ],
+                                                          ),
+                                                          SizedBox(
+                                                            width: 250,
+                                                            child: Padding(
                                                               padding:
                                                                   const EdgeInsets
-                                                                          .only(
-                                                                      left: 1),
+                                                                      .all(8.0),
                                                               child: Text(
-                                                                  Mytext['time']
-                                                                      .toString(),
-                                                                  style:
-                                                                      const TextStyle(
-                                                                    fontSize:
-                                                                        12,
-                                                                    fontFamily:
-                                                                        'MyCustomFont',
-                                                                    color:
-                                                                        unselected,
-                                                                  )),
-                                                            )
-                                                          ],
-                                                        ),
-                                                        SizedBox(
-                                                          width: 250,
-                                                          child: Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(8.0),
-                                                            child: Text(
-                                                              Mytext['comment'],
-                                                              style:
-                                                                  const TextStyle(
-                                                                fontSize: 16,
-                                                                fontFamily:
-                                                                    'MyCustomFont',
-                                                                color:
-                                                                    unselected,
+                                                                Mytext[
+                                                                    'comment'],
+                                                                style:
+                                                                    const TextStyle(
+                                                                  fontSize: 16,
+                                                                  fontFamily:
+                                                                      'MyCustomFont',
+                                                                  color:
+                                                                      unselected,
+                                                                ),
                                                               ),
                                                             ),
-                                                          ),
-                                                        )
-                                                      ],
+                                                          )
+                                                        ],
+                                                      ),
                                                     ),
                                                   ),
                                                 ),
@@ -532,15 +550,12 @@ class _MyCommentState extends State<Comment> {
                                 setState(() {
                                   _isLoading = true;
                                 });
-                                await commentSet
+                                var commentSet2 = commentSet
                                     .doc(postData['postid'])
                                     .collection('comments')
-                                    .doc()
-                                    .set({
-                                  'cid': commentSet
-                                      .doc(postData['postid'])
-                                      .collection('comments')
-                                      .id,
+                                    .doc();
+                                await commentSet2.set({
+                                  'cid': commentSet2.id,
                                   'comment': commentController.text,
                                   'postid': postData['postid'],
                                   'uid': FirebaseAuth.instance.currentUser!.uid,
@@ -566,5 +581,154 @@ class _MyCommentState extends State<Comment> {
               ],
             ),
           );
+  }
+
+  void _showModalBottomSheet(BuildContext context, postidD, Map mytext) {
+    //final commentUp = FirebaseFirestore.instance.collection('comments').where('cid', isEqualTo: cid).get();
+
+    showModalBottomSheet(
+      useRootNavigator: true,
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              if (FirebaseAuth.instance.currentUser!.uid == mytext['uid'])
+                ListTile(
+                  contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
+                  title: Center(
+                    child: Text(
+                      'Edit',
+                      style:
+                          TextStyle(fontFamily: 'MyCustomFont', fontSize: 20),
+                    ),
+                  ),
+                  onTap: () {
+                    showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                              title: Text('Edit Comment'),
+                              content: Form(
+                                child: TextFormField(
+                                  controller: _commentController,
+                                  decoration: InputDecoration(
+                                    hintText: 'type something',
+                                  ),
+                                  validator: (val) {
+                                    if (val!.isNotEmpty) {
+                                      return null;
+                                    } else {
+                                      return "plase Enter Display Name";
+                                    }
+                                  },
+                                  onChanged: (val) {
+                                    setState(() {
+                                      mytext['comment'] = val;
+                                    });
+                                  },
+                                ),
+                              ),
+                              actions: [
+                                TextButton(
+                                    onPressed: () => Navigator.pop(context),
+                                    child: Text('Cancle')),
+                                TextButton(
+                                    onPressed: (() {
+                                      FirebaseFirestore.instance
+                                          .collection('comments')
+                                          .doc(postidD)
+                                          .collection('comments')
+                                          .doc(mytext['cid'])
+                                          .update({
+                                        'cid': mytext['cid'],
+                                        'postid': mytext['postid'],
+                                        'uid': mytext['uid'],
+                                        'profile': mytext['profile'],
+                                        'Displayname': mytext['Displayname'],
+                                        'timeStamp': DateTime.now(),
+                                        "comment": _commentController.text
+                                      }).whenComplete(() {
+                                        Navigator.pop(context);
+                                      });
+                                    }),
+                                    child: Text('Save'))
+                              ],
+                            ));
+                  },
+                ),
+              if (FirebaseAuth.instance.currentUser!.uid == mytext['uid'])
+                ListTile(
+                  contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
+                  title: const Center(
+                      child: Text(
+                    'Delete',
+                    style: TextStyle(
+                        fontFamily: 'MyCustomFont',
+                        fontSize: 20,
+                        color: redColor),
+                  )),
+                  onTap: () {
+                    showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                              title: Text('Delete Comment'),
+                              content: Text(
+                                  'Are you sure you want to permanently\nremove this comment from Tungtee?'),
+                              actions: [
+                                TextButton(
+                                    onPressed: () => Navigator.pop(context),
+                                    child: Text('Cancle')),
+                                TextButton(
+                                    onPressed: (() {
+                                      FirebaseFirestore.instance
+                                          .collection('comments')
+                                          .doc(postidD)
+                                          .collection('comments')
+                                          .doc(mytext['cid'])
+                                          .delete()
+                                          .whenComplete(() {
+                                        Navigator.pop(context);
+                                      });
+                                    }),
+                                    child: Text('Delete'))
+                              ],
+                            ));
+                  },
+                ),
+              if (FirebaseAuth.instance.currentUser!.uid != mytext['uid'])
+                ListTile(
+                  contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
+                  title: const Center(
+                      child: Text(
+                    'Report',
+                    style: TextStyle(
+                        color: redColor,
+                        fontFamily: 'MyCustomFont',
+                        fontSize: 20),
+                  )),
+                  onTap: () {
+                    //Navigator.pop(context);
+                  },
+                ),
+              ListTile(
+                contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
+                title: const Center(
+                    child: Text(
+                  'Cancel',
+                  style: TextStyle(
+                      color: redColor,
+                      fontFamily: 'MyCustomFont',
+                      fontSize: 20),
+                )),
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 }

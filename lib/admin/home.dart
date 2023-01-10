@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tangteevs/admin/report.dart';
 import 'package:tangteevs/admin/tag/tag.dart';
-import 'package:tangteevs/admin/user.dart';
+import 'package:tangteevs/admin/user/user.dart';
 import 'package:tangteevs/utils/color.dart';
 
 import '../Landing.dart';
@@ -59,37 +59,6 @@ class _AdminHomePageState extends State<AdminHomePage> {
         break;
     }
     return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 50,
-        backgroundColor: mobileBackgroundColor,
-        elevation: 1,
-        leadingWidth: 130,
-        centerTitle: true,
-        title: const Text('test'),
-        leading: Container(
-          padding: const EdgeInsets.all(0),
-          child: Image.asset('assets/images/logo with name.png',
-              fit: BoxFit.scaleDown),
-        ),
-        actions: [
-          IconButton(
-            icon: const Icon(
-              Icons.logout,
-              color: purple,
-              size: 30,
-            ),
-            onPressed: () {
-              // Sign out of Firebase
-              FirebaseAuth.instance.signOut();
-
-              // Push the landing page route and replace the current route
-              Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (context) => const LandingPage()),
-              );
-            },
-          ),
-        ],
-      ),
       body: currentPage,
       bottomNavigationBar: SizedBox(
         height: 65,

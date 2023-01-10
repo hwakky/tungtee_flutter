@@ -51,7 +51,8 @@ class AuthService {
       String Displayname,
       String gender,
       String bio,
-      bool isadmin, String facebook, String twitter, String instagram, ) async {
+      bool verify,
+      bool isadmin, String facebook, String twitter, String instagram, String day, String month, String year,  ) async {
     try {
       User user = (await firebaseAuth.createUserWithEmailAndPassword(
               email: email, password: password))
@@ -60,7 +61,7 @@ class AuthService {
       if (user != null) {
         // call our database service to update the user data.
         await DatabaseService(uid: user.uid).savingUserData(fullName, email,
-            age, Imageidcard, Imageprofile, Displayname, gender, bio, isadmin,facebook,twitter,instagram);
+            age, Imageidcard, Imageprofile, Displayname, gender, bio, isadmin,verify,facebook,twitter,instagram,day,month,year);
         return true;
       }
     } on FirebaseAuthException catch (e) {

@@ -21,9 +21,10 @@ class DatabaseService {
     String gender,
     String bio,
     bool isadmin,
+    bool verify,
     String facebook,
     String instagram,
-    String twitter,
+    String twitter, String day, String month, String year,
   ) async {
     return await userCollection.doc(uid).set({
       "fullName": fullName,
@@ -35,11 +36,15 @@ class DatabaseService {
       "age": age,
       "idcard": Imageidcard,
       "profile": Imageprofile,
-      "uid": uid,
       "admin": isadmin,
       "facebook": facebook,
       "instagram": instagram,
       "twitter": twitter,
+      "verify": verify,
+      "uid": uid,
+      "day": day,
+      "month": month,
+      "year": year,
     });
   }
 

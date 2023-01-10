@@ -47,7 +47,10 @@ class _RegistrationScreen extends State<RegisterPage> {
   String instagram = "";
   String facebook = "";
   String twitter = "";
-
+  String day = "";
+  String month = "";
+  String year = "";
+  bool verify = false;
   bool isadmin = false;
   final textEditingController = TextEditingController();
 
@@ -302,9 +305,13 @@ class _RegistrationScreen extends State<RegisterPage> {
               gender,
               bio,
               isadmin,
+              verify,
               facebook,
               twitter,
-              instagram)
+              instagram,
+              day,
+              month,
+              year)
           .then((value) async {
         if (value == true) {
           // saving the shared preference state
