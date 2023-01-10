@@ -142,16 +142,15 @@ class _PostCardState extends State<CardWidget> {
                                     .doc(widget.snap.id)
                                     .set({
                                   "activityName": widget.snap['activityName'],
-                                  "dateTime": widget.snap['date'] +
-                                      '(' +
-                                      widget.snap['time'] +
-                                      ')',
+                                  "date": widget.snap['date'],
+                                  "time": widget.snap['time'],
                                   "place": widget.snap['place'],
                                   "location": widget.snap['location'],
                                   "peopleLimit": widget.snap['peopleLimit'],
                                   "detail": widget.snap['detail'],
                                   "uid": widget.snap['uid'],
-                                  "postId": widget.snap.id,
+                                  "timeStamp": widget.snap['timeStamp'],
+                                  "postid": widget.snap['postid'],
                                 });
                               }
                               if (_isFavorite == false) {

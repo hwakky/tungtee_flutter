@@ -235,7 +235,8 @@ class PostCard extends StatelessWidget {
                                                 .set({
                                               "activityName":
                                                   Mytext['activityName'],
-                                              "dateTime": Mytext['dateTime'],
+                                              "date": documentSnapshot['date'],
+                                              "time": documentSnapshot['time'],
                                               "place": Mytext['place'],
                                               "location": Mytext['location'],
                                               "peopleLimit":
@@ -243,7 +244,10 @@ class PostCard extends StatelessWidget {
                                               "detail":
                                                   documentSnapshot['detail'],
                                               "uid": documentSnapshot['uid'],
-                                              "postId": documentSnapshot.id,
+                                              "timeStamp":
+                                                  documentSnapshot['timeStamp'],
+                                              "postid":
+                                                  documentSnapshot['postid'],
                                             });
                                           }
                                           if (_isFavorite == false) {
@@ -358,13 +362,11 @@ class PostCard extends StatelessWidget {
                                   ),
                                   TextButton(
                                     onPressed: () {
-                                      Navigator.of(context).pushReplacement(
-                                        MaterialPageRoute(
-                                          builder: (context) => Comment(
+                                      nextScreenReplace(
+                                          context,
+                                          Comment(
                                               postid: streamSnapshot
-                                                  .data!.docs[index]),
-                                        ),
-                                      );
+                                                  .data!.docs[index]));
                                     },
                                     child: const Text('See More >>',
                                         style: TextStyle(

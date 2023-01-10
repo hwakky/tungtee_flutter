@@ -168,13 +168,11 @@ class _VerifyPageState extends State<VerifyPage> {
         const SnackBar(content: Text('You have successfully deleted a users')));
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: StreamBuilder(
-          stream: _users.snapshots(),
+          stream: _users.where('verify', isEqualTo: false).snapshots(),
           builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
             if (streamSnapshot.hasData) {
               return ListView.builder(

@@ -98,7 +98,9 @@ class _MyCommentState extends State<Comment> {
               backgroundColor: mobileBackgroundColor,
               leading: IconButton(
                 icon: const Icon(Icons.arrow_back_ios, color: unselected),
-                onPressed: () => {Navigator.pop(context)},
+                onPressed: () {
+                  Navigator.pop(context, true);
+                },
               ),
               elevation: 1,
               centerTitle: false,

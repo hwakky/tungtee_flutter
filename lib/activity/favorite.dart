@@ -1,42 +1,37 @@
 import 'package:favorite_button/favorite_button.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:tangteevs/Landing.dart';
-import 'package:tangteevs/comment/comment.dart';
-import 'package:tangteevs/profile/edit.dart';
-import 'package:tangteevs/profile/test.dart';
+import 'package:tangteevs/HomePage.dart';
 import 'package:tangteevs/utils/color.dart';
-import 'package:tangteevs/utils/showSnackbar.dart';
+import 'package:tangteevs/services/auth_service.dart';
+import 'package:getwidget/getwidget.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:url_launcher/url_launcher.dart';
-import '../regis,login/Login.dart';
-import '../widgets/custom_textfield.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'dart:math';
+import 'package:tangteevs/widgets/custom_textfield.dart';
 
-class FavoritePage extends StatefulWidget {
-  final String uid;
-  const FavoritePage({Key? key, required this.uid}) : super(key: key);
+import '../comment/comment.dart';
+
+class FavoritePage extends StatelessWidget {
+  FavoritePage({Key? key, required}) : super(key: key);
 
   @override
-  _FavoritePageState createState() => _FavoritePageState();
+  Widget build(BuildContext context) {
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      backgroundColor: mobileBackgroundColor,
+      body: PostCard(),
+    );
+  }
 }
 
-class _FavoritePageState extends State<FavoritePage> {
-  var favoritesLen = 0;
-  bool isLoading = false;
-
-  var uid = FirebaseAuth.instance.currentUser!.uid;
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
+class PostCard extends StatelessWidget {
   final CollectionReference _favorites =
       FirebaseFirestore.instance.collection('favorites');
 
   Future<void> _delete(String usersId) async {
     await _favorites
-        .doc(uid)
+        .doc(FirebaseAuth.instance.currentUser!.uid)
         .collection('favorites list')
         .doc(usersId)
         .delete();
@@ -44,51 +39,33 @@ class _FavoritePageState extends State<FavoritePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: FutureBuilder(
-        future: FirebaseFirestore.instance
-            .collection('favorites')
-            .doc(FirebaseAuth.instance.currentUser!.uid)
-            .collection('favorites list')
-            .where('postId', isEqualTo: widget.uid)
-            .get(),
-        builder: ((context, snapshot) {
-          //onRefresh:_onRefresh;
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Container(
-              child: Center(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: const <Widget>[
-                    SizedBox(
-                      height: 30.0,
-                      width: 30.0,
-                      child: CircularProgressIndicator(),
-                    ),
-                  ],
-                ),
-              ),
-            );
-          }
+    return StreamBuilder<QuerySnapshot>(
+      stream: _favorites
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .collection('favorites list')
+          .snapshots(),
+      builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+        //onRefresh:_onRefresh;
 
+        if (streamSnapshot.hasData) {
           return ListView.builder(
-            itemCount: (snapshot.data! as dynamic).docs.length,
+            itemCount: streamSnapshot.data!.docs.length,
             itemBuilder: (context, index) {
-              DocumentSnapshot snap = (snapshot.data! as dynamic).docs[index];
+              final DocumentSnapshot documentSnapshot =
+                  streamSnapshot.data!.docs[index];
 
               var Mytext = new Map();
-              Mytext['activityName'] =
-                  (snap.data()! as dynamic)['activityName'];
-              Mytext['dateTime'] = (snap.data()! as dynamic)['date'] +
+              Mytext['activityName'] = documentSnapshot['activityName'];
+              Mytext['dateTime'] = documentSnapshot['date'] +
                   '\t\t(' +
-                  (snap.data()! as dynamic)['time'] +
+                  documentSnapshot['time'] +
                   ')';
-              Mytext['place'] = (snap.data()! as dynamic)['place'];
-              Mytext['location'] = (snap.data()! as dynamic)['location'];
-              Mytext['peopleLimit'] = (snap.data()! as dynamic)['peopleLimit'];
+              Mytext['place'] = documentSnapshot['place'];
+              Mytext['location'] = documentSnapshot['location'];
+              Mytext['peopleLimit'] = documentSnapshot['peopleLimit'];
 
               return SizedBox(
-                height: 247,
+                height: 230,
                 child: Card(
                     clipBehavior: Clip.hardEdge,
                     shape: RoundedRectangleBorder(
@@ -101,7 +78,7 @@ class _FavoritePageState extends State<FavoritePage> {
                     margin: const EdgeInsets.all(10),
                     child: SizedBox(
                       width: 380,
-                      height: 190,
+                      height: 200,
                       child: Padding(
                         padding: const EdgeInsets.only(left: 15.00),
                         child: SingleChildScrollView(
@@ -123,15 +100,38 @@ class _FavoritePageState extends State<FavoritePage> {
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(left: 2),
-                                    child: IconButton(
-                                      onPressed: (() {
-                                        //add action
-                                      }),
-                                      icon: const Icon(
-                                        Icons.favorite_border,
-                                        color: unselected,
-                                      ),
-                                    ),
+                                    child: FavoriteButton(
+                                        iconSize: 45,
+                                        isFavorite: true,
+                                        iconDisabledColor: unselected,
+                                        valueChanged: (_isFavorite) {
+                                          if (_isFavorite == true) {
+                                            var uid = FirebaseAuth
+                                                .instance.currentUser!.uid;
+                                            FirebaseFirestore.instance
+                                                .collection("favorites")
+                                                .doc(uid)
+                                                .collection('favorites list')
+                                                .doc(documentSnapshot.id)
+                                                .set({
+                                              "activityName":
+                                                  Mytext['activityName'],
+                                              "dateTime": Mytext['dateTime'],
+                                              "place": Mytext['place'],
+                                              "location": Mytext['location'],
+                                              "peopleLimit":
+                                                  Mytext['peopleLimit'],
+                                              "detail":
+                                                  documentSnapshot['detail'],
+                                              "uid": documentSnapshot['uid'],
+                                              "postid":
+                                                  documentSnapshot['postid'],
+                                            });
+                                          }
+                                          if (_isFavorite == false) {
+                                            _delete(documentSnapshot.id);
+                                          }
+                                        }),
                                   ),
                                   SizedBox(
                                     width: 7,
@@ -240,13 +240,11 @@ class _FavoritePageState extends State<FavoritePage> {
                                   ),
                                   TextButton(
                                     onPressed: () {
-                                      Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                          builder: (context) => Comment(
-                                              postid:
-                                                  snapshot.data!.docs[index]),
-                                        ),
-                                      );
+                                      nextScreenReplace(
+                                          context,
+                                          Comment(
+                                              postid: streamSnapshot
+                                                  .data!.docs[index]));
                                     },
                                     child: const Text('See More >>',
                                         style: TextStyle(
@@ -266,8 +264,22 @@ class _FavoritePageState extends State<FavoritePage> {
               );
             },
           );
-        }),
-      ),
+        }
+        return Container(
+          child: Center(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: const <Widget>[
+                SizedBox(
+                  height: 30.0,
+                  width: 30.0,
+                  child: CircularProgressIndicator(),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }

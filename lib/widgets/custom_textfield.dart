@@ -52,6 +52,8 @@ void nextScreenReplaceOut(context, page) {
       MaterialPageRoute(builder: (context) => page), (route) => false);
 }
 
+
+
 void showSnackbar(context, color, message) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(

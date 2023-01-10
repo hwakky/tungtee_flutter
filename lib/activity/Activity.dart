@@ -9,70 +9,54 @@ import 'package:tangteevs/utils/color.dart';
 class ActivityPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 1,
-        centerTitle: false,
-        title: Image.asset(
-          "assets/images/logo with name.png",
-          width: 130,
-        ),
-        actions: [
-          IconButton(
-            icon: const Icon(
-              Icons.notifications_none,
-              color: purple,
-              size: 30,
+    return DefaultTabController(
+        length: 3,
+        child: Scaffold(
+          appBar: AppBar(
+            backgroundColor: mobileBackgroundColor,
+            elevation: 1,
+            leadingWidth: 130,
+            centerTitle: false,
+            title: Image.asset(
+              "assets/images/logo with name.png",
+              width: 130,
             ),
-            onPressed: () {},
+            actions: [
+              IconButton(
+                icon: const Icon(
+                  Icons.notifications_none,
+                  color: purple,
+                  size: 30,
+                ),
+                onPressed: () {},
+              ),
+            ],
+            bottom: const TabBar(
+              indicatorColor: green,
+              labelColor: green,
+              labelPadding: EdgeInsets.symmetric(horizontal: 30),
+              unselectedLabelColor: unselected,
+              labelStyle: TextStyle(
+                  fontSize: 20.0,
+                  fontFamily: 'MyCustomFont'), //For Selected tab
+              unselectedLabelStyle: TextStyle(
+                  fontSize: 20.0,
+                  fontFamily: 'MyCustomFont'), //For Un-selected Tabs
+              tabs: [
+                Tab(text: 'Waiting'),
+                Tab(text: 'History'),
+                Tab(text: 'Favorite'),
+              ],
+            ),
           ),
-        ],
-        backgroundColor: mobileBackgroundColor,
-      ),
-      body: SingleChildScrollView(
-        child: DefaultTabController(
-          length: 3,
-          initialIndex: 0,
-          child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(top: 15),
-                  child: Container(
-                    child: const TabBar(
-                      indicatorColor: green,
-                      labelColor: green,
-                      labelPadding: EdgeInsets.symmetric(horizontal: 30),
-                      unselectedLabelColor: unselected,
-                      labelStyle: TextStyle(
-                          fontSize: 20.0,
-                          fontFamily: 'MyCustomFont'), //For Selected tab
-                      unselectedLabelStyle: TextStyle(
-                          fontSize: 20.0,
-                          fontFamily: 'MyCustomFont'), //For Un-selected Tabs
-                      tabs: [
-                        Tab(text: 'Waiting'),
-                        Tab(text: 'History'),
-                        Tab(text: 'Favorite'),
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 30,
-                ),
-                SizedBox(
-                  height: 400,
-                  child: TabBarView(children: <Widget>[
-                    Waiting(),
-                    History(),
-                    Favorite(),
-                  ]),
-                )
-              ]),
-        ),
-      ),
-    );
+          body: TabBarView(
+            children: [
+              Waiting(),
+              History(),
+              Favorite(),
+            ],
+          ),
+        ));
   }
 }
 
@@ -80,9 +64,7 @@ class Favorite extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: FavoritePage(
-        uid: FirebaseAuth.instance.currentUser!.uid,
-      ),
+      home: FavoritePage(),
     );
   }
 }

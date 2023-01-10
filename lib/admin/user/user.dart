@@ -40,13 +40,8 @@ class _UserPageState extends State<UserPage> {
                 size: 30,
               ),
               onPressed: () {
-                // Sign out of Firebase
                 FirebaseAuth.instance.signOut();
-
-                // Push the landing page route and replace the current route
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (context) => const LandingPage()),
-                );
+                nextScreenReplaceOut(context, const LandingPage());
               },
             ),
           ],
