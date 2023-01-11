@@ -385,7 +385,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                         ),
                         SizedBox(
-                          height: 533,
+                          height: 330,
                           child: TabBarView(children: <Widget>[
                             Container(
                               child: FutureBuilder<QuerySnapshot>(

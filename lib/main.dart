@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tangteevs/comment/comment.dart';
 import 'log.dart';
 import 'model/user_model.dart';
 import 'regis,login/Verify.dart';

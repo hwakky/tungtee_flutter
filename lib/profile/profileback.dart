@@ -128,10 +128,9 @@ class ActivityTab extends StatelessWidget {
 class HomeTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final user = FirebaseAuth.instance.currentUser!;
     return MaterialApp(
       home: FeedPage(
-        
+        uid: FirebaseAuth.instance.currentUser!.uid,
       ),
     );
   }

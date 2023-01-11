@@ -270,7 +270,7 @@ class _IdcardPageState extends State<IdcardPage> {
                                             // Close the dialog
                                             Navigator.pop(context);
                                           },
-                                          child: Text('12z'),
+                                          child: Text('12'),
                                         ),
                                       ],
                                     );

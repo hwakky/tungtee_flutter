@@ -177,16 +177,18 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
               ),
 
               TextFormField(
-                controller: _peopleLimit,
-                decoration: InputDecoration(labelText: 'People Limit'),
-                keyboardType: TextInputType.number,
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please enter a valid people limit';
-                  }
-                  return null;
-                },
-              ),
+                  controller: _peopleLimit,
+                  decoration: InputDecoration(labelText: 'People Limit'),
+                  keyboardType: TextInputType.number,
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Please enter a valid people limit';
+                    } else if (int.parse(value) >= 100) {
+                      return 'people must less than 100';
+                    } else {
+                      return null;
+                    }
+                  }),
 
               const SizedBox(
                 height: 32,

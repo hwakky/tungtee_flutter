@@ -1,3 +1,4 @@
+import 'package:favorite_button/favorite_button.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:tangteevs/utils/showSnackbar.dart';
@@ -85,6 +86,17 @@ class _MyCommentState extends State<Comment> {
   final _formKey = GlobalKey<FormState>();
   final commentController = TextEditingController();
 
+  final CollectionReference _favorites =
+      FirebaseFirestore.instance.collection('favorites');
+
+  Future<void> _delete(String usersId) async {
+    await _favorites
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection('favorites list')
+        .doc(usersId)
+        .delete();
+  }
+
   @override
   Widget build(BuildContext context) {
     return isLoading
@@ -99,7 +111,7 @@ class _MyCommentState extends State<Comment> {
               leading: IconButton(
                 icon: const Icon(Icons.arrow_back_ios, color: unselected),
                 onPressed: () {
-                  Navigator.pop(context, true);
+                  Navigator.of(context).pop();
                 },
               ),
               elevation: 1,
@@ -142,17 +154,20 @@ class _MyCommentState extends State<Comment> {
                           ),
                           Container(
                             width: 20,
-                            child: IconButton(
-                              onPressed: (() {
-                                //add action
-                              }),
-                              icon: const Icon(
-                                Icons.favorite_border,
-                                color: unselected,
-                                size: 30,
-                              ),
+                            child: FavoriteButton(
+                              iconSize: 45,
+                              isFavorite: false,
+                              iconDisabledColor: unselected,
+                              valueChanged: (_isFavorite) {
+                                if (_isFavorite == true) {
+                                  //do action
+                                }
+                                if (_isFavorite == false) {
+                                  //do action
+                                }
+                              },
                             ),
-                          ),
+                          )
                         ],
                       ),
                     ),
@@ -178,7 +193,7 @@ class _MyCommentState extends State<Comment> {
                                   Row(
                                     children: [
                                       SizedBox(
-                                        width: 290,
+                                        width: 280,
                                         child: Text(postData['activityName'],
                                             style: const TextStyle(
                                               fontSize: 20,

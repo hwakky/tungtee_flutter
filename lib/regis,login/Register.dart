@@ -5,19 +5,13 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
-import 'package:tangteevs/regis,login/Registernext.dart';
 import 'package:tangteevs/regis,login/idcard.dart';
 import 'package:tangteevs/services/auth_service.dart';
 import 'package:tangteevs/widgets/custom_textfield.dart';
 import 'package:tangteevs/helper/helper_function.dart';
-import 'package:tangteevs/Homepage.dart';
-import '../team/privacy.dart';
-import '../team/team.dart';
 import '../utils/color.dart';
 import 'Login.dart';
-import 'package:image_picker/image_picker.dart';
 import 'dart:io';
-import 'package:tangteevs/regis,login/Verify.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);

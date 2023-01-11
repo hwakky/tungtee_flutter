@@ -3,6 +3,78 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../utils/color.dart';
 import '../../widgets/custom_textfield.dart';
 
+class SearchUser extends StatefulWidget {
+  const SearchUser({Key? key}) : super(key: key);
+
+  @override
+  State<SearchUser> createState() => _SearchUserState();
+}
+
+class _SearchUserState extends State<SearchUser> {
+  String name = '';
+  bool _isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return _isLoading
+        ? const Center()
+        : NestedScrollView(
+            floatHeaderSlivers: true,
+            headerSliverBuilder: (context, innerBoxIsScrolled) {
+              return <Widget>[
+                SliverAppBar(
+                  //preferredSize: const Size.fromHeight(80),
+                  //child: AppBar(
+                  floating: true,
+                  snap: true,
+                  forceElevated: innerBoxIsScrolled,
+                  backgroundColor: mobileBackgroundColor,
+                  elevation: 0,
+                  centerTitle: false,
+                  title: const Padding(
+                    padding: EdgeInsets.only(top: 5.0),
+                    child: SizedBox(
+                      width: 400.0,
+                      height: 45.0,
+                      child: TextField(
+                        decoration: InputDecoration(
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(15)),
+                            borderSide:
+                                BorderSide(width: 2, color: lightOrange),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(15)),
+                            borderSide: BorderSide(width: 1, color: orange),
+                          ),
+                          hintText: 'ค้นหาuserด้วยdisplayname หรือ email',
+                          hintStyle: TextStyle(
+                            color: unselected,
+                            fontFamily: 'MyCustomFont',
+                          ),
+                          suffixIcon: Icon(
+                            Icons.search_outlined,
+                            color: orange,
+                            size: 30,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                //),
+              ];
+            },
+            body: const DataPage(),
+          );
+  }
+}
+
 class DataPage extends StatefulWidget {
   const DataPage({Key? key}) : super(key: key);
 

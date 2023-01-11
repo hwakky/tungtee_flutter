@@ -63,8 +63,8 @@ class ActivityPage extends StatelessWidget {
 class Favorite extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: FavoritePage(),
+    return Scaffold(
+      body: PostCard(),
     );
   }
 }

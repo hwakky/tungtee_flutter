@@ -84,8 +84,8 @@ class verify extends StatelessWidget {
 class data extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: DataPage(),
+    return const MaterialApp(
+      home: SearchUser(),
     );
   }
 }
