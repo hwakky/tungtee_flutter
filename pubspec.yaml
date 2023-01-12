@@ -43,6 +43,8 @@ dependencies:
   getwidget: ^ 2.0.4
   timeago: ^3.3.0
 
+  age_calculator: ^1.0.0
+
   # flutter_tags: "^0.4.8+1"
   flutter_tags: "^1.0.0-nullsafety.1"
 

@@ -30,11 +30,11 @@ class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
 
   final List<Widget> _pages = [
-    HomeTab(),
-    ActivityTab(),
-    Event(),
-    ChatTab(),
-    ProfileTab(),
+    const HomeTab(),
+    const ActivityTab(),
+    const Event(),
+    const ChatTab(),
+    const ProfileTab(),
   ];
 
   void _onItemTapped(int index) {
@@ -107,15 +107,19 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 
 class Event extends StatelessWidget {
+  const Event({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       home: CreateEventScreen(),
     );
   }
 }
 
 class ActivityTab extends StatelessWidget {
+  const ActivityTab({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -125,6 +129,8 @@ class ActivityTab extends StatelessWidget {
 }
 
 class HomeTab extends StatelessWidget {
+  const HomeTab({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -136,15 +142,17 @@ class HomeTab extends StatelessWidget {
 }
 
 class ChatTab extends StatelessWidget {
+  const ChatTab({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: const Text('Add the content for the chat tab here'),
-    );
+    return const Text('Add the content for the chat tab here');
   }
 }
 
 class ProfileTab extends StatelessWidget {
+  const ProfileTab({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

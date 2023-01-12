@@ -182,48 +182,15 @@ class _VerifyPageState extends State<VerifyPage> {
                       streamSnapshot.data!.docs[index];
                   return Card(
                     margin: const EdgeInsets.all(10),
-                    child: ListTile(
-                      title: Text(documentSnapshot['Displayname']),
-                      subtitle: Text(documentSnapshot['email']),
-                      trailing: SingleChildScrollView(
-                        child: SizedBox(
-                          width: 100,
-                          child: Row(
-                            children: [
-                              IconButton(
-                                  icon: const Icon(Icons.edit),
-                                  onPressed: () => _update(documentSnapshot)),
-                              IconButton(
-                                  icon: const Icon(Icons.delete),
-                                  onPressed: () => showDialog(
-                                        context: context,
-                                        builder: (context) {
-                                          return AlertDialog(
-                                            title: Text('Are you sure?'),
-                                            content: Text(
-                                                'This action cannot be undone.'),
-                                            actions: [
-                                              TextButton(
-                                                child: Text('Cancel'),
-                                                onPressed: () {
-                                                  Navigator.of(context)
-                                                      .pop(); // dismiss the dialog
-                                                },
-                                              ),
-                                              TextButton(
-                                                child: Text('OK'),
-                                                onPressed: () {
-                                                  _delete(documentSnapshot.id);
-                                                  Navigator.of(context)
-                                                      .pop(); // dismiss the dialog
-                                                },
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                      )),
-                            ],
-                          ),
+                    child: InkWell(
+                      onTap: () {
+                        _update(documentSnapshot);
+                      },
+                      child: SizedBox(
+                        width: 70,
+                        child: ListTile(
+                          title: Text(documentSnapshot['Displayname']),
+                          subtitle: Text(documentSnapshot['email']),
                         ),
                       ),
                     ),

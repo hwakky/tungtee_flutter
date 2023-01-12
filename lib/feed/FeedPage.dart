@@ -8,9 +8,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'dart:math';
-import 'package:tangteevs/widgets/custom_textfield.dart';
 
 import '../widgets/PostCard.dart';
+import '../widgets/custom_textfield.dart';
 
 class FeedPage extends StatefulWidget {
   final String uid;
@@ -23,29 +23,33 @@ class FeedPage extends StatefulWidget {
 class _FeedPageState extends State<FeedPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: mobileBackgroundColor,
-      appBar: AppBar(
-        backgroundColor: mobileBackgroundColor,
-        elevation: 1,
-        centerTitle: false,
-        title: Image.asset(
-          "assets/images/logo with name.png",
-          width: 130,
-        ),
-        actions: [
-          IconButton(
-            icon: const Icon(
-              Icons.notifications_none,
-              color: purple,
-              size: 30,
+    return DismissKeyboard(
+      child: MaterialApp(
+        home: Scaffold(
+          resizeToAvoidBottomInset: false,
+          backgroundColor: mobileBackgroundColor,
+          appBar: AppBar(
+            backgroundColor: mobileBackgroundColor,
+            elevation: 1,
+            centerTitle: false,
+            title: Image.asset(
+              "assets/images/logo with name.png",
+              width: 130,
             ),
-            onPressed: () {},
+            actions: [
+              IconButton(
+                icon: const Icon(
+                  Icons.notifications_none,
+                  color: purple,
+                  size: 30,
+                ),
+                onPressed: () {},
+              ),
+            ],
           ),
-        ],
+          body: const SearchForm(),
+        ),
       ),
-      body: const SearchForm(),
     );
   }
 }
@@ -68,21 +72,13 @@ class SearchForm extends StatelessWidget {
             backgroundColor: mobileBackgroundColor,
             elevation: 0,
             centerTitle: false,
-            title: const Padding(
+            title: Padding(
               padding: EdgeInsets.only(top: 10.0),
               child: SizedBox(
                 width: 350.0,
                 height: 45.0,
                 child: TextField(
-                  decoration: InputDecoration(
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(15)),
-                      borderSide: BorderSide(width: 2, color: lightOrange),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(15)),
-                      borderSide: BorderSide(width: 1, color: orange),
-                    ),
+                  decoration: searchInputDecoration.copyWith(
                     hintText: 'ค้นหากิจกรรม หรือ Tag ที่คุณสนใจ',
                     hintStyle: TextStyle(
                       color: unselected,

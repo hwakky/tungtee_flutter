@@ -233,61 +233,6 @@ class _EditPageState extends State<EditPage> {
                             Container(
                               alignment: Alignment.center,
                               width: 360,
-                              child: TextField(
-                                controller: _genderController,
-                                readOnly: true,
-                                onTap: () {
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return SimpleDialog(
-                                        children: <Widget>[
-                                          SimpleDialogOption(
-                                            onPressed: () {
-                                              _genderController.text = 'Male';
-                                              // Close the dialog
-                                              Navigator.pop(context);
-                                            },
-                                            child: Text('Male'),
-                                          ),
-                                          SimpleDialogOption(
-                                            onPressed: () {
-                                              _genderController.text = 'Female';
-
-                                              // Close the dialog
-                                              Navigator.pop(context);
-                                            },
-                                            child: Text('Female'),
-                                          ),
-                                          SimpleDialogOption(
-                                            onPressed: () {
-                                              _genderController.text = 'Other';
-                                              // Close the dialog
-                                              Navigator.pop(context);
-                                            },
-                                            child: Text('Other'),
-                                          ),
-                                        ],
-                                      );
-                                    },
-                                  );
-                                },
-                                enableInteractiveSelection: false,
-                                decoration: textInputDecorationp.copyWith(
-                                  hintText: 'Select Gender',
-                                  prefixIcon: Icon(
-                                    Icons.wc_sharp,
-                                    color: lightPurple,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 15,
-                            ),
-                            Container(
-                              alignment: Alignment.center,
-                              width: 360,
                               child: TextFormField(
                                 controller: _bioController,
                                 maxLines: 3,
@@ -320,7 +265,7 @@ class _EditPageState extends State<EditPage> {
                               child: TextFormField(
                                 controller: _instagramController,
                                 decoration: textInputDecorationp.copyWith(
-                                    hintText: "link(option)",
+                                    hintText: "IG Username",
                                     prefixIcon: Image.asset(
                                         'assets/images/instagram.png')),
                               ),
@@ -334,7 +279,7 @@ class _EditPageState extends State<EditPage> {
                               child: TextFormField(
                                 controller: _facebookController,
                                 decoration: textInputDecorationp.copyWith(
-                                    hintText: "link(option)",
+                                    hintText: "Facebook Username",
                                     prefixIcon: Image.asset(
                                         'assets/images/facebook.png')),
                               ),
@@ -344,18 +289,15 @@ class _EditPageState extends State<EditPage> {
                             ),
                             ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                  backgroundColor: mobileBackgroundColor,
-                                  side: const BorderSide(
-                                    width: 2.0,
-                                    color: purple,
-                                  ),
+                                  backgroundColor: purple,
                                   minimumSize: const Size(307, 49),
                                   elevation: 0,
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(30))),
                               child: const Text(
                                 "save",
-                                style: TextStyle(color: purple, fontSize: 24),
+                                style: TextStyle(
+                                    color: primaryColor, fontSize: 24),
                               ),
                               onPressed: () {
                                 Updata();

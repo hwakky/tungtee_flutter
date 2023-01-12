@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:tangteevs/feed/EditAct.dart';
 import 'package:tangteevs/utils/showSnackbar.dart';
 import 'package:tangteevs/widgets/custom_textfield.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../HomePage.dart';
 import '../comment/comment.dart';
 import '../utils/color.dart';
@@ -214,7 +215,7 @@ class _PostCardState extends State<CardWidget> {
 
   Widget build(BuildContext context) {
     return Container(
-      height: 240,
+      height: 250,
       child: Card(
         clipBehavior: Clip.hardEdge,
         shape: RoundedRectangleBorder(
@@ -351,23 +352,30 @@ class _PostCardState extends State<CardWidget> {
                   const SizedBox(
                     height: 5,
                   ),
-                  Text.rich(
-                    TextSpan(
-                      children: <InlineSpan>[
-                        const TextSpan(
-                          text: '',
+                  Container(
+                    height: 35,
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.place,
                         ),
-                        const WidgetSpan(
-                          child: Icon(
-                            Icons.place,
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            left: 0,
                           ),
                         ),
-                        TextSpan(
-                          text: '\t\t' + widget.snap['location'],
-                          style: const TextStyle(
-                            fontFamily: 'MyCustomFont',
-                            color: unselected,
-                            fontSize: 14,
+                        TextButton(
+                          onPressed: () {
+                            Uri uri = Uri.parse(widget
+                                .snap['location']); //https://www.facebook.com/
+                            _launchUrl(uri);
+                          },
+                          child: Text(
+                            widget.snap['place'],
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: purple,
+                            ),
                           ),
                         ),
                       ],
@@ -446,5 +454,24 @@ class _PostCardState extends State<CardWidget> {
         ),
       ),
     );
+  }
+
+  Future<void> _launchUrl(Uri url) async {
+    try {
+      if (await canLaunchUrl(url)) {
+        await launchUrl(
+          url,
+        );
+      } else {
+        throw 'Could not launch $url';
+      }
+    } catch (_) {}
+  }
+
+  String? encodeQueryParameters(Map<String, String> params) {
+    return params.entries
+        .map((MapEntry<String, String> e) =>
+            '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}')
+        .join('&');
   }
 }

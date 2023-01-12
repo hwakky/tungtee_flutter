@@ -24,7 +24,7 @@ class _LogState extends State<Log> {
   bool isLogin = false;
 
   var admin = const AdminHomePage();
-  var user = MyHomePage();
+  var aser = MyHomePage();
 
   checkIfLogin() async {
     auth.authStateChanges().listen((User? user) {
@@ -45,7 +45,7 @@ class _LogState extends State<Log> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: isLogin ? user : const LandingPage(),
+      home: isLogin ? aser : const LandingPage(),
     );
   }
 }

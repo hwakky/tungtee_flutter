@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tangteevs/Landing.dart';
@@ -7,6 +9,7 @@ import 'package:tangteevs/utils/color.dart';
 import 'package:tangteevs/utils/showSnackbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:age_calculator/age_calculator.dart';
 
 import '../regis,login/Login.dart';
 import '../widgets/PostCard.dart';
@@ -24,6 +27,12 @@ class _ProfilePageState extends State<ProfilePage> {
   var userData = {};
   var postLen = 0;
   bool isLoading = false;
+
+  String y = "";
+  String m = "";
+  String d = "";
+  DateTime birthday = DateTime(1);
+  DateDuration duration = DateDuration();
 
   @override
   void initState() {
@@ -49,6 +58,15 @@ class _ProfilePageState extends State<ProfilePage> {
 
       postLen = postSnap.docs.length;
       userData = userSnap.data()!;
+
+      y = userData['year'].toString();
+      m = userData['month'].toString();
+      d = userData['day'].toString();
+      var yy = int.parse(y);
+      var mm = int.parse(m);
+      var dd = int.parse(d);
+      DateTime birthday = DateTime(yy, mm, dd);
+      duration = AgeCalculator.age(birthday);
 
       setState(() {});
     } catch (e) {
@@ -133,6 +151,7 @@ class _ProfilePageState extends State<ProfilePage> {
     final _post = FirebaseFirestore.instance
         .collection('post')
         .orderBy('timeStamp', descending: true);
+
     return isLoading
         ? const Center(
             child: CircularProgressIndicator(),
@@ -184,33 +203,17 @@ class _ProfilePageState extends State<ProfilePage> {
                                   top: 1,
                                   left: 30,
                                 ),
-                                child: Row(
-                                  children: [
-                                    const Text(
-                                      'อายุ ',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        color: unselected,
-                                        fontFamily: 'MyCustomFont',
-                                      ),
+                                child: Text.rich(
+                                  TextSpan(
+                                    text: 'อายุ ' +
+                                        duration.years.toString() +
+                                        ' ปี',
+                                    style: const TextStyle(
+                                      fontFamily: 'MyCustomFont',
+                                      color: unselected,
+                                      fontSize: 16,
                                     ),
-                                    Text(
-                                      userData['age'].toString(),
-                                      style: const TextStyle(
-                                        fontSize: 16,
-                                        color: unselected,
-                                        fontFamily: 'MyCustomFont',
-                                      ),
-                                    ),
-                                    const Text(
-                                      ' ปี',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        color: unselected,
-                                        fontFamily: 'MyCustomFont',
-                                      ),
-                                    ),
-                                  ],
+                                  ),
                                 ),
                               ),
                               Container(
@@ -219,25 +222,16 @@ class _ProfilePageState extends State<ProfilePage> {
                                   top: 10,
                                   left: 30,
                                 ),
-                                child: Row(
-                                  children: [
-                                    const Text(
-                                      'เพศ ',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        color: unselected,
-                                        fontFamily: 'MyCustomFont',
-                                      ),
+                                child: Text.rich(
+                                  TextSpan(
+                                    text:
+                                        'เพศ ' + userData['gender'].toString(),
+                                    style: const TextStyle(
+                                      fontFamily: 'MyCustomFont',
+                                      color: unselected,
+                                      fontSize: 16,
                                     ),
-                                    Text(
-                                      userData['gender'].toString(),
-                                      style: const TextStyle(
-                                        fontSize: 16,
-                                        color: unselected,
-                                        fontFamily: 'MyCustomFont',
-                                      ),
-                                    ),
-                                  ],
+                                  ),
                                 ),
                               ),
                               Container(
@@ -273,9 +267,10 @@ class _ProfilePageState extends State<ProfilePage> {
                                             height: 30,
                                             child: MaterialButton(
                                               onPressed: () {
-                                                Uri uri = Uri.parse(userData[
-                                                        'instagram']
-                                                    .toString()); //https://www.instagram.com/
+                                                Uri uri = Uri.parse(
+                                                    "https://www.instagram.com/" +
+                                                        userData['instagram']
+                                                            .toString()); //https://www.instagram.com/
                                                 _launchUrl(uri);
                                               },
                                               padding: const EdgeInsets.only(
@@ -302,9 +297,11 @@ class _ProfilePageState extends State<ProfilePage> {
                                                     '')
                                                 ? MaterialButton(
                                                     onPressed: () {
-                                                      Uri uri = Uri.parse(userData[
-                                                              'facebook']
-                                                          .toString()); //https://www.facebook.com/
+                                                      Uri uri = Uri.parse(
+                                                          "https://www.facebook.com/" +
+                                                              userData[
+                                                                      'facebook']
+                                                                  .toString()); //https://www.facebook.com/
                                                       _launchUrl(uri);
                                                     },
                                                     padding:
@@ -332,9 +329,10 @@ class _ProfilePageState extends State<ProfilePage> {
                                                 '')
                                             ? MaterialButton(
                                                 onPressed: () {
-                                                  Uri uri = Uri.parse(userData[
-                                                          'facebook']
-                                                      .toString()); //https://www.facebook.com/
+                                                  Uri uri = Uri.parse(
+                                                      "https://web.facebook.com/" +
+                                                          userData['facebook']
+                                                              .toString()); //https://www.facebook.com/
                                                   _launchUrl(uri);
                                                 },
                                                 padding: const EdgeInsets.only(
@@ -385,7 +383,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                         ),
                         SizedBox(
-                          height: 330,
+                          height: 440,
                           child: TabBarView(children: <Widget>[
                             Container(
                               child: FutureBuilder<QuerySnapshot>(
