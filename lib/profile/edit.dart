@@ -85,232 +85,239 @@ class _EditPageState extends State<EditPage> {
   Widget build(BuildContext context) {
     return isLoading
         ? const Center()
-        : Scaffold(
-            appBar: AppBar(
-              backgroundColor: mobileBackgroundColor,
-              leading: IconButton(
-                icon: const Icon(Icons.arrow_back, color: mobileSearchColor),
-                onPressed: () => {nextScreen(context, MyHomePage())},
-              ),
-              toolbarHeight: 120,
-              centerTitle: true,
-              elevation: 0,
-              title: const Text(
-                "PROFILE",
-                style: TextStyle(
-                  fontSize: 46,
-                  fontWeight: FontWeight.bold,
-                  color: purple,
-                  shadows: [
-                    Shadow(
-                      blurRadius: 5,
-                      color: unselected,
-                      offset: Offset(3, 3),
-                    ),
-                  ],
-                ),
-              ),
-              // ignore: prefer_const_constructors
-              bottom: PreferredSize(
-                preferredSize: const Size.fromHeight(-20),
-                child: const Text("แก้ไขข้อมูลส่วนตัวของคุณ",
+        : DismissKeyboard(
+            child: MaterialApp(
+              home: Scaffold(
+                appBar: AppBar(
+                  backgroundColor: mobileBackgroundColor,
+                  leading: IconButton(
+                    icon:
+                        const Icon(Icons.arrow_back, color: mobileSearchColor),
+                    onPressed: () => {nextScreen(context, MyHomePage())},
+                  ),
+                  toolbarHeight: 120,
+                  centerTitle: true,
+                  elevation: 0,
+                  title: const Text(
+                    "PROFILE",
                     style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: unselected)),
-              ),
-            ),
-            body: _isLoading
-                ? Center(
-                    child: CircularProgressIndicator(
-                    backgroundColor: mobileBackgroundColor,
-                  ))
-                : Container(
-                    color: mobileBackgroundColor,
-                    child: SingleChildScrollView(
-                      child: Form(
-                        key: _formKey,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          // ignore: prefer_const_literals_to_create_immutables
-                          children: [
-                            const SizedBox(
-                              height: 15,
-                            ),
-                            Container(
-                              child: InkWell(
-                                onTap: () {
-                                  showModalBottomSheet(
-                                    context: context,
-                                    builder: ((builder) => bottomSheet()),
-                                  );
-                                },
-                                child: Stack(
-                                  alignment: Alignment.center,
-                                  children: <Widget>[
-                                    Container(
-                                      decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          border: Border.all(
-                                            width: 2,
-                                            color: purple,
-                                          )),
-                                      child: CircleAvatar(
-                                        radius: 60,
-                                        backgroundColor: Colors.transparent,
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(60),
-                                          child: media1 != null
-                                              ? Image.file(media1!)
-                                              : Image.network(
-                                                  userData['profile']
-                                                      .toString(),
-                                                ),
-                                        ),
-                                      ),
-                                    ),
-                                    Positioned(
-                                      bottom: 0,
-                                      right: 0,
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          border: Border.all(
-                                            width: 2,
-                                            color: primaryColor,
-                                          ),
-                                          color: lightPurple,
-                                        ),
-                                        child: Ink(
-                                          child: Icon(
-                                            Icons.edit,
-                                            color: primaryColor,
-                                            size: 30,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 15,
-                            ),
-                            Center(
-                              child: Container(
-                                alignment: Alignment.center,
-                                width: 360,
-                                child: TextFormField(
-                                  controller: _DisplaynameController,
-                                  decoration: textInputDecorationp.copyWith(
-                                      hintText: 'Display Name',
-                                      prefixIcon: Icon(
-                                        Icons.person_pin_circle_sharp,
-                                        color: lightPurple,
-                                        //color: Theme.of(context).primaryColor,
-                                      )),
-                                  validator: (val) {
-                                    if (val!.isNotEmpty) {
-                                      return null;
-                                    } else {
-                                      return "plase Enter Display Name";
-                                    }
-                                  },
-                                  onChanged: (val) {
-                                    setState(() {
-                                      Displayname = val;
-                                    });
-                                  },
-                                ),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 15,
-                            ),
-                            Container(
-                              alignment: Alignment.center,
-                              width: 360,
-                              child: TextFormField(
-                                controller: _bioController,
-                                maxLines: 3,
-                                decoration: textInputDecorationp.copyWith(
-                                    hintText: 'bio',
-                                    prefixIcon: Icon(
-                                      Icons.pending,
-                                      color: lightPurple,
-                                    )),
-                                validator: (val) {
-                                  if (val!.isNotEmpty) {
-                                    return null;
-                                  } else {
-                                    return "plase Enter Your bio";
-                                  }
-                                },
-                                onChanged: (val) {
-                                  setState(() {
-                                    bio = val;
-                                  });
-                                },
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 15,
-                            ),
-                            Container(
-                              alignment: Alignment.center,
-                              width: 360,
-                              child: TextFormField(
-                                controller: _instagramController,
-                                decoration: textInputDecorationp.copyWith(
-                                    hintText: "IG Username",
-                                    prefixIcon: Image.asset(
-                                        'assets/images/instagram.png')),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 15,
-                            ),
-                            Container(
-                              alignment: Alignment.center,
-                              width: 360,
-                              child: TextFormField(
-                                controller: _facebookController,
-                                decoration: textInputDecorationp.copyWith(
-                                    hintText: "Facebook Username",
-                                    prefixIcon: Image.asset(
-                                        'assets/images/facebook.png')),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 25,
-                            ),
-                            ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  backgroundColor: purple,
-                                  minimumSize: const Size(307, 49),
-                                  elevation: 0,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(30))),
-                              child: const Text(
-                                "save",
-                                style: TextStyle(
-                                    color: primaryColor, fontSize: 24),
-                              ),
-                              onPressed: () {
-                                Updata();
-                              },
-                            ),
-                            const SizedBox(
-                              height: 15,
-                            ),
-                          ],
+                      fontSize: 46,
+                      fontWeight: FontWeight.bold,
+                      color: purple,
+                      shadows: [
+                        Shadow(
+                          blurRadius: 5,
+                          color: unselected,
+                          offset: Offset(3, 3),
                         ),
-                      ),
+                      ],
                     ),
                   ),
+                  // ignore: prefer_const_constructors
+                  bottom: PreferredSize(
+                    preferredSize: const Size.fromHeight(-20),
+                    child: const Text("แก้ไขข้อมูลส่วนตัวของคุณ",
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: unselected)),
+                  ),
+                ),
+                body: _isLoading
+                    ? Center(
+                        child: CircularProgressIndicator(
+                        backgroundColor: mobileBackgroundColor,
+                      ))
+                    : Container(
+                        color: mobileBackgroundColor,
+                        child: SingleChildScrollView(
+                          child: Form(
+                            key: _formKey,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              // ignore: prefer_const_literals_to_create_immutables
+                              children: [
+                                const SizedBox(
+                                  height: 15,
+                                ),
+                                Container(
+                                  child: InkWell(
+                                    onTap: () {
+                                      showModalBottomSheet(
+                                        context: context,
+                                        builder: ((builder) => bottomSheet()),
+                                      );
+                                    },
+                                    child: Stack(
+                                      alignment: Alignment.center,
+                                      children: <Widget>[
+                                        Container(
+                                          decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              border: Border.all(
+                                                width: 2,
+                                                color: purple,
+                                              )),
+                                          child: CircleAvatar(
+                                            radius: 60,
+                                            backgroundColor: Colors.transparent,
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(60),
+                                              child: media1 != null
+                                                  ? Image.file(media1!)
+                                                  : Image.network(
+                                                      userData['profile']
+                                                          .toString(),
+                                                    ),
+                                            ),
+                                          ),
+                                        ),
+                                        Positioned(
+                                          bottom: 0,
+                                          right: 0,
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              border: Border.all(
+                                                width: 2,
+                                                color: primaryColor,
+                                              ),
+                                              color: lightPurple,
+                                            ),
+                                            child: Ink(
+                                              child: Icon(
+                                                Icons.edit,
+                                                color: primaryColor,
+                                                size: 30,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 15,
+                                ),
+                                Center(
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    width: 360,
+                                    child: TextFormField(
+                                      controller: _DisplaynameController,
+                                      decoration: textInputDecorationp.copyWith(
+                                          hintText: 'Display Name',
+                                          prefixIcon: Icon(
+                                            Icons.person_pin_circle_sharp,
+                                            color: lightPurple,
+                                            //color: Theme.of(context).primaryColor,
+                                          )),
+                                      validator: (val) {
+                                        if (val!.isNotEmpty) {
+                                          return null;
+                                        } else {
+                                          return "plase Enter Display Name";
+                                        }
+                                      },
+                                      onChanged: (val) {
+                                        setState(() {
+                                          Displayname = val;
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 15,
+                                ),
+                                Container(
+                                  alignment: Alignment.center,
+                                  width: 360,
+                                  child: TextFormField(
+                                    controller: _bioController,
+                                    maxLines: 3,
+                                    decoration: textInputDecorationp.copyWith(
+                                        hintText: 'bio',
+                                        prefixIcon: Icon(
+                                          Icons.pending,
+                                          color: lightPurple,
+                                        )),
+                                    validator: (val) {
+                                      if (val!.isNotEmpty) {
+                                        return null;
+                                      } else {
+                                        return "plase Enter Your bio";
+                                      }
+                                    },
+                                    onChanged: (val) {
+                                      setState(() {
+                                        bio = val;
+                                      });
+                                    },
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 15,
+                                ),
+                                Container(
+                                  alignment: Alignment.center,
+                                  width: 360,
+                                  child: TextFormField(
+                                    controller: _instagramController,
+                                    decoration: textInputDecorationp.copyWith(
+                                        hintText: "IG Username",
+                                        prefixIcon: Image.asset(
+                                            'assets/images/instagram.png')),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 15,
+                                ),
+                                Container(
+                                  alignment: Alignment.center,
+                                  width: 360,
+                                  child: TextFormField(
+                                    controller: _facebookController,
+                                    decoration: textInputDecorationp.copyWith(
+                                        hintText: "Facebook Url",
+                                        prefixIcon: Image.asset(
+                                            'assets/images/facebook.png')),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 25,
+                                ),
+                                ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                      backgroundColor: purple,
+                                      minimumSize: const Size(307, 49),
+                                      elevation: 0,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(30))),
+                                  child: const Text(
+                                    "save",
+                                    style: TextStyle(
+                                        color: primaryColor, fontSize: 24),
+                                  ),
+                                  onPressed: () {
+                                    Updata();
+                                  },
+                                ),
+                                Container(
+                                  color: mobileBackgroundColor,
+                                  height: 150,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+              ),
+            ),
           );
   }
 

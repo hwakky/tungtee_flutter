@@ -359,19 +359,13 @@ class _PostCardState extends State<CardWidget> {
                         Icon(
                           Icons.place,
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                            left: 0,
-                          ),
-                        ),
                         TextButton(
                           onPressed: () {
-                            Uri uri = Uri.parse(widget
-                                .snap['location']); //https://www.facebook.com/
+                            Uri uri = Uri.parse(widget.snap['location']);
                             _launchUrl(uri);
                           },
                           child: Text(
-                            widget.snap['place'],
+                            'Location',
                             style: TextStyle(
                               fontSize: 14,
                               color: purple,

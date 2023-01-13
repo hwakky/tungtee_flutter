@@ -36,7 +36,7 @@ class _RegistrationScreen extends State<RegisterPage> {
   String age = "";
   String gender = "";
   String Imageidcard = "";
-  String ImageProfile = "";
+  String ImageProfile = 'https://cdn-icons-png.flaticon.com/512/149/149071.png';
   String bio = "";
   String instagram = "";
   String facebook = "";

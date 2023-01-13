@@ -8,13 +8,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'dart:math';
-
 import '../widgets/PostCard.dart';
 import '../widgets/custom_textfield.dart';
 
 class FeedPage extends StatefulWidget {
   final String uid;
-  FeedPage({Key? key, required this.uid}) : super(key: key);
+  const FeedPage({Key? key, required this.uid}) : super(key: key);
 
   @override
   _FeedPageState createState() => _FeedPageState();
@@ -23,9 +22,9 @@ class FeedPage extends StatefulWidget {
 class _FeedPageState extends State<FeedPage> {
   @override
   Widget build(BuildContext context) {
-    return DismissKeyboard(
-      child: MaterialApp(
-        home: Scaffold(
+    return MaterialApp(
+      home: DismissKeyboard(
+        child: Scaffold(
           resizeToAvoidBottomInset: false,
           backgroundColor: mobileBackgroundColor,
           appBar: AppBar(

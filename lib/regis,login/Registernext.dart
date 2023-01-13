@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -35,6 +36,7 @@ class _RegisnextPageState extends State<RegisnextPage> {
   final TextEditingController _ageController = TextEditingController();
   final TextEditingController _genderController = TextEditingController();
   String _ImageProfileController = '';
+  String _selectedGender = '';
   final CollectionReference _users =
       FirebaseFirestore.instance.collection('users');
   File? media1;
@@ -122,43 +124,47 @@ class _RegisnextPageState extends State<RegisnextPage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   // ignore: prefer_const_literals_to_create_immutables
                   children: [
-                    InkWell(
-                      onTap: () async {
-                        ImagePicker imagePicker = ImagePicker();
-                        XFile? file = await imagePicker.pickImage(
-                            source: ImageSource.gallery);
-                        print('${file?.path}');
+                    Container(
+                      child: InkWell(
+                        onTap: () async {
+                          ImagePicker imagePicker = ImagePicker();
+                          XFile? file = await imagePicker.pickImage(
+                              source: ImageSource.gallery);
+                          print('${file?.path}');
 
-                        if (file == null) return;
-                        String uniqueFileName =
-                            DateTime.now().millisecondsSinceEpoch.toString();
-                        Reference referenceRoot =
-                            FirebaseStorage.instance.ref();
-                        Reference referenceDirImages =
-                            referenceRoot.child('Profile');
-                        Reference referenceImageToUpload =
-                            referenceDirImages.child("${user?.uid}");
-                        try {
-                          //Store the file
-                          await referenceImageToUpload.putFile(File(file.path));
-                          //  Success: get the download URL
-                          _ImageProfileController =
-                              await referenceImageToUpload.getDownloadURL();
-                        } catch (error) {
-                          //Some error occurred
-                        }
-                        setState(() {
-                          media1 = File(file.path);
-                        });
-                      },
-                      child: CircleAvatar(
-                        radius: 100,
-                        backgroundColor: Colors.transparent,
-                        child: ClipRRect(
-                            borderRadius: BorderRadius.circular(500),
-                            child: media1 != null
-                                ? Image.file(media1!)
-                                : Image.asset('assets/images/profile.png')),
+                          if (file == null) return;
+                          String uniqueFileName =
+                              DateTime.now().millisecondsSinceEpoch.toString();
+                          Reference referenceRoot =
+                              FirebaseStorage.instance.ref();
+                          Reference referenceDirImages =
+                              referenceRoot.child('Profile');
+                          Reference referenceImageToUpload =
+                              referenceDirImages.child("${user?.uid}");
+                          try {
+                            //Store the file
+                            await referenceImageToUpload
+                                .putFile(File(file.path));
+                            //  Success: get the download URL
+                            _ImageProfileController =
+                                await referenceImageToUpload.getDownloadURL();
+                          } catch (error) {
+                            //Some error occurred
+                          }
+                          setState(() {
+                            media1 = File(file.path);
+                          });
+                        },
+                        child: CircleAvatar(
+                          radius: 100,
+                          backgroundColor: Colors.transparent,
+                          child: ClipRRect(
+                              borderRadius: BorderRadius.circular(500),
+                              child: media1 != null
+                                  ? Image.file(media1!)
+                                  : Image.network(
+                                      'https://cdn-icons-png.flaticon.com/512/149/149071.png')),
+                        ),
                       ),
                     ),
                     Center(
@@ -189,89 +195,6 @@ class _RegisnextPageState extends State<RegisnextPage> {
                     Container(
                       alignment: Alignment.center,
                       width: 360,
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: TextFormField(
-                              controller: _ageController,
-                              keyboardType: TextInputType.number,
-                              decoration: textInputDecorationp.copyWith(
-                                  hintText: "Age",
-                                  prefixIcon: Icon(
-                                    Icons.cake,
-                                    color: Theme.of(context).primaryColor,
-                                  )),
-                              validator: (val) {
-                                if (val!.isEmpty) {
-                                  return "plase Enter Your Age";
-                                } else if (int.parse(val) < 15) {
-                                  return 'Age must be 15 or older';
-                                } else {
-                                  return null;
-                                }
-                              },
-                            ),
-                          ),
-                          const SizedBox(width: 16),
-                          Expanded(
-                            child: TextField(
-                              controller: _genderController,
-                              readOnly: true,
-                              onTap: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return SimpleDialog(
-                                      children: <Widget>[
-                                        SimpleDialogOption(
-                                          onPressed: () {
-                                            _genderController.text = 'Male';
-                                            // Close the dialog
-                                            Navigator.pop(context);
-                                          },
-                                          child: Text('Male'),
-                                        ),
-                                        SimpleDialogOption(
-                                          onPressed: () {
-                                            _genderController.text = 'Female';
-
-                                            // Close the dialog
-                                            Navigator.pop(context);
-                                          },
-                                          child: Text('Female'),
-                                        ),
-                                        SimpleDialogOption(
-                                          onPressed: () {
-                                            _genderController.text = 'Other';
-                                            // Close the dialog
-                                            Navigator.pop(context);
-                                          },
-                                          child: Text('Other'),
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                );
-                              },
-                              enableInteractiveSelection: false,
-                              decoration: textInputDecorationp.copyWith(
-                                hintText: 'Select Gender',
-                                prefixIcon: Icon(
-                                  Icons.wc_sharp,
-                                  color: Theme.of(context).primaryColor,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    Container(
-                      alignment: Alignment.center,
-                      width: 360,
                       child: TextFormField(
                         controller: _bioController,
                         maxLines: 5,
@@ -289,6 +212,45 @@ class _RegisnextPageState extends State<RegisnextPage> {
                           }
                         },
                       ),
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text('Gender: '),
+                        Radio(
+                          value: 'male',
+                          groupValue: _genderController.text,
+                          onChanged: (value) {
+                            setState(() {
+                              _genderController.text = value!;
+                            });
+                          },
+                        ),
+                        Text('Male'),
+                        Radio(
+                          value: 'female',
+                          groupValue: _genderController.text,
+                          onChanged: (value) {
+                            setState(() {
+                              _genderController.text = value!;
+                            });
+                          },
+                        ),
+                        Text('Female'),
+                        Radio(
+                          value: 'other',
+                          groupValue: _genderController.text,
+                          onChanged: (value) {
+                            setState(() {
+                              _genderController.text = value!;
+                            });
+                          },
+                        ),
+                        Text('other'),
+                      ],
                     ),
                     const SizedBox(
                       height: 10,
