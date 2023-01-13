@@ -28,11 +28,19 @@ class _MyCommentState extends State<Comment> {
   var currentUser = {};
   var commentLen = 0;
   bool isLoading = false;
+  bool _waiting = false;
 
   @override
   void initState() {
     super.initState();
     getData();
+  }
+
+  void _onPress() {
+    setState(() {
+      _waiting = !_waiting;
+    });
+    // Do content here
   }
 
   getData() async {
@@ -302,41 +310,46 @@ class _MyCommentState extends State<Comment> {
                               child: SizedBox(
                                 width: MediaQuery.of(context).size.width,
                                 child: Padding(
-                                  padding: const EdgeInsets.only(left: 15.00),
+                                  padding: const EdgeInsets.only(
+                                      left: 15.0, top: 8.0),
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Row(
-                                        children: [
-                                          SizedBox(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.7,
-                                            child: Text(
-                                                postData['activityName'],
-                                                style: const TextStyle(
-                                                  fontSize: 20,
-                                                  fontFamily: 'MyCustomFont',
-                                                  color: unselected,
-                                                  fontWeight: FontWeight.bold,
-                                                )),
-                                          ),
-                                          SizedBox(child: Icon(Icons.person)),
-                                          Text.rich(
-                                              TextSpan(children: <InlineSpan>[
-                                            TextSpan(
-                                                text: '\t' +
-                                                    '0 / ' +
-                                                    postData['peopleLimit'],
-                                                style: const TextStyle(
-                                                  fontSize: 20,
-                                                  fontFamily: 'MyCustomFont',
-                                                  color: unselected,
-                                                )),
-                                          ])),
-                                        ],
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(bottom: 8.0),
+                                        child: Row(
+                                          children: [
+                                            SizedBox(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.7,
+                                              child: Text(
+                                                  postData['activityName'],
+                                                  style: const TextStyle(
+                                                    fontSize: 20,
+                                                    fontFamily: 'MyCustomFont',
+                                                    color: unselected,
+                                                    fontWeight: FontWeight.bold,
+                                                  )),
+                                            ),
+                                            SizedBox(child: Icon(Icons.person)),
+                                            Text.rich(
+                                                TextSpan(children: <InlineSpan>[
+                                              TextSpan(
+                                                  text: '\t' +
+                                                      '0 / ' +
+                                                      postData['peopleLimit'],
+                                                  style: const TextStyle(
+                                                    fontSize: 20,
+                                                    fontFamily: 'MyCustomFont',
+                                                    color: unselected,
+                                                  )),
+                                            ])),
+                                          ],
+                                        ),
                                       ),
                                       Text.rich(TextSpan(children: <InlineSpan>[
                                         const TextSpan(
@@ -470,21 +483,63 @@ class _MyCommentState extends State<Comment> {
                                                   .instance.currentUser!.uid !=
                                               postData['uid'])
                                             ElevatedButton(
-                                              onPressed: () {},
+                                              onPressed: () {
+                                                _onPress();
+                                                print(_waiting);
+                                                if (_waiting == true) {
+                                                  var uid = FirebaseAuth
+                                                      .instance
+                                                      .currentUser!
+                                                      .uid;
+                                                  FirebaseFirestore.instance
+                                                      .collection("waiting")
+                                                      .doc(uid)
+                                                      .collection(
+                                                          'waiting list')
+                                                      .doc(widget.postid.id)
+                                                      .set({
+                                                    "activityName": widget
+                                                        .postid['activityName'],
+                                                    "date":
+                                                        widget.postid['date'],
+                                                    "time":
+                                                        widget.postid['time'],
+                                                    "place":
+                                                        widget.postid['place'],
+                                                    "location": widget
+                                                        .postid['location'],
+                                                    "peopleLimit": widget
+                                                        .postid['peopleLimit'],
+                                                    "detail":
+                                                        widget.postid['detail'],
+                                                    "uid": widget.postid['uid'],
+                                                    "timeStamp": widget
+                                                        .postid['timeStamp'],
+                                                    "postid":
+                                                        widget.postid['postid'],
+                                                  });
+                                                }
+                                              },
                                               style: ElevatedButton.styleFrom(
-                                                backgroundColor: lightGreen,
+                                                backgroundColor: _waiting
+                                                    ? lightPurple
+                                                    : lightGreen,
                                                 shape: RoundedRectangleBorder(
                                                   borderRadius:
                                                       BorderRadius.circular(
                                                           10.0),
                                                 ),
                                               ),
-                                              child: const Text(
-                                                'Request',
+                                              child: Text(
+                                                _waiting
+                                                    ? 'Waiting'
+                                                    : 'Request',
                                                 style: TextStyle(
                                                   fontSize: 16,
                                                   fontFamily: 'MyCustomFont',
-                                                  color: unselected,
+                                                  color: _waiting
+                                                      ? primaryColor
+                                                      : unselected,
                                                   fontWeight: FontWeight.bold,
                                                 ),
                                               ),
@@ -525,7 +580,7 @@ class _MyCommentState extends State<Comment> {
                                     child: SizedBox(
                                       height:
                                           MediaQuery.of(context).size.height *
-                                              0.331,
+                                              0.33,
                                       child: ListView.builder(
                                           itemCount: snapshot.data!.docs.length,
                                           itemBuilder: (context, index) {
@@ -534,6 +589,8 @@ class _MyCommentState extends State<Comment> {
                                                 snapshot.data!.docs[index];
 
                                             var postidD = postData['postid'];
+                                            var timeStamp =
+                                                postData['timeStamp'];
 
                                             var Mytext = new Map();
                                             Mytext['Displayname'] =
@@ -577,7 +634,8 @@ class _MyCommentState extends State<Comment> {
                                                           _showModalBottomSheet(
                                                               context,
                                                               postidD,
-                                                              Mytext),
+                                                              Mytext,
+                                                              timeStamp),
                                                       child: Card(
                                                         clipBehavior:
                                                             Clip.hardEdge,
@@ -703,100 +761,98 @@ class _MyCommentState extends State<Comment> {
                         )
                       ],
                     ),
-                    Container(
-                      color: Colors.white,
-                      child: Align(
-                        alignment: FractionalOffset.bottomCenter,
-                        child: Form(
-                          key: _formKey,
-                          child: Row(
-                            children: [
-                              IconButton(
-                                onPressed: () {},
-                                icon: const Icon(
-                                  Icons.attach_file_outlined,
-                                  color: purple,
-                                  size: 30,
-                                ),
-                              ),
-                              SizedBox(
-                                width: 315, //MediaQuery.of(context).size.width,
-                                child: TextFormField(
-                                  keyboardType: TextInputType.multiline,
-                                  maxLines: 5,
-                                  minLines: 1,
-                                  controller: commentController,
-                                  validator: (value) {
-                                    if (value!.isEmpty) {
-                                      return 'Please enter a comment';
-                                    }
-                                    return null;
-                                  },
-                                  decoration: const InputDecoration(
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(15)),
-                                      borderSide: BorderSide(
-                                          width: 1, color: unselected),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(15)),
-                                      borderSide: BorderSide(
-                                          width: 2, color: unselected),
-                                    ),
-                                    hintText: 'Send a message',
-                                    hintStyle: TextStyle(
-                                      color: unselected,
-                                      fontFamily: 'MyCustomFont',
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              IconButton(
-                                onPressed: () async {
-                                  if (_formKey.currentState!.validate() ==
-                                      true) {
-                                    setState(() {
-                                      _isLoading = true;
-                                    });
-                                    var commentSet2 = commentSet
-                                        .doc(postData['postid'])
-                                        .collection('comments')
-                                        .doc();
-                                    await commentSet2.set({
-                                      'cid': commentSet2.id,
-                                      'comment': commentController.text,
-                                      'postid': postData['postid'],
-                                      'uid': FirebaseAuth
-                                          .instance.currentUser!.uid,
-                                      'profile': currentUser['profile'],
-                                      'Displayname': currentUser['Displayname'],
-                                      'timeStamp': DateTime.now(),
-                                    }).whenComplete(() {
-                                      commentController.clear();
-                                    });
-                                  }
-                                },
-                                icon: const Icon(
-                                  Icons.send_outlined,
-                                  size: 30,
-                                  color: purple,
-                                ),
-                              )
-                            ],
+                  ],
+                ),
+                bottomNavigationBar: Container(
+                  color: Colors.white,
+                  child: Form(
+                    key: _formKey,
+                    child: Row(
+                      children: [
+                        IconButton(
+                          onPressed: () {},
+                          icon: const Icon(
+                            Icons.attach_file_outlined,
+                            color: purple,
+                            size: 30,
                           ),
                         ),
-                      ),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.76,
+                          child: TextFormField(
+                            keyboardType: TextInputType.multiline,
+                            maxLines: 5,
+                            minLines: 1,
+                            controller: commentController,
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Please enter a comment';
+                              }
+                              return null;
+                            },
+                            decoration: const InputDecoration(
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: 15, horizontal: 10),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(15)),
+                                borderSide:
+                                    BorderSide(width: 2, color: unselected),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(70)),
+                                borderSide:
+                                    BorderSide(width: 2, color: unselected),
+                              ),
+                              hintText: 'Send a message',
+                              hintStyle: TextStyle(
+                                color: unselected,
+                                fontFamily: 'MyCustomFont',
+                              ),
+                            ),
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: () async {
+                            if (_formKey.currentState!.validate() == true) {
+                              setState(() {
+                                _isLoading = true;
+                              });
+                              var commentSet2 = commentSet
+                                  .doc(postData['postid'])
+                                  .collection('comments')
+                                  .doc();
+                              await commentSet2.set({
+                                'cid': commentSet2.id,
+                                'comment': commentController.text,
+                                'postid': postData['postid'],
+                                'uid': FirebaseAuth.instance.currentUser!.uid,
+                                'profile': currentUser['profile'],
+                                'Displayname': currentUser['Displayname'],
+                                'timeStamp': DateTime.now(),
+                              }).whenComplete(() {
+                                commentController.clear();
+                              });
+                            }
+                          },
+                          icon: const Icon(
+                            Icons.send_outlined,
+                            size: 30,
+                            color: purple,
+                          ),
+                        )
+                      ],
                     ),
-                  ],
+                  ),
                 ),
               ),
             ),
           );
   }
 
-  void _showModalBottomSheet(BuildContext context, postidD, Map mytext) {
+  void _showModalBottomSheet(
+      BuildContext context, postidD, Map mytext, timeStamp) {
     _commentController.text = mytext['comment'].toString();
     String Comment = '';
 
@@ -825,6 +881,9 @@ class _MyCommentState extends State<Comment> {
                               title: Text('Edit Comment'),
                               content: Form(
                                 child: TextFormField(
+                                  keyboardType: TextInputType.multiline,
+                                  maxLines: 5,
+                                  minLines: 1,
                                   controller: _commentController,
                                   decoration: textInputDecorationp.copyWith(
                                     hintText: 'type something',
@@ -860,7 +919,7 @@ class _MyCommentState extends State<Comment> {
                                         'uid': mytext['uid'],
                                         'profile': mytext['profile'],
                                         'Displayname': mytext['Displayname'],
-                                        'timeStamp': DateTime.now(),
+                                        'timeStamp': timeStamp,
                                         "comment": _commentController.text
                                       }).whenComplete(() {
                                         Navigator.pop(context);

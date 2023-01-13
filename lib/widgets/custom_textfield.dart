@@ -24,7 +24,7 @@ const textInputDecoration = InputDecoration(
 const textInputDecorationp = InputDecoration(
   labelStyle: TextStyle(color: Colors.black),
   focusedBorder: OutlineInputBorder(
-    borderRadius: BorderRadius.all(Radius.circular(20.0)),
+    borderRadius: BorderRadius.all(Radius.circular(70.0)),
     borderSide: BorderSide(color: purple, width: 2),
   ),
   enabledBorder: OutlineInputBorder(
@@ -32,7 +32,7 @@ const textInputDecorationp = InputDecoration(
     borderSide: BorderSide(color: purple, width: 2),
   ),
   errorBorder: OutlineInputBorder(
-    borderRadius: BorderRadius.all(Radius.circular(20.0)),
+    borderRadius: BorderRadius.all(Radius.circular(70.0)),
     borderSide: BorderSide(color: purple, width: 2),
   ),
   fillColor: primaryColor,

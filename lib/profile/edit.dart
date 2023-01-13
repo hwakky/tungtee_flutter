@@ -91,11 +91,11 @@ class _EditPageState extends State<EditPage> {
                 appBar: AppBar(
                   backgroundColor: mobileBackgroundColor,
                   leading: IconButton(
-                    icon:
-                        const Icon(Icons.arrow_back, color: mobileSearchColor),
+                    icon: const Icon(Icons.arrow_back_ios,
+                        color: mobileSearchColor, size: 30),
                     onPressed: () => {nextScreen(context, MyHomePage())},
                   ),
-                  toolbarHeight: 120,
+                  toolbarHeight: MediaQuery.of(context).size.height * 0.13,
                   centerTitle: true,
                   elevation: 0,
                   title: const Text(
@@ -113,10 +113,9 @@ class _EditPageState extends State<EditPage> {
                       ],
                     ),
                   ),
-                  // ignore: prefer_const_constructors
-                  bottom: PreferredSize(
-                    preferredSize: const Size.fromHeight(-20),
-                    child: const Text("แก้ไขข้อมูลส่วนตัวของคุณ",
+                  bottom: const PreferredSize(
+                    preferredSize: Size.fromHeight(-20),
+                    child: Text("แก้ไขข้อมูลส่วนตัวของคุณ",
                         style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
@@ -138,8 +137,9 @@ class _EditPageState extends State<EditPage> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               // ignore: prefer_const_literals_to_create_immutables
                               children: [
-                                const SizedBox(
-                                  height: 15,
+                                SizedBox(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.02,
                                 ),
                                 Container(
                                   child: InkWell(
@@ -205,7 +205,8 @@ class _EditPageState extends State<EditPage> {
                                 Center(
                                   child: Container(
                                     alignment: Alignment.center,
-                                    width: 360,
+                                    width: MediaQuery.of(context).size.width *
+                                        0.85,
                                     child: TextFormField(
                                       controller: _DisplaynameController,
                                       decoration: textInputDecorationp.copyWith(
@@ -230,12 +231,14 @@ class _EditPageState extends State<EditPage> {
                                     ),
                                   ),
                                 ),
-                                const SizedBox(
-                                  height: 15,
+                                SizedBox(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.02,
                                 ),
                                 Container(
                                   alignment: Alignment.center,
-                                  width: 360,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.85,
                                   child: TextFormField(
                                     controller: _bioController,
                                     maxLines: 3,
@@ -259,12 +262,14 @@ class _EditPageState extends State<EditPage> {
                                     },
                                   ),
                                 ),
-                                const SizedBox(
-                                  height: 15,
+                                SizedBox(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.02,
                                 ),
                                 Container(
                                   alignment: Alignment.center,
-                                  width: 360,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.85,
                                   child: TextFormField(
                                     controller: _instagramController,
                                     decoration: textInputDecorationp.copyWith(
@@ -273,12 +278,14 @@ class _EditPageState extends State<EditPage> {
                                             'assets/images/instagram.png')),
                                   ),
                                 ),
-                                const SizedBox(
-                                  height: 15,
+                                SizedBox(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.02,
                                 ),
                                 Container(
                                   alignment: Alignment.center,
-                                  width: 360,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.85,
                                   child: TextFormField(
                                     controller: _facebookController,
                                     decoration: textInputDecorationp.copyWith(
@@ -287,8 +294,9 @@ class _EditPageState extends State<EditPage> {
                                             'assets/images/facebook.png')),
                                   ),
                                 ),
-                                const SizedBox(
-                                  height: 25,
+                                SizedBox(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.05,
                                 ),
                                 ElevatedButton(
                                   style: ElevatedButton.styleFrom(
@@ -309,7 +317,8 @@ class _EditPageState extends State<EditPage> {
                                 ),
                                 Container(
                                   color: mobileBackgroundColor,
-                                  height: 150,
+                                  height: MediaQuery.of(context).size.height *
+                                      0.231,
                                 ),
                               ],
                             ),
@@ -323,7 +332,7 @@ class _EditPageState extends State<EditPage> {
 
   Widget bottomSheet() {
     return Container(
-      height: 150,
+      height: MediaQuery.of(context).size.height * 0.15,
       width: MediaQuery.of(context).size.width,
       margin: EdgeInsets.symmetric(
         vertical: 20,
@@ -337,7 +346,7 @@ class _EditPageState extends State<EditPage> {
             ),
           ),
           SizedBox(
-            height: 10,
+            height: MediaQuery.of(context).size.height * 0.01,
           ),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -360,7 +369,7 @@ class _EditPageState extends State<EditPage> {
                 ),
               ),
               SizedBox(
-                height: 10,
+                height: MediaQuery.of(context).size.height * 0.01,
               ),
               SizedBox(
                 child: TextButton.icon(

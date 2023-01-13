@@ -215,7 +215,7 @@ class _PostCardState extends State<CardWidget> {
 
   Widget build(BuildContext context) {
     return Container(
-      height: 250,
+      height: MediaQuery.of(context).size.height * 0.31,
       child: Card(
         clipBehavior: Clip.hardEdge,
         shape: RoundedRectangleBorder(
@@ -237,7 +237,7 @@ class _PostCardState extends State<CardWidget> {
                   Row(
                     children: [
                       SizedBox(
-                        width: 280,
+                        width: MediaQuery.of(context).size.width * 0.7,
                         child: Text(widget.snap['activityName'],
                             style: const TextStyle(
                               fontSize: 20,
@@ -349,11 +349,8 @@ class _PostCardState extends State<CardWidget> {
                       ],
                     ),
                   ),
-                  const SizedBox(
-                    height: 5,
-                  ),
                   Container(
-                    height: 35,
+                    height: MediaQuery.of(context).size.height * 0.05,
                     child: Row(
                       children: [
                         Icon(
@@ -375,9 +372,6 @@ class _PostCardState extends State<CardWidget> {
                       ],
                     ),
                   ),
-                  const SizedBox(
-                    height: 5,
-                  ),
                   Text.rich(
                     TextSpan(
                       children: <InlineSpan>[
@@ -387,6 +381,7 @@ class _PostCardState extends State<CardWidget> {
                         const WidgetSpan(
                           child: Icon(
                             Icons.person_outline,
+                            size: 30,
                           ),
                         ),
                         TextSpan(
@@ -402,14 +397,13 @@ class _PostCardState extends State<CardWidget> {
                   ),
                   Row(
                     children: [
-                      const SingleChildScrollView(
+                      SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         child: Padding(
                           padding: EdgeInsets.all(1),
                           child: SizedBox(
-                            width: 240,
-                            height: 25,
-                            child: Text(
+                            width: MediaQuery.of(context).size.width * 0.6,
+                            child: const Text(
                               'add tag+',
                               style: TextStyle(
                                 fontFamily: 'MyCustomFont',

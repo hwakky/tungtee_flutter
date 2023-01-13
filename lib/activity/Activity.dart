@@ -15,11 +15,10 @@ class ActivityPage extends StatelessWidget {
           appBar: AppBar(
             backgroundColor: mobileBackgroundColor,
             elevation: 1,
-            leadingWidth: 130,
             centerTitle: false,
             title: Image.asset(
               "assets/images/logo with name.png",
-              width: 130,
+              width: MediaQuery.of(context).size.width * 0.31,
             ),
             actions: [
               IconButton(

@@ -33,7 +33,7 @@ class _FeedPageState extends State<FeedPage> {
             centerTitle: false,
             title: Image.asset(
               "assets/images/logo with name.png",
-              width: 130,
+              width: MediaQuery.of(context).size.width * 0.31,
             ),
             actions: [
               IconButton(
@@ -74,8 +74,8 @@ class SearchForm extends StatelessWidget {
             title: Padding(
               padding: EdgeInsets.only(top: 10.0),
               child: SizedBox(
-                width: 350.0,
-                height: 45.0,
+                width: MediaQuery.of(context).size.width * 0.9,
+                height: MediaQuery.of(context).size.height * 0.05,
                 child: TextField(
                   decoration: searchInputDecoration.copyWith(
                     hintText: 'ค้นหากิจกรรม หรือ Tag ที่คุณสนใจ',

@@ -1,15 +1,68 @@
+import 'package:favorite_button/favorite_button.dart';
 import 'package:flutter/material.dart';
 import 'package:tangteevs/utils/color.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:tangteevs/widgets/custom_textfield.dart';
+import '../comment/comment.dart';
+import '../widgets/PostCard.dart';
 
 class WaitingPage extends StatelessWidget {
+  const WaitingPage({Key? key, required}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: const Center(
-        child: Text('Waiting',
-            style: TextStyle(
-                fontSize: 22, fontWeight: FontWeight.bold, color: purple)),
-      ),
+    return Scaffold(
+      body: Waiting(),
+    );
+  }
+}
+
+class Waiting extends StatelessWidget {
+  final CollectionReference _waiting =
+      FirebaseFirestore.instance.collection('waiting');
+
+  Future<void> _delete(String usersId) async {
+    await _waiting
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection('waiting list')
+        .doc(usersId)
+        .delete();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<QuerySnapshot>(
+      stream: _waiting
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .collection('waiting list')
+          .snapshots(),
+      builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+        //onRefresh:_onRefresh;
+
+        if (streamSnapshot.hasData) {
+          return ListView.builder(
+              itemCount: streamSnapshot.data!.docs.length,
+              itemBuilder: (context, index) => Container(
+                    child: CardWidget(
+                        snap: (streamSnapshot.data! as dynamic).docs[index]),
+                  ));
+        }
+        return Container(
+          child: Center(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: const <Widget>[
+                SizedBox(
+                  height: 30.0,
+                  width: 30.0,
+                  child: CircularProgressIndicator(),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }

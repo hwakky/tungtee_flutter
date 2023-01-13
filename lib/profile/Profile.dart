@@ -267,8 +267,14 @@ class _ProfilePageState extends State<ProfilePage> {
                                         ? Row(
                                             children: [
                                               SizedBox(
-                                                width: 30,
-                                                height: 30,
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.1,
+                                                height: MediaQuery.of(context)
+                                                        .size
+                                                        .height *
+                                                    0.04,
                                                 child: MaterialButton(
                                                   onPressed: () {
                                                     Uri uri = Uri.parse(
@@ -297,8 +303,14 @@ class _ProfilePageState extends State<ProfilePage> {
                                                 ),
                                               ),
                                               SizedBox(
-                                                width: 30,
-                                                height: 30,
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.1,
+                                                height: MediaQuery.of(context)
+                                                        .size
+                                                        .height *
+                                                    0.04,
                                                 child: (userData['facebook']
                                                             .toString() !=
                                                         '')
@@ -329,8 +341,14 @@ class _ProfilePageState extends State<ProfilePage> {
                                             ],
                                           )
                                         : SizedBox(
-                                            width: 30,
-                                            height: 30,
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.1,
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                0.04,
                                             child: (userData['facebook']
                                                         .toString() !=
                                                     '')
@@ -394,7 +412,8 @@ class _ProfilePageState extends State<ProfilePage> {
                               ),
                             ),
                             SizedBox(
-                              height: 440,
+                              height:
+                                  MediaQuery.of(context).size.height * 0.613,
                               child: TabBarView(children: <Widget>[
                                 Container(
                                   child: FutureBuilder<QuerySnapshot>(
