@@ -456,7 +456,7 @@ class _MyCommentState extends State<Comment> {
                                                   width: MediaQuery.of(context)
                                                           .size
                                                           .width *
-                                                      0.64,
+                                                      0.62,
                                                   height: MediaQuery.of(context)
                                                           .size
                                                           .height *
