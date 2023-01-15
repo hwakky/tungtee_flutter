@@ -141,7 +141,9 @@ class SearchForm extends StatelessWidget {
           //),
         ];
       },
-      body: PostCard(),
+      body: SafeArea(
+        child: PostCard(),
+      ),
     );
   }
 }
