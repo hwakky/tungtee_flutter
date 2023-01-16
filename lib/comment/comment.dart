@@ -238,7 +238,7 @@ class _MyCommentState extends State<Comment> {
                                                                     .width *
                                                                 0.7,
                                                             child: Text(
-                                                                postData[
+                                                                documentSnapshot[
                                                                     'activityName'],
                                                                 style:
                                                                     const TextStyle(
@@ -261,7 +261,7 @@ class _MyCommentState extends State<Comment> {
                                                                 TextSpan(
                                                                     text: '\t' +
                                                                         '0 / ' +
-                                                                        postData[
+                                                                        documentSnapshot[
                                                                             'peopleLimit'],
                                                                     style:
                                                                         const TextStyle(
@@ -289,7 +289,7 @@ class _MyCommentState extends State<Comment> {
                                                           ),
                                                           TextSpan(
                                                               text:
-                                                                  '${'\t\t' + postData['date'] + '\t\t(' + postData['time']})',
+                                                                  '${'\t\t' + documentSnapshot['date'] + '\t\t(' + documentSnapshot['time']})',
                                                               style:
                                                                   const TextStyle(
                                                                 fontFamily:
@@ -305,27 +305,29 @@ class _MyCommentState extends State<Comment> {
                                                                   .height *
                                                               0.01,
                                                     ),
-                                                    Text.rich(
-                                                        TextSpan(children: <
-                                                            InlineSpan>[
-                                                      const TextSpan(
-                                                        text: '',
-                                                      ),
-                                                      const WidgetSpan(
-                                                        child: Icon(
-                                                          Icons.maps_home_work,
-                                                        ),
-                                                      ),
-                                                      TextSpan(
-                                                          text: '\t\t' +
-                                                              postData['place'],
-                                                          style:
-                                                              const TextStyle(
-                                                            fontFamily:
-                                                                'MyCustomFont',
-                                                            color: unselected,
-                                                          )),
-                                                    ])),
+                                                    Text.rich(TextSpan(
+                                                        children: <InlineSpan>[
+                                                          const TextSpan(
+                                                            text: '',
+                                                          ),
+                                                          const WidgetSpan(
+                                                            child: Icon(
+                                                              Icons
+                                                                  .maps_home_work,
+                                                            ),
+                                                          ),
+                                                          TextSpan(
+                                                              text: '\t\t' +
+                                                                  documentSnapshot[
+                                                                      'place'],
+                                                              style:
+                                                                  const TextStyle(
+                                                                fontFamily:
+                                                                    'MyCustomFont',
+                                                                color:
+                                                                    unselected,
+                                                              )),
+                                                        ])),
                                                     SizedBox(
                                                       height:
                                                           MediaQuery.of(context)
@@ -345,7 +347,7 @@ class _MyCommentState extends State<Comment> {
                                                           ),
                                                           TextSpan(
                                                               text: '\t\t' +
-                                                                  postData[
+                                                                  documentSnapshot[
                                                                       'location'],
                                                               style:
                                                                   const TextStyle(
@@ -370,7 +372,7 @@ class _MyCommentState extends State<Comment> {
                                                             0.7,
                                                         child: Text(
                                                             '\nDetail\n\t\t\t\t\t' +
-                                                                postData[
+                                                                documentSnapshot[
                                                                     'detail'],
                                                             style: const TextStyle(
                                                                 fontSize: 16,
@@ -421,7 +423,8 @@ class _MyCommentState extends State<Comment> {
                                                                 .instance
                                                                 .currentUser!
                                                                 .uid ==
-                                                            postData['uid'])
+                                                            documentSnapshot[
+                                                                'uid'])
                                                           ElevatedButton(
                                                             onPressed: () {},
                                                             style:
@@ -455,7 +458,8 @@ class _MyCommentState extends State<Comment> {
                                                                 .instance
                                                                 .currentUser!
                                                                 .uid !=
-                                                            postData['uid'])
+                                                            documentSnapshot[
+                                                                'uid'])
                                                           ElevatedButton(
                                                             onPressed: () {
                                                               _onPress();
@@ -566,7 +570,7 @@ class _MyCommentState extends State<Comment> {
                                       ),
                                       StreamBuilder<QuerySnapshot>(
                                         stream: commentSet
-                                            .doc(postData['postid'])
+                                            .doc(documentSnapshot['postid'])
                                             .collection('comments')
                                             .orderBy('timeStamp',
                                                 descending: true)
