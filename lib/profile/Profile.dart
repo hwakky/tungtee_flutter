@@ -416,13 +416,14 @@ class _ProfilePageState extends State<ProfilePage> {
                                   MediaQuery.of(context).size.height * 0.613,
                               child: TabBarView(children: <Widget>[
                                 Container(
-                                  child: FutureBuilder<QuerySnapshot>(
-                                    future: FirebaseFirestore.instance
+                                  child: StreamBuilder<QuerySnapshot>(
+                                    stream: FirebaseFirestore.instance
                                         .collection('post')
                                         .where('uid', isEqualTo: widget.uid)
                                         .orderBy('timeStamp', descending: true)
-                                        .get(),
-                                    builder: ((context, snapshot) {
+                                        .snapshots(),
+                                    builder: ((context,
+                                        AsyncSnapshot<QuerySnapshot> snapshot) {
                                       if (snapshot.hasData) {
                                         return ListView.builder(
                                             itemCount:
