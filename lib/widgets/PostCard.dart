@@ -81,6 +81,182 @@ class _PostCardState extends State<CardWidget> {
     });
   }
 
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  final CollectionReference _post =
+      FirebaseFirestore.instance.collection('post');
+  final CollectionReference _favorites =
+      FirebaseFirestore.instance.collection('favorites');
+
+  Future<void> post_delete(String postid) async {
+    await _post.doc(postid).delete();
+
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('You have successfully deleted a post activity')));
+  }
+
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Container(
+        child: Card(
+          clipBehavior: Clip.hardEdge,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15.0),
+            side: const BorderSide(
+              color: unselected,
+              width: 2,
+            ),
+          ),
+        ),
+        margin: const EdgeInsets.all(15),
+        child: SizedBox(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 15.00),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.6,
+                        child: Text(widget.snap['activityName'],
+                            style: const TextStyle(
+                              fontFamily: 'MyCustomFont',
+                              color: unselected,
+                              fontWeight: FontWeight.bold,
+                            )),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 3),
+                        child: IconButton(
+                          icon: widget.snap['likes'].contains(
+                                  FirebaseAuth.instance.currentUser!.uid)
+                              ? const Icon(
+                                  Icons.favorite,
+                                  color: Colors.red,
+                                  size: 30,
+                                )
+                              : const Icon(
+                                  Icons.favorite_border,
+                                  size: 30,
+                                ),
+                          onPressed: () => likePost(
+                            widget.snap['postid'].toString(),
+                            FirebaseAuth.instance.currentUser!.uid,
+                            widget.snap['likes'],
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 1),
+                        child: SizedBox(
+                          child: IconButton(
+                            icon: const Icon(
+                              Icons.more_horiz,
+                              color: unselected,
+                              fontSize: 14,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      height: MediaQuery.of(context).size.height * 0.05,
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.place,
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              Uri uri = Uri.parse(widget.snap['location']);
+                              _launchUrl(uri);
+                            },
+                            child: Text(
+                              'Location',
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: purple,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Text.rich(
+                      TextSpan(
+                        children: <InlineSpan>[
+                          const TextSpan(
+                            text: '',
+                          ),
+                          const WidgetSpan(
+                            child: Icon(
+                              Icons.person_outline,
+                            ),
+                          ),
+                          TextSpan(
+                            text: '\t\t' + '0 / ' + widget.snap['peopleLimit'],
+                            style: const TextStyle(
+                              fontFamily: 'MyCustomFont',
+                              color: unselected,
+                              fontSize: 14,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Padding(
+                            padding: EdgeInsets.all(1),
+                            child: SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.6,
+                              child: const Text(
+                                'add tag+',
+                                style: TextStyle(
+                                  fontFamily: 'MyCustomFont',
+                                  color: unselected,
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    Comment(postid: widget.snap),
+                              ),
+                            );
+                          },
+                          child: const Text(
+                            'See More >>',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontFamily: 'MyCustomFont',
+                              color: green,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   void _showModalBottomSheet(BuildContext context, uid) {
     showModalBottomSheet(
       useRootNavigator: true,
@@ -193,257 +369,6 @@ class _PostCardState extends State<CardWidget> {
     );
   }
 
-  final CollectionReference _post =
-      FirebaseFirestore.instance.collection('post');
-  final CollectionReference _favorites =
-      FirebaseFirestore.instance.collection('favorites');
-
-  Future<void> post_delete(String postid) async {
-    await _post.doc(postid).delete();
-
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('You have successfully deleted a post activity')));
-  }
-
-  Future<void> _delete(String usersId) async {
-    await _favorites
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .collection('favorites list')
-        .doc(usersId)
-        .delete();
-  }
-
-  Widget build(BuildContext context) {
-    return SafeArea(
-      child: Container(
-        child: Card(
-          clipBehavior: Clip.hardEdge,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15.0),
-            side: const BorderSide(
-              color: unselected,
-              width: 2,
-            ),
-          ),
-          margin: const EdgeInsets.all(15),
-          child: SizedBox(
-            child: Padding(
-              padding: const EdgeInsets.only(left: 15.00),
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.7,
-                          child: Text(widget.snap['activityName'],
-                              style: const TextStyle(
-                                fontSize: 20,
-                                fontFamily: 'MyCustomFont',
-                                color: unselected,
-                                fontWeight: FontWeight.bold,
-                              )),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 0),
-                          child: FavoriteButton(
-                              iconSize: 35,
-                              isFavorite: false,
-                              iconDisabledColor: unselected,
-                              valueChanged: (_isFavorite) {
-                                if (_isFavorite == true) {
-                                  var uid =
-                                      FirebaseAuth.instance.currentUser!.uid;
-                                  FirebaseFirestore.instance
-                                      .collection("activity")
-                                      .doc(uid)
-                                      .collection('favorites list')
-                                      .doc(widget.snap.id)
-                                      .set({
-                                    "activityName": widget.snap['activityName'],
-                                    "date": widget.snap['date'],
-                                    "time": widget.snap['time'],
-                                    "place": widget.snap['place'],
-                                    "location": widget.snap['location'],
-                                    "peopleLimit": widget.snap['peopleLimit'],
-                                    "detail": widget.snap['detail'],
-                                    "uid": widget.snap['uid'],
-                                    "timeStamp": widget.snap['timeStamp'],
-                                    "postid": widget.snap['postid'],
-                                  });
-                                }
-                                if (_isFavorite == false) {
-                                  _delete(widget.snap.id);
-                                }
-                              }),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 0),
-                          child: SizedBox(
-                            child: IconButton(
-                              icon: const Icon(
-                                Icons.more_horiz,
-                                color: unselected,
-                                size: 30,
-                              ),
-                              onPressed: (() {
-                                //add action
-                                _showModalBottomSheet(
-                                    context, currentUser['uid']);
-                              }),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Text.rich(
-                      TextSpan(
-                        children: <InlineSpan>[
-                          const TextSpan(
-                            text: '',
-                          ),
-                          const WidgetSpan(
-                            child: Icon(
-                              Icons.calendar_today,
-                            ),
-                          ),
-                          TextSpan(
-                            text: '\t\t' +
-                                widget.snap['date'] +
-                                '\t(' +
-                                widget.snap['time'] +
-                                ')',
-                            style: const TextStyle(
-                              fontFamily: 'MyCustomFont',
-                              color: unselected,
-                              fontSize: 14,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    Text.rich(
-                      TextSpan(
-                        children: <InlineSpan>[
-                          const TextSpan(
-                            text: '',
-                          ),
-                          const WidgetSpan(
-                            child: Icon(
-                              Icons.maps_home_work,
-                            ),
-                          ),
-                          TextSpan(
-                            text: '\t\t' + widget.snap['place'],
-                            style: const TextStyle(
-                              fontFamily: 'MyCustomFont',
-                              color: unselected,
-                              fontSize: 14,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      height: MediaQuery.of(context).size.height * 0.05,
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.place,
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              Uri uri = Uri.parse(widget.snap['location']);
-                              _launchUrl(uri);
-                            },
-                            child: Text(
-                              'Location',
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: purple,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Text.rich(
-                      TextSpan(
-                        children: <InlineSpan>[
-                          const TextSpan(
-                            text: '',
-                          ),
-                          const WidgetSpan(
-                            child: Icon(
-                              Icons.person_outline,
-                            ),
-                          ),
-                          TextSpan(
-                            text: '\t\t' + '0 / ' + widget.snap['peopleLimit'],
-                            style: const TextStyle(
-                              fontFamily: 'MyCustomFont',
-                              color: unselected,
-                              fontSize: 14,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Row(
-                      children: [
-                        SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Padding(
-                            padding: EdgeInsets.all(1),
-                            child: SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.6,
-                              child: const Text(
-                                'add tag+',
-                                style: TextStyle(
-                                  fontFamily: 'MyCustomFont',
-                                  color: unselected,
-                                  fontSize: 14,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    Comment(postid: widget.snap),
-                              ),
-                            );
-                          },
-                          child: const Text(
-                            'See More >>',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontFamily: 'MyCustomFont',
-                              color: green,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
   Future<void> _launchUrl(Uri url) async {
     try {
       if (await canLaunchUrl(url)) {
@@ -461,5 +386,26 @@ class _PostCardState extends State<CardWidget> {
         .map((MapEntry<String, String> e) =>
             '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}')
         .join('&');
+  }
+
+  Future<String> likePost(String postId, String uid, List likes) async {
+    String res = "Some error occurred";
+    try {
+      if (likes.contains(uid)) {
+        // if the likes list contains the user uid, we need to remove it
+        _firestore.collection('post').doc(postId).update({
+          'likes': FieldValue.arrayRemove([uid])
+        });
+      } else {
+        // else we need to add uid to the likes array
+        _firestore.collection('post').doc(postId).update({
+          'likes': FieldValue.arrayUnion([uid])
+        });
+      }
+      res = 'success';
+    } catch (err) {
+      res = err.toString();
+    }
+    return res;
   }
 }

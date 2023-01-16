@@ -13,45 +13,51 @@ class FavoritePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: mobileBackgroundColor,
       body: PostCard(),
     );
   }
 }
 
 class PostCard extends StatelessWidget {
-  final CollectionReference _activity =
-      FirebaseFirestore.instance.collection('activity');
-
-  Future<void> _delete(String usersId) async {
-    await _activity
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .collection('favorites list')
-        .doc(usersId)
-        .delete();
-  }
+  final _post = FirebaseFirestore.instance.collection('post');
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<QuerySnapshot>(
-      stream: _activity
-          .doc(FirebaseAuth.instance.currentUser!.uid)
-          .collection('favorites list')
-          .snapshots(),
-      builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
-        //onRefresh:_onRefresh;
-
-        if (streamSnapshot.hasData) {
-          return ListView.builder(
-              itemCount: streamSnapshot.data!.docs.length,
-              itemBuilder: (context, index) => Container(
-                    child: CardWidget(
-                        snap: (streamSnapshot.data! as dynamic).docs[index]),
-                  ));
-        }
-        return Container(
-          child: const Text('no data yet'),
-        );
-      },
+    return Container(
+      color: mobileBackgroundColor,
+      child: StreamBuilder<QuerySnapshot>(
+        stream: FirebaseFirestore.instance
+            .collection('post')
+            .where('likes',
+                arrayContains: FirebaseAuth.instance.currentUser!.uid)
+            .orderBy('timeStamp', descending: true)
+            .snapshots(),
+        builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+          if (streamSnapshot.hasData) {
+            return ListView.builder(
+                itemCount: streamSnapshot.data!.docs.length,
+                itemBuilder: (context, index) => Container(
+                      child: CardWidget(
+                          snap: (streamSnapshot.data! as dynamic).docs[index]),
+                    ));
+          }
+          return Container(
+            child: Center(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: const <Widget>[
+                  SizedBox(
+                    height: 30.0,
+                    width: 30.0,
+                    child: CircularProgressIndicator(),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
     );
   }
 }

@@ -430,21 +430,22 @@ class _ProfilePageState extends State<ProfilePage> {
                                   ],
                                 ),
                               ),
-                              SizedBox(
-                                height: MediaQuery.of(context).size.height *
-                                    0.45, //0.613
-                                child: TabBarView(children: <Widget>[
-                                  Container(
-                                    child: FutureBuilder<QuerySnapshot>(
-                                      future: FirebaseFirestore.instance
-                                          .collection('post')
-                                          .where('uid', isEqualTo: widget.uid)
-                                          .orderBy('timeStamp',
-                                              descending: true)
-                                          .get(),
-                                      builder: ((context, snapshot) {
-                                        if (snapshot.hasData) {
-                                          return ListView.builder(
+                            ),
+                            SizedBox(
+                              height:
+                                  MediaQuery.of(context).size.height * 0.613,
+                              child: TabBarView(children: <Widget>[
+                                Container(
+                                  child: StreamBuilder<QuerySnapshot>(
+                                    stream: FirebaseFirestore.instance
+                                        .collection('post')
+                                        .where('uid', isEqualTo: widget.uid)
+                                        .orderBy('timeStamp', descending: true)
+                                        .snapshots(),
+                                    builder: ((context,
+                                        AsyncSnapshot<QuerySnapshot> snapshot) {
+                                      if (snapshot.hasData) {
+                                        return ListView.builder(
                                             itemCount:
                                                 (snapshot.data! as dynamic)
                                                     .docs
