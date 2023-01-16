@@ -213,6 +213,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                           'time': _time.text,
                           'detail': _detail.text,
                           'peopleLimit': _peopleLimit.text,
+                          'like': false,
                           'timeStamp': FieldValue.serverTimestamp(),
                           'uid': FirebaseAuth.instance.currentUser?.uid,
                         }).whenComplete(() {
