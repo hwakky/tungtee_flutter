@@ -81,118 +81,6 @@ class _PostCardState extends State<CardWidget> {
     });
   }
 
-  void _showModalBottomSheet(BuildContext context, uid) {
-    showModalBottomSheet(
-      useRootNavigator: true,
-      context: context,
-      builder: (BuildContext context) {
-        return Container(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              if (postData['uid'].toString() == uid)
-                ListTile(
-                  contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
-                  title: Center(
-                    child: Text(
-                      'Edit Activity',
-                      style:
-                          TextStyle(fontFamily: 'MyCustomFont', fontSize: 20),
-                    ),
-                  ),
-                  onTap: () {
-                    Navigator.of(context, rootNavigator: true)
-                        .pushAndRemoveUntil(
-                      MaterialPageRoute(
-                        builder: (BuildContext context) {
-                          return EditAct(
-                            postid: widget.snap['postid'],
-                          );
-                        },
-                      ),
-                      (_) => false,
-                    );
-                  },
-                ),
-              if (postData['uid'].toString() == uid)
-                ListTile(
-                  contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
-                  title: const Center(
-                    child: Text(
-                      'Delete',
-                      style: TextStyle(
-                          fontFamily: 'MyCustomFont',
-                          fontSize: 20,
-                          color: redColor),
-                    ),
-                  ),
-                  onTap: () {
-                    showDialog(
-                        context: context,
-                        builder: (context) => AlertDialog(
-                              title: Text('Delete Activity'),
-                              content: Text(
-                                  'Are you sure you want to permanently\nremove this Activity from Tungtee?'),
-                              actions: [
-                                TextButton(
-                                    onPressed: () => Navigator.pop(context),
-                                    child: Text('Cancle')),
-                                TextButton(
-                                    onPressed: (() {
-                                      FirebaseFirestore.instance
-                                          .collection('post')
-                                          .doc(widget.snap['postid'])
-                                          .delete()
-                                          .whenComplete(() {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => MyHomePage(),
-                                          ),
-                                        );
-                                      });
-                                    }),
-                                    child: Text('Delete'))
-                              ],
-                            ));
-                  },
-                ),
-              if (postData['uid'].toString() != uid)
-                ListTile(
-                  contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
-                  title: const Center(
-                      child: Text(
-                    'Report',
-                    style: TextStyle(
-                        color: redColor,
-                        fontFamily: 'MyCustomFont',
-                        fontSize: 20),
-                  )),
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                ),
-              ListTile(
-                contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
-                title: const Center(
-                    child: Text(
-                  'Cancel',
-                  style: TextStyle(
-                      color: redColor,
-                      fontFamily: 'MyCustomFont',
-                      fontSize: 20),
-                )),
-                onTap: () {
-                  Navigator.pop(context);
-                },
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final CollectionReference _post =
       FirebaseFirestore.instance.collection('post');
@@ -430,6 +318,118 @@ class _PostCardState extends State<CardWidget> {
           ),
         ),
       ),
+    );
+  }
+
+  void _showModalBottomSheet(BuildContext context, uid) {
+    showModalBottomSheet(
+      useRootNavigator: true,
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              if (postData['uid'].toString() == uid)
+                ListTile(
+                  contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
+                  title: Center(
+                    child: Text(
+                      'Edit Activity',
+                      style:
+                          TextStyle(fontFamily: 'MyCustomFont', fontSize: 20),
+                    ),
+                  ),
+                  onTap: () {
+                    Navigator.of(context, rootNavigator: true)
+                        .pushAndRemoveUntil(
+                      MaterialPageRoute(
+                        builder: (BuildContext context) {
+                          return EditAct(
+                            postid: widget.snap['postid'],
+                          );
+                        },
+                      ),
+                      (_) => false,
+                    );
+                  },
+                ),
+              if (postData['uid'].toString() == uid)
+                ListTile(
+                  contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
+                  title: const Center(
+                    child: Text(
+                      'Delete',
+                      style: TextStyle(
+                          fontFamily: 'MyCustomFont',
+                          fontSize: 20,
+                          color: redColor),
+                    ),
+                  ),
+                  onTap: () {
+                    showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                              title: Text('Delete Activity'),
+                              content: Text(
+                                  'Are you sure you want to permanently\nremove this Activity from Tungtee?'),
+                              actions: [
+                                TextButton(
+                                    onPressed: () => Navigator.pop(context),
+                                    child: Text('Cancle')),
+                                TextButton(
+                                    onPressed: (() {
+                                      FirebaseFirestore.instance
+                                          .collection('post')
+                                          .doc(widget.snap['postid'])
+                                          .delete()
+                                          .whenComplete(() {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => MyHomePage(),
+                                          ),
+                                        );
+                                      });
+                                    }),
+                                    child: Text('Delete'))
+                              ],
+                            ));
+                  },
+                ),
+              if (postData['uid'].toString() != uid)
+                ListTile(
+                  contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
+                  title: const Center(
+                      child: Text(
+                    'Report',
+                    style: TextStyle(
+                        color: redColor,
+                        fontFamily: 'MyCustomFont',
+                        fontSize: 20),
+                  )),
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                ),
+              ListTile(
+                contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
+                title: const Center(
+                    child: Text(
+                  'Cancel',
+                  style: TextStyle(
+                      color: redColor,
+                      fontFamily: 'MyCustomFont',
+                      fontSize: 20),
+                )),
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 

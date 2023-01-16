@@ -141,11 +141,9 @@ class SearchForm extends StatelessWidget {
           //),
         ];
       },
-
       body: SafeArea(
         child: PostCard(),
       ),
-
     );
   }
 }
@@ -153,16 +151,6 @@ class SearchForm extends StatelessWidget {
 class PostCard extends StatelessWidget {
   final CollectionReference _post =
       FirebaseFirestore.instance.collection('post');
-  final CollectionReference _favorites =
-      FirebaseFirestore.instance.collection('favorites');
-
-  Future<void> _delete(String usersId) async {
-    await _favorites
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .collection('favorites list')
-        .doc(usersId)
-        .delete();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -190,7 +178,6 @@ class PostCard extends StatelessWidget {
               itemCount: (snapshot.data! as dynamic).docs.length,
               itemBuilder: (context, index) => Container(
                     child: CardWidget(
-                      
                         snap: (snapshot.data! as dynamic).docs[index]),
                   ));
         });
