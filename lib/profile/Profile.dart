@@ -10,7 +10,7 @@ import 'package:tangteevs/utils/showSnackbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:age_calculator/age_calculator.dart';
-
+import '../admin/home.dart';
 import '../regis,login/Login.dart';
 import '../widgets/PostCard.dart';
 import '../widgets/custom_textfield.dart';
@@ -89,6 +89,28 @@ class _ProfilePageState extends State<ProfilePage> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
+              if (userData['admin'] == true)
+                ListTile(
+                  contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
+                  title: Center(
+                    child: Text(
+                      'Go to admin page',
+                      style:
+                          TextStyle(fontFamily: 'MyCustomFont', fontSize: 20),
+                    ),
+                  ),
+                  onTap: () {
+                    Navigator.of(context, rootNavigator: true)
+                        .pushAndRemoveUntil(
+                      MaterialPageRoute(
+                        builder: (BuildContext context) {
+                          return const AdminHomePage();
+                        },
+                      ),
+                      (_) => false,
+                    );
+                  },
+                ),
               ListTile(
                 contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
                 title: Center(
@@ -182,181 +204,108 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ],
                 ),
-                body: ListView(children: [
-                  Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            CircleAvatar(
-                              backgroundColor: green,
-                              backgroundImage: NetworkImage(
-                                userData['profile'].toString(),
+                body: SafeArea(
+                  child: ListView(children: [
+                    Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              CircleAvatar(
+                                backgroundColor: green,
+                                backgroundImage: NetworkImage(
+                                  userData['profile'].toString(),
+                                ),
+                                radius: 60,
                               ),
-                              radius: 60,
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: Column(
-                                children: [
-                                  Container(
-                                    alignment: Alignment.centerLeft,
-                                    padding: const EdgeInsets.only(
-                                      top: 1,
-                                      left: 30,
-                                    ),
-                                    child: Text.rich(
-                                      TextSpan(
-                                        text: 'อายุ ' +
-                                            duration.years.toString() +
-                                            ' ปี',
-                                        style: const TextStyle(
-                                          fontFamily: 'MyCustomFont',
-                                          color: unselected,
-                                          fontSize: 16,
-                                        ),
+                              Expanded(
+                                flex: 1,
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      alignment: Alignment.centerLeft,
+                                      padding: const EdgeInsets.only(
+                                        top: 1,
+                                        left: 30,
                                       ),
-                                    ),
-                                  ),
-                                  Container(
-                                    alignment: Alignment.centerLeft,
-                                    padding: const EdgeInsets.only(
-                                      top: 10,
-                                      left: 30,
-                                    ),
-                                    child: Text.rich(
-                                      TextSpan(
-                                        text: 'เพศ ' +
-                                            userData['gender'].toString(),
-                                        style: const TextStyle(
-                                          fontFamily: 'MyCustomFont',
-                                          color: unselected,
-                                          fontSize: 16,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  Container(
-                                    alignment: Alignment.centerLeft,
-                                    padding: const EdgeInsets.only(
-                                      top: 10,
-                                      left: 30,
-                                    ),
-                                    child: Row(
-                                      children: [
-                                        Text(
-                                          userData['bio'].toString(),
+                                      child: Text.rich(
+                                        TextSpan(
+                                          text: 'อายุ ' +
+                                              duration.years.toString() +
+                                              ' ปี',
                                           style: const TextStyle(
-                                            fontSize: 16,
-                                            color: unselected,
                                             fontFamily: 'MyCustomFont',
+                                            color: unselected,
+                                            fontSize: 16,
                                           ),
                                         ),
-                                      ],
+                                      ),
                                     ),
-                                  ),
-                                  Container(
-                                    alignment: Alignment.centerLeft,
-                                    padding: const EdgeInsets.only(
-                                      top: 10,
-                                      left: 30,
+                                    Container(
+                                      alignment: Alignment.centerLeft,
+                                      padding: const EdgeInsets.only(
+                                        top: 10,
+                                        left: 30,
+                                      ),
+                                      child: Text.rich(
+                                        TextSpan(
+                                          text: 'เพศ ' +
+                                              userData['gender'].toString(),
+                                          style: const TextStyle(
+                                            fontFamily: 'MyCustomFont',
+                                            color: unselected,
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                      ),
                                     ),
-                                    child: (userData['instagram'].toString() !=
-                                            '')
-                                        ? Row(
-                                            children: [
-                                              SizedBox(
-                                                width: MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    0.1,
-                                                height: MediaQuery.of(context)
-                                                        .size
-                                                        .height *
-                                                    0.04,
-                                                child: MaterialButton(
-                                                  onPressed: () {
-                                                    Uri uri = Uri.parse(
-                                                        "https://www.instagram.com/" +
-                                                            userData[
-                                                                    'instagram']
-                                                                .toString()); //https://www.instagram.com/
-                                                    _launchUrl(uri);
-                                                  },
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                    left: 0,
-                                                  ),
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            20),
-                                                  ),
-                                                  child: Image.asset(
-                                                      'assets/images/instagram.png'),
-                                                ),
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                  left: 20,
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                width: MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    0.1,
-                                                height: MediaQuery.of(context)
-                                                        .size
-                                                        .height *
-                                                    0.04,
-                                                child: (userData['facebook']
-                                                            .toString() !=
-                                                        '')
-                                                    ? MaterialButton(
-                                                        onPressed: () {
-                                                          Uri uri = Uri.parse(
-                                                              userData[
-                                                                      'facebook']
-                                                                  .toString()); //https://www.facebook.com/
-                                                          _launchUrl(uri);
-                                                        },
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .only(
-                                                          left: 0,
-                                                        ),
-                                                        shape:
-                                                            RoundedRectangleBorder(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(20),
-                                                        ),
-                                                        child: Image.asset(
-                                                            'assets/images/facebook.png'),
-                                                      )
-                                                    : Container(),
-                                              ),
-                                            ],
-                                          )
-                                        : SizedBox(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.1,
-                                            height: MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.04,
-                                            child: (userData['facebook']
-                                                        .toString() !=
-                                                    '')
-                                                ? MaterialButton(
+                                    Container(
+                                      alignment: Alignment.centerLeft,
+                                      padding: const EdgeInsets.only(
+                                        top: 10,
+                                        left: 30,
+                                      ),
+                                      child: Row(
+                                        children: [
+                                          Text(
+                                            userData['bio'].toString(),
+                                            style: const TextStyle(
+                                              fontSize: 16,
+                                              color: unselected,
+                                              fontFamily: 'MyCustomFont',
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Container(
+                                      alignment: Alignment.centerLeft,
+                                      padding: const EdgeInsets.only(
+                                        top: 10,
+                                        left: 30,
+                                      ),
+                                      child: (userData['instagram']
+                                                  .toString() !=
+                                              '')
+                                          ? Row(
+                                              children: [
+                                                SizedBox(
+                                                  width: MediaQuery.of(context)
+                                                          .size
+                                                          .width *
+                                                      0.1,
+                                                  height: MediaQuery.of(context)
+                                                          .size
+                                                          .height *
+                                                      0.04,
+                                                  child: MaterialButton(
                                                     onPressed: () {
-                                                      Uri uri = Uri.parse(userData[
-                                                              'facebook']
-                                                          .toString()); //https://www.facebook.com/
+                                                      Uri uri = Uri.parse(
+                                                          "https://www.instagram.com/" +
+                                                              userData[
+                                                                      'instagram']
+                                                                  .toString()); //https://www.instagram.com/
                                                       _launchUrl(uri);
                                                     },
                                                     padding:
@@ -370,45 +319,116 @@ class _ProfilePageState extends State<ProfilePage> {
                                                               20),
                                                     ),
                                                     child: Image.asset(
-                                                        'assets/images/facebook.png'),
-                                                  )
-                                                : Container(),
-                                          ),
-                                  ),
-                                ],
+                                                        'assets/images/instagram.png'),
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                    left: 20,
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  width: MediaQuery.of(context)
+                                                          .size
+                                                          .width *
+                                                      0.1,
+                                                  height: MediaQuery.of(context)
+                                                          .size
+                                                          .height *
+                                                      0.04,
+                                                  child: (userData['facebook']
+                                                              .toString() !=
+                                                          '')
+                                                      ? MaterialButton(
+                                                          onPressed: () {
+                                                            Uri uri = Uri.parse(
+                                                                userData[
+                                                                        'facebook']
+                                                                    .toString()); //https://www.facebook.com/
+                                                            _launchUrl(uri);
+                                                          },
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .only(
+                                                            left: 0,
+                                                          ),
+                                                          shape:
+                                                              RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        20),
+                                                          ),
+                                                          child: Image.asset(
+                                                              'assets/images/facebook.png'),
+                                                        )
+                                                      : Container(),
+                                                ),
+                                              ],
+                                            )
+                                          : SizedBox(
+                                              child: (userData['facebook']
+                                                          .toString() !=
+                                                      '')
+                                                  ? MaterialButton(
+                                                      onPressed: () {
+                                                        Uri uri = Uri.parse(
+                                                            userData['facebook']
+                                                                .toString()); //https://www.facebook.com/
+                                                        _launchUrl(uri);
+                                                      },
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                        left: 0,
+                                                      ),
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(20),
+                                                      ),
+                                                      child: Image.asset(
+                                                          'assets/images/facebook.png'),
+                                                    )
+                                                  : Container(),
+                                            ),
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                      ],
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  SingleChildScrollView(
-                    child: DefaultTabController(
-                      length: 2,
-                      initialIndex: 0,
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: <Widget>[
-                            Container(
-                              child: const TabBar(
-                                indicatorColor: green,
-                                labelColor: green,
-                                labelPadding:
-                                    EdgeInsets.symmetric(horizontal: 60),
-                                unselectedLabelColor: unselected,
-                                labelStyle: TextStyle(
-                                    fontSize: 20.0,
-                                    fontFamily:
-                                        'MyCustomFont'), //For Selected tab
-                                unselectedLabelStyle: TextStyle(
-                                    fontSize: 20.0,
-                                    fontFamily:
-                                        'MyCustomFont'), //For Un-selected Tabs
-                                tabs: [
-                                  Tab(text: 'Post'),
-                                  Tab(text: 'Review'),
-                                ],
+                    SingleChildScrollView(
+                      child: DefaultTabController(
+                        length: 2,
+                        initialIndex: 0,
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: <Widget>[
+                              Container(
+                                child: const TabBar(
+                                  indicatorColor: green,
+                                  labelColor: green,
+                                  labelPadding:
+                                      EdgeInsets.symmetric(horizontal: 60),
+                                  unselectedLabelColor: unselected,
+                                  labelStyle: TextStyle(
+                                      fontSize: 20.0,
+                                      fontFamily:
+                                          'MyCustomFont'), //For Selected tab
+                                  unselectedLabelStyle: TextStyle(
+                                      fontSize: 20.0,
+                                      fontFamily:
+                                          'MyCustomFont'), //For Un-selected Tabs
+                                  tabs: [
+                                    Tab(text: 'Post'),
+                                    Tab(text: 'Review'),
+                                  ],
+                                ),
                               ),
                             ),
                             SizedBox(
@@ -432,45 +452,51 @@ class _ProfilePageState extends State<ProfilePage> {
                                                     .length,
                                             itemBuilder: (context, index) =>
                                                 Container(
-                                                  child: CardWidget(
-                                                      snap: (snapshot.data!
-                                                              as dynamic)
-                                                          .docs[index]),
-                                                ));
-                                      }
-                                      return Container(
-                                        child: Center(
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: const <Widget>[
-                                              SizedBox(
-                                                height: 30.0,
-                                                width: 30.0,
-                                                child:
-                                                    CircularProgressIndicator(),
+                                              child: CardWidget(
+                                                snap:
+                                                    (snapshot.data! as dynamic)
+                                                        .docs[index],
                                               ),
-                                            ],
+                                            ),
+                                          );
+                                        }
+                                        return Container(
+                                          child: Center(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: const <Widget>[
+                                                SizedBox(
+                                                  height: 30.0,
+                                                  width: 30.0,
+                                                  child:
+                                                      CircularProgressIndicator(),
+                                                ),
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                      );
-                                    }),
+                                        );
+                                      }),
+                                    ),
                                   ),
-                                ),
-                                Container(
-                                  child: const Center(
-                                    child: Text('Review',
+                                  Container(
+                                    child: const Center(
+                                      child: Text(
+                                        'Review',
                                         style: TextStyle(
-                                            fontSize: 22,
-                                            fontWeight: FontWeight.bold)),
+                                          fontSize: 22,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
                                   ),
-                                ),
-                              ]),
-                            )
-                          ]),
+                                ]),
+                              )
+                            ]),
+                      ),
                     ),
-                  ),
-                ]),
+                  ]),
+                ),
               ),
             ),
           );

@@ -492,7 +492,7 @@ class _MyCommentState extends State<Comment> {
                                                       .currentUser!
                                                       .uid;
                                                   FirebaseFirestore.instance
-                                                      .collection("waiting")
+                                                      .collection("activity")
                                                       .doc(uid)
                                                       .collection(
                                                           'waiting list')

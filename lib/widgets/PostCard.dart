@@ -96,15 +96,16 @@ class _PostCardState extends State<CardWidget> {
   }
 
   Widget build(BuildContext context) {
-    return Container(
-      height: MediaQuery.of(context).size.height * 0.31,
-      child: Card(
-        clipBehavior: Clip.hardEdge,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15.0),
-          side: const BorderSide(
-            color: unselected,
-            width: 2,
+    return SafeArea(
+      child: Container(
+        child: Card(
+          clipBehavior: Clip.hardEdge,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15.0),
+            side: const BorderSide(
+              color: unselected,
+              width: 2,
+            ),
           ),
         ),
         margin: const EdgeInsets.all(15),
@@ -122,7 +123,6 @@ class _PostCardState extends State<CardWidget> {
                         width: MediaQuery.of(context).size.width * 0.6,
                         child: Text(widget.snap['activityName'],
                             style: const TextStyle(
-                              fontSize: 20,
                               fontFamily: 'MyCustomFont',
                               color: unselected,
                               fontWeight: FontWeight.bold,
@@ -156,156 +156,99 @@ class _PostCardState extends State<CardWidget> {
                             icon: const Icon(
                               Icons.more_horiz,
                               color: unselected,
-                              size: 30,
-                            ),
-                            onPressed: (() {
-                              //add action
-                              _showModalBottomSheet(
-                                  context, currentUser['uid']);
-                            }),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Text.rich(
-                    TextSpan(
-                      children: <InlineSpan>[
-                        const TextSpan(
-                          text: '',
-                        ),
-                        const WidgetSpan(
-                          child: Icon(
-                            Icons.calendar_today,
-                          ),
-                        ),
-                        TextSpan(
-                          text: '\t\t' +
-                              widget.snap['date'] +
-                              '\t(' +
-                              widget.snap['time'] +
-                              ')',
-                          style: const TextStyle(
-                            fontFamily: 'MyCustomFont',
-                            color: unselected,
-                            fontSize: 14,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  Text.rich(
-                    TextSpan(
-                      children: <InlineSpan>[
-                        const TextSpan(
-                          text: '',
-                        ),
-                        const WidgetSpan(
-                          child: Icon(
-                            Icons.maps_home_work,
-                          ),
-                        ),
-                        TextSpan(
-                          text: '\t\t' + widget.snap['place'],
-                          style: const TextStyle(
-                            fontFamily: 'MyCustomFont',
-                            color: unselected,
-                            fontSize: 14,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    height: MediaQuery.of(context).size.height * 0.05,
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.place,
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            Uri uri = Uri.parse(widget.snap['location']);
-                            _launchUrl(uri);
-                          },
-                          child: Text(
-                            'Location',
-                            style: TextStyle(
                               fontSize: 14,
-                              color: purple,
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                  Text.rich(
-                    TextSpan(
-                      children: <InlineSpan>[
-                        const TextSpan(
-                          text: '',
-                        ),
-                        const WidgetSpan(
-                          child: Icon(
-                            Icons.person_outline,
-                            size: 30,
+                    Container(
+                      height: MediaQuery.of(context).size.height * 0.05,
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.place,
                           ),
-                        ),
-                        TextSpan(
-                          text: '\t\t' + '0 / ' + widget.snap['peopleLimit'],
-                          style: const TextStyle(
-                            fontFamily: 'MyCustomFont',
-                            color: unselected,
-                            fontSize: 14,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Row(
-                    children: [
-                      SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Padding(
-                          padding: EdgeInsets.all(1),
-                          child: SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.6,
-                            child: const Text(
-                              'add tag+',
+                          TextButton(
+                            onPressed: () {
+                              Uri uri = Uri.parse(widget.snap['location']);
+                              _launchUrl(uri);
+                            },
+                            child: Text(
+                              'Location',
                               style: TextStyle(
-                                fontFamily: 'MyCustomFont',
-                                color: unselected,
                                 fontSize: 14,
+                                color: purple,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Text.rich(
+                      TextSpan(
+                        children: <InlineSpan>[
+                          const TextSpan(
+                            text: '',
+                          ),
+                          const WidgetSpan(
+                            child: Icon(
+                              Icons.person_outline,
+                            ),
+                          ),
+                          TextSpan(
+                            text: '\t\t' + '0 / ' + widget.snap['peopleLimit'],
+                            style: const TextStyle(
+                              fontFamily: 'MyCustomFont',
+                              color: unselected,
+                              fontSize: 14,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Padding(
+                            padding: EdgeInsets.all(1),
+                            child: SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.6,
+                              child: const Text(
+                                'add tag+',
+                                style: TextStyle(
+                                  fontFamily: 'MyCustomFont',
+                                  color: unselected,
+                                  fontSize: 14,
+                                ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  Comment(postid: widget.snap),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    Comment(postid: widget.snap),
+                              ),
+                            );
+                          },
+                          child: const Text(
+                            'See More >>',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontFamily: 'MyCustomFont',
+                              color: green,
+                              fontWeight: FontWeight.bold,
                             ),
-                          );
-                        },
-                        child: const Text(
-                          'See More >>',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontFamily: 'MyCustomFont',
-                            color: green,
-                            fontWeight: FontWeight.bold,
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

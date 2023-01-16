@@ -141,7 +141,11 @@ class SearchForm extends StatelessWidget {
           //),
         ];
       },
-      body: PostCard(),
+
+      body: SafeArea(
+        child: PostCard(),
+      ),
+
     );
   }
 }
@@ -186,6 +190,7 @@ class PostCard extends StatelessWidget {
               itemCount: (snapshot.data! as dynamic).docs.length,
               itemBuilder: (context, index) => Container(
                     child: CardWidget(
+                      
                         snap: (snapshot.data! as dynamic).docs[index]),
                   ));
         });

@@ -81,8 +81,8 @@ class History extends StatelessWidget {
 class Waiting extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: WaitingPage(),
+    return Scaffold(
+      body: WaitingCard(),
     );
   }
 }
