@@ -19,11 +19,11 @@ class FavoritePage extends StatelessWidget {
 }
 
 class PostCard extends StatelessWidget {
-  final CollectionReference _favorites =
-      FirebaseFirestore.instance.collection('favorites');
+  final CollectionReference _activity =
+      FirebaseFirestore.instance.collection('activity');
 
   Future<void> _delete(String usersId) async {
-    await _favorites
+    await _activity
         .doc(FirebaseAuth.instance.currentUser!.uid)
         .collection('favorites list')
         .doc(usersId)
@@ -33,7 +33,7 @@ class PostCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: _favorites
+      stream: _activity
           .doc(FirebaseAuth.instance.currentUser!.uid)
           .collection('favorites list')
           .snapshots(),
@@ -49,18 +49,7 @@ class PostCard extends StatelessWidget {
                   ));
         }
         return Container(
-          child: Center(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: const <Widget>[
-                SizedBox(
-                  height: 30.0,
-                  width: 30.0,
-                  child: CircularProgressIndicator(),
-                ),
-              ],
-            ),
-          ),
+          child: const Text('no data yet'),
         );
       },
     );

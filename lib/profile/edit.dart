@@ -88,6 +88,8 @@ class _EditPageState extends State<EditPage> {
         : DismissKeyboard(
             child: MaterialApp(
               home: Scaffold(
+                bottomNavigationBar: null,
+                backgroundColor: mobileBackgroundColor,
                 appBar: AppBar(
                   backgroundColor: mobileBackgroundColor,
                   leading: IconButton(
@@ -127,8 +129,7 @@ class _EditPageState extends State<EditPage> {
                         child: CircularProgressIndicator(
                         backgroundColor: mobileBackgroundColor,
                       ))
-                    : Container(
-                        color: mobileBackgroundColor,
+                    : SafeArea(
                         child: SingleChildScrollView(
                           child: Form(
                             key: _formKey,
@@ -139,7 +140,7 @@ class _EditPageState extends State<EditPage> {
                               children: [
                                 SizedBox(
                                   height:
-                                      MediaQuery.of(context).size.height * 0.02,
+                                      MediaQuery.of(context).size.height * 0.04,
                                 ),
                                 Container(
                                   child: InkWell(
@@ -199,8 +200,9 @@ class _EditPageState extends State<EditPage> {
                                     ),
                                   ),
                                 ),
-                                const SizedBox(
-                                  height: 15,
+                                SizedBox(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.05,
                                 ),
                                 Center(
                                   child: Container(
@@ -314,11 +316,6 @@ class _EditPageState extends State<EditPage> {
                                   onPressed: () {
                                     Updata();
                                   },
-                                ),
-                                Container(
-                                  color: mobileBackgroundColor,
-                                  height: MediaQuery.of(context).size.height *
-                                      0.231,
                                 ),
                               ],
                             ),
