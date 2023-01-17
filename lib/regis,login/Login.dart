@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tangteevs/HomePage.dart';
+import 'package:tangteevs/landing.dart';
 import 'package:tangteevs/regis,login/Register.dart';
 import 'package:tangteevs/services/auth_service.dart';
 import 'package:tangteevs/services/database_service.dart';
@@ -47,6 +48,8 @@ class _LoginState extends State<Login> {
       backgroundColor: lightPurple,
       extendBodyBehindAppBar: false,
       appBar: AppBar(
+        leading: IconButton(
+            onPressed: () => LandingPage(), icon: Icon(Icons.arrow_back_ios)),
         toolbarHeight: 171,
         flexibleSpace: Container(
           decoration: const BoxDecoration(
@@ -71,15 +74,6 @@ class _LoginState extends State<Login> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    // AppBar(
-                    //  centerTitle: true,
-                    //   flexibleSpace: Container(
-                    //       decoration: const BoxDecoration(
-                    //          image: DecorationImage(
-                    //    image: AssetImage("assets/login.png"),
-                    //   )))),
-                    //Image.asset("assets/login.png"),
-
                     const Text(
                       "WELCOME BACK",
                       style: TextStyle(
@@ -131,7 +125,6 @@ class _LoginState extends State<Login> {
                     const SizedBox(
                       height: 25,
                     ),
-
                     Container(
                       alignment: Alignment.center,
                       width: 360,
@@ -178,13 +171,6 @@ class _LoginState extends State<Login> {
                     const SizedBox(
                       height: 50,
                     ),
-                    //ElevatedButton.icon(
-                    // onPressed: () {
-                    //   login();
-                    // },
-                    // icon: const Icon(Icons.lock_open),
-                    // label: const Text('Login'),
-                    // ),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                           backgroundColor: mobileBackgroundColor,
@@ -204,12 +190,6 @@ class _LoginState extends State<Login> {
                         login();
                       },
                     ),
-
-                    //TextButton(
-                    // onPressed: () =>
-                    //    Navigator.pushNamed(context, '/register'),
-                    // child: const Text('ยังไม่มีบัญชีหรอ? สมัครใช้งาน'),
-                    // ),
                     const SizedBox(
                       height: 15,
                     ),

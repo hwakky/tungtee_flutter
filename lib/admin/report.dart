@@ -6,7 +6,7 @@ class ReportPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: const Center(
-        child: Text('Report',
+        child: Text('Reporty',
             style: TextStyle(
                 fontSize: 22, fontWeight: FontWeight.bold, color: purple)),
       ),

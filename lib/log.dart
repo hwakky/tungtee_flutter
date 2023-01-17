@@ -45,7 +45,7 @@ class _LogState extends State<Log> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: isLogin ? user : const LandingPage(),
+      home: isLogin ? admin : const LandingPage(),
     );
   }
 }

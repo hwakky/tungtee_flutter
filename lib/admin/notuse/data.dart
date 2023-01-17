@@ -3,22 +3,20 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../utils/color.dart';
 import '../../widgets/custom_textfield.dart';
 
-class DataPage extends StatefulWidget {
-  const DataPage({Key? key}) : super(key: key);
+class DataTagPage extends StatefulWidget {
+  const DataTagPage({Key? key}) : super(key: key);
 
   @override
-  _DataPageState createState() => _DataPageState();
+  _DataTagPageState createState() => _DataTagPageState();
 }
 
-class _DataPageState extends State<DataPage> {
+class _DataTagPageState extends State<DataTagPage> {
 // text fields' controllers
-  final TextEditingController _DisplaynameController = TextEditingController();
-  final TextEditingController _idcardController = TextEditingController();
-  final TextEditingController _verifyController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _tagnameController = TextEditingController();
+  final TextEditingController _categoryController = TextEditingController();
 
-  final CollectionReference _users =
-      FirebaseFirestore.instance.collection('users');
+  final CollectionReference _tags =
+      FirebaseFirestore.instance.collection('tags');
 
   Future<void> _create([DocumentSnapshot? documentSnapshot]) async {
     await showModalBottomSheet(
@@ -36,16 +34,12 @@ class _DataPageState extends State<DataPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 TextField(
-                  controller: _DisplaynameController,
-                  decoration: const InputDecoration(labelText: 'Displayname'),
+                  controller: _tagnameController,
+                  decoration: const InputDecoration(labelText: 'Tag'),
                 ),
                 TextField(
-                  keyboardType:
-                      const TextInputType.numberWithOptions(decimal: true),
-                  controller: _emailController,
-                  decoration: const InputDecoration(
-                    labelText: 'email',
-                  ),
+                  controller: _categoryController,
+                  decoration: const InputDecoration(labelText: 'Category'),
                 ),
                 const SizedBox(
                   height: 20,
@@ -53,14 +47,14 @@ class _DataPageState extends State<DataPage> {
                 ElevatedButton(
                   child: const Text('Create'),
                   onPressed: () async {
-                    final String Displayname = _DisplaynameController.text;
-                    final String email = _emailController.text;
-                    if (email != null) {
-                      await _users
-                          .add({"Displayname": Displayname, "email": email});
+                    final String Tagname = _tagnameController.text;
+                    final String category = _categoryController.text;
+                    if (category != null) {
+                      await _tags
+                          .add({"Tagname": Tagname, "category": category});
 
-                      _DisplaynameController.text = '';
-                      _emailController.text = '';
+                      _tagnameController.text = '';
+                      _categoryController.text = '';
                       Navigator.of(context).pop();
                     }
                   },
@@ -73,8 +67,8 @@ class _DataPageState extends State<DataPage> {
 
   Future<void> _update([DocumentSnapshot? documentSnapshot]) async {
     if (documentSnapshot != null) {
-      _idcardController.text = documentSnapshot['idcard'];
-      _verifyController.text = documentSnapshot['verify'].toString();
+      _tagnameController.text = documentSnapshot['Tagname'];
+      _categoryController.text = documentSnapshot['category'];
     }
 
     await showModalBottomSheet(
@@ -102,7 +96,7 @@ class _DataPageState extends State<DataPage> {
                         child: Container(
                             height: 40.0,
                             width: 40.0,
-                            child: Image.network(_idcardController.text,
+                            child: Image.network(_tagnameController.text,
                                 fit: BoxFit.cover))),
                   ),
                 ),
@@ -130,12 +124,12 @@ class _DataPageState extends State<DataPage> {
                       onPressed: () async {
                         const bool verify = true;
                         if (verify != null) {
-                          await _users
+                          await _tags
                               .doc(documentSnapshot!.id)
                               .update({"verify": verify});
-                          _DisplaynameController.text = '';
-                          _emailController.text = '';
-                          nextScreen(context, DataPage());
+                          _tagnameController.text = '';
+                          _categoryController.text = '';
+                          nextScreen(context, DataTagPage());
                         }
                       },
                     ),
@@ -144,12 +138,12 @@ class _DataPageState extends State<DataPage> {
                       onPressed: () async {
                         const bool verify = false;
                         if (verify != null) {
-                          await _users
+                          await _tags
                               .doc(documentSnapshot!.id)
                               .update({"verify": verify});
-                          _DisplaynameController.text = '';
-                          _emailController.text = '';
-                          nextScreen(context, DataPage());
+                          _tagnameController.text = '';
+                          _categoryController.text = '';
+                          nextScreen(context, DataTagPage());
                         }
                       },
                     ),
@@ -162,7 +156,7 @@ class _DataPageState extends State<DataPage> {
   }
 
   Future<void> _delete(String usersId) async {
-    await _users.doc(usersId).delete();
+    await _tags.doc(usersId).delete();
 
     ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('You have successfully deleted a users')));
@@ -172,7 +166,7 @@ class _DataPageState extends State<DataPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: StreamBuilder(
-          stream: _users.where('verify', isEqualTo: true).snapshots(),
+          stream: _tags.where('verify', isEqualTo: true).snapshots(),
           builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
             if (streamSnapshot.hasData) {
               return ListView.builder(
@@ -192,7 +186,8 @@ class _DataPageState extends State<DataPage> {
                             children: [
                               IconButton(
                                   icon: const Icon(Icons.edit),
-                                  onPressed: () => _update(documentSnapshot)),
+                                  onPressed: () {}),
+                              // onPressed: () => _update(documentSnapshot)),
                               IconButton(
                                   icon: const Icon(Icons.delete),
                                   onPressed: () => showDialog(

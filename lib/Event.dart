@@ -34,15 +34,6 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
   final _post = FirebaseFirestore.instance.collection('post').doc();
 
   final _formKey = GlobalKey<FormState>();
-  // late String _activityName;
-  // late String _place;
-  // late String _location;
-  // late DateTime _date;
-  // late TimeOfDay _time;
-  // late String _detail;
-  // late int _peopleLimit;
-  // late final uid = FirebaseAuth.instance.currentUser?.uid;
-
   final _activityName = TextEditingController();
   final _place = TextEditingController();
   final _location = TextEditingController();
@@ -78,9 +69,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                   }
                   return null;
                 },
-                //onSaved: (value) => _activityName = value!,
               ),
-
               TextFormField(
                 controller: _place,
                 decoration: InputDecoration(labelText: 'Place'),
@@ -90,11 +79,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                   }
                   return null;
                 },
-                //onSaved: (value) => _place = value!,
               ),
-              // Add a Google Maps widget to select the location
-              // ...
-
               TextFormField(
                 controller: _location,
                 decoration: InputDecoration(labelText: 'Location'),
@@ -104,9 +89,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                   }
                   return null;
                 },
-                //onSaved: (value) => _location = value!,
               ),
-
               TextField(
                 controller: dateController,
                 decoration: const InputDecoration(
@@ -133,7 +116,6 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                   }
                 },
               ),
-
               TextField(
                 controller: _time,
                 decoration: const InputDecoration(
@@ -163,7 +145,6 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                   }
                 },
               ),
-
               TextFormField(
                 controller: _detail,
                 decoration: InputDecoration(labelText: 'Detail'),
@@ -175,7 +156,6 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                 },
                 //onSaved: (value) => _detail = value!,
               ),
-
               TextFormField(
                 controller: _peopleLimit,
                 decoration: InputDecoration(labelText: 'People Limit'),
@@ -187,7 +167,6 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                   return null;
                 },
               ),
-
               const SizedBox(
                 height: 32,
                 width: 22,
