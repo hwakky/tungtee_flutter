@@ -62,7 +62,7 @@ class _tagCategoryState extends State<CategoryWidget> {
                         await categorysSet.set({
                           "Category": Category,
                           "color": color,
-                          "categortId": categorysSet.id
+                          "categoryId": categorysSet.id
                         });
 
                         _CategoryController.text = '';
@@ -122,16 +122,15 @@ class _tagCategoryState extends State<CategoryWidget> {
                         final String Category = _CategoryController.text;
                         final String color = _colorController.text;
                         const bool verify = true;
-                        if (verify != null) {
-                          await _categorys.doc(documentSnapshot!.id).update({
-                            "verify": verify,
-                            'Category': Category,
-                            'color': color
-                          });
-                          _CategoryController.text = '';
-                          _colorController.text = '';
-                          // nextScreen(context, CategoryWidget());
-                        }
+
+                        await _categorys.doc(documentSnapshot!.id).update({
+                          "verify": verify,
+                          'Category': Category,
+                          'color': color
+                        });
+                        _CategoryController.text = '';
+                        _colorController.text = '';
+                        // nextScreen(context, CategoryWidget());
                       },
                     ),
                     ElevatedButton(
@@ -217,6 +216,7 @@ class _tagCategoryState extends State<CategoryWidget> {
   final tagController = TextEditingController();
   var tagCategoryController = TextEditingController();
 
+  @override
   Widget build(BuildContext context) {
     return Card(
       elevation: 2,
@@ -232,7 +232,7 @@ class _tagCategoryState extends State<CategoryWidget> {
             subtitle: Text(widget.snap['color']),
             trailing: SingleChildScrollView(
               child: SizedBox(
-                width: 150,
+                width: 160,
                 child: Row(
                   children: [
                     TextButton(
@@ -247,9 +247,9 @@ class _tagCategoryState extends State<CategoryWidget> {
                       child: const Text(
                         '+',
                         style: TextStyle(
-                          fontSize: 16,
+                          fontSize: 32,
                           fontFamily: 'MyCustomFont',
-                          color: green,
+                          color: Colors.grey,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -264,24 +264,20 @@ class _tagCategoryState extends State<CategoryWidget> {
                               builder: (context) {
                                 return AlertDialog(
                                   title: Text('Are you sure?'),
-                                  // ignore: duplicate_ignore
                                   content:
-                                      // ignore: prefer_const_constructors
                                       Text('This action cannot be undone.'),
                                   actions: [
                                     TextButton(
                                       child: Text('Cancel'),
                                       onPressed: () {
-                                        Navigator.of(context)
-                                            .pop(); // dismiss the dialog
+                                        Navigator.of(context).pop();
                                       },
                                     ),
                                     TextButton(
                                       child: Text('OK'),
                                       onPressed: () {
                                         _delete(widget.snap.id);
-                                        Navigator.of(context)
-                                            .pop(); // dismiss the dialog
+                                        Navigator.of(context).pop();
                                       },
                                     ),
                                   ],

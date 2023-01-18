@@ -1,5 +1,8 @@
+// ignore_for_file: sort_child_properties_last
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 
 import '../../utils/color.dart';
 import '../../utils/showSnackbar.dart';
@@ -7,7 +10,7 @@ import '../../widgets/custom_textfield.dart';
 
 class TagCategory extends StatefulWidget {
   DocumentSnapshot categoryId;
-  TagCategory({Key? key, required this.categoryId}) : super(key: key);
+  TagCategory({required this.categoryId});
 
   @override
   _TagCategoryState createState() => _TagCategoryState();
@@ -65,7 +68,17 @@ class _TagCategoryState extends State<TagCategory> {
           body: ListView(
             children: [
               Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(12, 12, 0, 0),
+                    child: Text(
+                      widget.categoryId['Category'],
+                      style: const TextStyle(
+                        fontSize: 24,
+                      ),
+                    ),
+                  ),
                   StreamBuilder<QuerySnapshot>(
                     stream: tagSet
                         .doc(categoryData['categoryId'])
@@ -78,7 +91,7 @@ class _TagCategoryState extends State<TagCategory> {
                             Expanded(
                               child: SizedBox(
                                 height:
-                                    MediaQuery.of(context).size.height * 0.33,
+                                    MediaQuery.of(context).size.height * 0.73,
                                 child: ListView.builder(
                                     itemCount: snapshot.data!.docs.length,
                                     itemBuilder: (context, index) {
@@ -91,14 +104,52 @@ class _TagCategoryState extends State<TagCategory> {
                                       var Mytext = new Map();
                                       Mytext['tag'] = documentSnapshot['tag'];
 
-                                      return Center(
-                                        child: Padding(
-                                          padding:
-                                              const EdgeInsets.only(left: 10),
-                                          child: Row(
-                                            children: [Text(Mytext['tag'])],
-                                          ),
+                                      return Card(
+                                        shape: RoundedRectangleBorder(
+                                          side: BorderSide(
+                                              color: HexColor(
+                                                  categoryData['color']),
+                                              width: 5),
                                         ),
+                                        child: ClipPath(
+                                          child: Container(
+                                            height: 80,
+                                            child: ListTile(
+                                              title: Row(
+                                                children: [
+                                                  Text(Mytext['tag']),
+                                                ],
+                                              ),
+                                              trailing: SingleChildScrollView(
+                                                child: SizedBox(
+                                                  width: 160,
+                                                  child: Row(
+                                                    children: [
+                                                      IconButton(
+                                                          icon: const Icon(
+                                                              Icons.edit),
+                                                          onPressed: () {}),
+                                                      IconButton(
+                                                          icon: const Icon(
+                                                              Icons.edit),
+                                                          onPressed: () {}),
+                                                      IconButton(
+                                                          icon: const Icon(
+                                                              Icons.edit),
+                                                          onPressed: () {}),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          clipper: ShapeBorderClipper(
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          3))),
+                                        ),
+                                        margin: const EdgeInsets.all(10),
                                       );
                                     }),
                               ),
@@ -129,7 +180,7 @@ class _TagCategoryState extends State<TagCategory> {
                       controller: tagController,
                       validator: (value) {
                         if (value!.isEmpty) {
-                          return 'Please enter a comment';
+                          return 'Please enter a tag';
                         }
                         return null;
                       },
@@ -144,7 +195,7 @@ class _TagCategoryState extends State<TagCategory> {
                           borderRadius: BorderRadius.all(Radius.circular(70)),
                           borderSide: BorderSide(width: 2, color: unselected),
                         ),
-                        hintText: 'Send a message',
+                        hintText: 'Add Tag here',
                         hintStyle: TextStyle(
                           color: unselected,
                           fontFamily: 'MyCustomFont',

@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tangteevs/admin/report.dart';
 import 'package:tangteevs/admin/tag/before.dart';
-import 'package:tangteevs/admin/tag/tag.dart';
 import 'package:tangteevs/admin/user/user.dart';
 import 'package:tangteevs/utils/color.dart';
 
@@ -108,28 +107,6 @@ class ReportTab extends StatelessWidget {
     );
   }
 }
-
-// class tagTab extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     final user = FirebaseAuth.instance.currentUser!;
-//     return MaterialApp(
-//       home: TagPage(snap: null,),
-//     );
-//   }
-// }
-
-// class tagTab extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     final user = FirebaseAuth.instance.currentUser!;
-//     return MaterialApp(
-//       home: BeforeTagPage(
-//         uid: FirebaseAuth.instance.currentUser!.uid,
-//       ),
-//     );
-//   }
-// }
 
 class tagTab extends StatelessWidget {
   @override

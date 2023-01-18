@@ -15,6 +15,66 @@ class BeforeTagPage extends StatefulWidget {
 }
 
 class _BeforeTagPageState extends State<BeforeTagPage> {
+  final CollectionReference _categorys =
+      FirebaseFirestore.instance.collection('categorys');
+
+  final TextEditingController _CategoryController = TextEditingController();
+  final TextEditingController _colorController = TextEditingController();
+  final categorysSet = FirebaseFirestore.instance.collection('categorys').doc();
+
+  Future<void> _create([DocumentSnapshot? documentSnapshot]) async {
+    await showModalBottomSheet(
+        isScrollControlled: true,
+        context: context,
+        builder: (BuildContext ctx) {
+          return Padding(
+            padding: EdgeInsets.only(
+                top: 20,
+                left: 20,
+                right: 20,
+                bottom: MediaQuery.of(ctx).viewInsets.bottom + 20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TextField(
+                  controller: _CategoryController,
+                  decoration: const InputDecoration(labelText: 'Category'),
+                ),
+                TextField(
+                  controller: _colorController,
+                  decoration: const InputDecoration(labelText: 'Color code'),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Align(
+                  alignment: Alignment.bottomRight,
+                  child: ElevatedButton(
+                    child: const Text('Create'),
+                    onPressed: () async {
+                      final String Category = _CategoryController.text;
+                      final String color = _colorController.text;
+                      if (color != null) {
+                        await categorysSet.set({
+                          "Category": Category,
+                          "color": color,
+                          "categoryId": categorysSet.id
+                        });
+
+                        _CategoryController.text = '';
+                        _colorController.text = '';
+                        Navigator.of(context).pop();
+                      }
+                    },
+                  ),
+                )
+              ],
+            ),
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -23,6 +83,8 @@ class _BeforeTagPageState extends State<BeforeTagPage> {
           resizeToAvoidBottomInset: false,
           backgroundColor: mobileBackgroundColor,
           body: Categoryone(),
+          floatingActionButton: FloatingActionButton(
+              onPressed: () => _create(), child: Icon(Icons.add)),
         ),
       ),
     );
@@ -57,16 +119,6 @@ class Categoryone extends StatelessWidget {
           child: Image.asset('assets/images/logo with name.png',
               fit: BoxFit.scaleDown),
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(
-              Icons.add,
-              color: purple,
-              size: 30,
-            ),
-            onPressed: () {},
-          ),
-        ],
       ),
       body: StreamBuilder<QuerySnapshot>(
           stream: _categorys.snapshots(),
