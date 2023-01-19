@@ -4,8 +4,10 @@ import 'package:intl/intl.dart';
 import 'package:tangteevs/feed/EditAct.dart';
 import 'package:tangteevs/utils/showSnackbar.dart';
 import 'package:tangteevs/widgets/custom_textfield.dart';
+import 'package:tangteevs/widgets/like.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../HomePage.dart';
+import '../Report.dart';
 import '../comment/comment.dart';
 import '../utils/color.dart';
 import '../services/auth_service.dart';
@@ -84,22 +86,12 @@ class _PostCardState extends State<CardWidget> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final CollectionReference _post =
       FirebaseFirestore.instance.collection('post');
-  final CollectionReference _favorites =
-      FirebaseFirestore.instance.collection('favorites');
 
   Future<void> post_delete(String postid) async {
     await _post.doc(postid).delete();
 
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text('You have successfully deleted a post activity')));
-  }
-
-  Future<void> _delete(String usersId) async {
-    await _favorites
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .collection('favorites list')
-        .doc(usersId)
-        .delete();
   }
 
   Widget build(BuildContext context) {
@@ -142,7 +134,7 @@ class _PostCardState extends State<CardWidget> {
                                     FirebaseAuth.instance.currentUser!.uid)
                                 ? const Icon(
                                     Icons.favorite,
-                                    color: Colors.red,
+                                    color: redColor,
                                     size: 30,
                                   )
                                 : const Icon(
@@ -409,7 +401,7 @@ class _PostCardState extends State<CardWidget> {
                         fontSize: 20),
                   )),
                   onTap: () {
-                    Navigator.pop(context);
+                    return showModalBottomSheetRP(context, postData);
                   },
                 ),
               ListTile(
@@ -450,26 +442,5 @@ class _PostCardState extends State<CardWidget> {
         .map((MapEntry<String, String> e) =>
             '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}')
         .join('&');
-  }
-
-  Future<String> likePost(String postId, String uid, List likes) async {
-    String res = "Some error occurred";
-    try {
-      if (likes.contains(uid)) {
-        // if the likes list contains the user uid, we need to remove it
-        _firestore.collection('post').doc(postId).update({
-          'likes': FieldValue.arrayRemove([uid])
-        });
-      } else {
-        // else we need to add uid to the likes array
-        _firestore.collection('post').doc(postId).update({
-          'likes': FieldValue.arrayUnion([uid])
-        });
-      }
-      res = 'success';
-    } catch (err) {
-      res = err.toString();
-    }
-    return res;
   }
 }

@@ -9,6 +9,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'dart:math';
 import '../widgets/PostCard.dart';
+import '../widgets/SearchResult.dart';
 import '../widgets/custom_textfield.dart';
 
 class FeedPage extends StatefulWidget {
@@ -46,7 +47,7 @@ class _FeedPageState extends State<FeedPage> {
               ),
             ],
           ),
-          body: const SearchForm(),
+          body: SearchForm(),
         ),
       ),
     );
@@ -54,10 +55,11 @@ class _FeedPageState extends State<FeedPage> {
 }
 
 class SearchForm extends StatelessWidget {
-  const SearchForm({super.key});
+  SearchForm({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final _activitySearch = TextEditingController();
     return NestedScrollView(
       floatHeaderSlivers: true,
       headerSliverBuilder: (context, innerBoxIsScrolled) {
@@ -76,17 +78,28 @@ class SearchForm extends StatelessWidget {
               child: SizedBox(
                 width: MediaQuery.of(context).size.width * 0.9,
                 height: MediaQuery.of(context).size.height * 0.05,
-                child: TextField(
-                  decoration: searchInputDecoration.copyWith(
-                    hintText: 'ค้นหากิจกรรม หรือ Tag ที่คุณสนใจ',
-                    hintStyle: TextStyle(
-                      color: unselected,
-                      fontFamily: 'MyCustomFont',
-                    ),
-                    suffixIcon: Icon(
-                      Icons.search_outlined,
-                      color: orange,
-                      size: 30,
+                child: Form(
+                  child: TextFormField(
+                    controller: _activitySearch,
+                    decoration: searchInputDecoration.copyWith(
+                      hintText: 'ค้นหากิจกรรม หรือ Tag ที่คุณสนใจ',
+                      hintStyle: TextStyle(
+                        color: unselected,
+                        fontFamily: 'MyCustomFont',
+                      ),
+                      suffixIcon: IconButton(
+                        icon: Icon(Icons.search_outlined),
+                        color: orange,
+                        iconSize: 30,
+                        onPressed: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  SearchResult(activity: _activitySearch.text),
+                            ),
+                          );
+                        },
+                      ),
                     ),
                   ),
                 ),
