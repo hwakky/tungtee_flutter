@@ -12,6 +12,7 @@ class ActivityPage extends StatelessWidget {
     return DefaultTabController(
         length: 3,
         child: Scaffold(
+          backgroundColor: mobileBackgroundColor,
           appBar: AppBar(
             backgroundColor: mobileBackgroundColor,
             elevation: 1,
