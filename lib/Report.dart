@@ -12,7 +12,7 @@ void showModalBottomSheetRP(BuildContext context, r_pid) {
   final _report = FirebaseFirestore.instance
       .collection('report')
       .doc('reportPost')
-      .collection(r_pid['uid'])
+      .collection(r_pid['postid'])
       .doc();
   showModalBottomSheet(
     useRootNavigator: true,
@@ -239,7 +239,7 @@ void showModalBottomSheetRC(BuildContext context, r_pid, Map mytext) {
   final _report = FirebaseFirestore.instance
       .collection('report')
       .doc('reportComment')
-      .collection(mytext['uid'])
+      .collection(mytext['cid'])
       .doc();
   showModalBottomSheet(
     useRootNavigator: true,

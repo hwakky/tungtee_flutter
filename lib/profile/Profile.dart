@@ -3,6 +3,7 @@ import 'dart:ffi';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tangteevs/Landing.dart';
+import 'package:tangteevs/admin/home.dart';
 import 'package:tangteevs/feed/FeedPage.dart';
 import 'package:tangteevs/profile/edit.dart';
 import 'package:tangteevs/utils/color.dart';
@@ -89,6 +90,28 @@ class _ProfilePageState extends State<ProfilePage> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
+              if (userData['admin'] == true)
+                ListTile(
+                  contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
+                  title: Center(
+                    child: const Text(
+                      'Go to admin page',
+                      style:
+                          TextStyle(fontFamily: 'MyCustomFont', fontSize: 20),
+                    ),
+                  ),
+                  onTap: () {
+                    Navigator.of(context, rootNavigator: true)
+                        .pushAndRemoveUntil(
+                      MaterialPageRoute(
+                        builder: (BuildContext context) {
+                          return const AdminHomePage();
+                        },
+                      ),
+                      (_) => false,
+                    );
+                  },
+                ),
               ListTile(
                 contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
                 title: Center(
